@@ -1,0 +1,38 @@
+projeto-geteats/
+│
+├─ index.html                  ← Página inicial / login do cliente
+├─ admin.html                  ← Página de login do administrador
+│
+├─ paginas/                    ← Cada tela do sistema em HTML
+│   ├─ cardapio.html           ← Lista de produtos e categorias
+│   ├─ produto.html            ← Detalhes de um produto (ingredientes, tamanhos)
+│   ├─ carrinho.html           ← Itens selecionados pelo cliente
+│   ├─ pagamento.html          ← Escolha da forma de pagamento
+│   ├─ pedido-status.html      ← Acompanhamento do pedido
+│   ├─ admin-dashboard.html    ← Estatísticas e visão geral (ADM)
+│   ├─ admin-cardapio.html     ← CRUD de produtos (criar, editar, excluir)
+│   └─ ... (outras telas, se necessário)
+│
+├─ recursos/
+│   ├─ css/
+│   │   ├─ principal.css       ← Estilos globais (cores, tipografia, layout base)
+│   │   ├─ componentes.css     ← Botões, cards, formulários, etc.
+│   │   └─ admin.css           ← Estilos exclusivos do painel do administrador
+│   │
+│   ├─ js/
+│   │   ├─ principal.js        ← Funções gerais (menu, validações simples)
+│   │   ├─ carrinho.js         ← Lógica para adicionar/remover itens
+│   │   ├─ pagamento.js        ← Processamento e validação do pagamento
+│   │   ├─ produto.js          ← Ações nas páginas de produto
+│   │   ├─ admin.js            ← Funções de administração (CRUD, métricas)
+│   │   └─ api.js              ← Comunicação com backend / requisições (futuro)
+│   │
+│   ├─ imagens/                ← Logos, ícones, fotos de produtos
+│   └─ fontes/                 ← (opcional) Fontes personalizadas
+│
+├─ componentes/                ← Trechos de HTML reaproveitáveis
+│   ├─ cabecalho.html
+│   ├─ rodape.html
+│   └─ card-produto.html
+│
+
