@@ -57,6 +57,10 @@ Além disso, o projeto contempla a perspectiva administrativa, oferecendo telas 
 
 ![UserFlow](img/userflow-geteats.jpg)
 
+> O fluxo do usuário administrador.
+
+![UserFlow](img/admflow-geteats.jpg)
+
 **Fluxos mapeados:**
 
 1. **Onboarding do Cliente Corporativo**  
