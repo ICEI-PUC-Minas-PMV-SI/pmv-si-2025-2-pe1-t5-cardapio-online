@@ -1,0 +1,87 @@
+body{
+	background-color: white;
+}
+
+a{
+	text-decoration: none;
+}
+
+.header--background{
+	background-color: #f9f9f9;
+	height: 40vw;
+	position: fixed;
+	top: 0;
+}
+
+.pagamento--header{
+	display: flex;
+	position: absolute;
+	flex-direction: row;
+	top: 0;
+	padding: 2rem 0;
+}
+
+.geteatslogo{
+	background-color: var(--color-primary);
+	padding: .75rem;
+	padding-bottom: 0;
+	border-radius: 20px;
+}
+
+.searchbar{
+	border-radius: 60px;
+	min-width: 20vw;
+}
+
+.headerbuttons{
+	padding: 1rem 2vw;
+}
+
+.pagamento--box{
+	display: flex;
+	box-shadow: 0 4px 8px var(--color-shadow);
+	padding: 3rem 2rem;
+	border-radius: 20px;
+	margin-top: 12vh;
+	margin-bottom: 5vh;
+}
+
+.carrinho--itemcontainer{
+	position: relative;
+	left: 0;
+}
+
+.pagamento--box_left{
+	left: 0;
+}
+
+.pagamento--box_right{
+	padding: 0 5vw;
+	right: 0;
+}
+
+.pagamento--titulo{
+	display: flex;
+	flex-direction: column;
+	margin: 0 10vw;
+}
+
+.input--card{
+	width: 100%;
+}
+
+.input--expiration{
+	width: 60%;
+}
+
+.input--cvv{
+	width: 60%;
+}
+
+.input--cardname{
+	width: 100%;
+}
+
+.margin2remvertical{
+	margin: 2rem 0;
+}

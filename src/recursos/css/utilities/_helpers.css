@@ -1,0 +1,11 @@
+.u-margin-top-md {
+  margin-top: var(--spacing-md);
+}
+
+.u-text-center {
+  text-align: center;
+}
+
+.u-esconder {
+  display: none;
+}

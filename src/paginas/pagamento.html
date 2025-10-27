@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="../recursos/css/principal.css">
+	<link rel="stylesheet" type="text/css" href="../recursos/css/paginas/carrinho.css">
+	<link rel="stylesheet" type="text/css" href="../recursos/css/paginas/pagamento.css">
+	<title>Pagamento</title>
+	<!-- feito por Miguel J. Castro -->
+</head>
+<body>
+
+		<!--CABEÇARIO-->
+
+	<div class="pagamento--header">
+		<div class="geteatslogo"> <img src="../assets/logos/GetEatsSVG.svg" width="50px" height="50px"> </div>
+		<div class="headerbuttons">Novidades</div>
+		<div class="headerbuttons">Favoritos</div>
+		    <div class="input-field">
+		      <div class="input-field__input searchbar">
+		        <div class="input-field__icon"> <img src="../assets/icons/Busca.svg"> </div>
+				<input type="search" id="search" placeholder="Buscar pratos..." />
+		      </div>
+		    </div>
+		<div class="headerbuttons">
+			<a href="login.html">
+				<img src="../assets/icons/PerfilHeaderRed.svg" width="35px" height="35px" class="login--header">
+			</a>
+		</div>
+		<div class="headerbuttons">
+			<a>
+				<img src="../assets/icons/CartRed.svg" width="35px" height="35px" class="login--header">
+			</a>
+		</div>
+	</div>
+
+		<!--CAIXA COM TUDO-->
+
+	<div class="pagamento--box">
+
+		<div class="pagamento--box_left">
+		<div class="carrinho--itemcontainer">
+			<div class="carrinho--item">
+				<div>
+					<img src="../assets/imagen/ArtesanalDuplo.jpg" class="carrinho--imagem">
+
+						<div class="carrinho--opcoes">
+							<div class="carrinho--iconbg carrinho--opcao">
+								<div class="carrinho--icon"> - </div>
+							</div>
+							<div class="carrinho--numeroitens">1</div>
+							<div class="carrinho--iconbg carrinho--opcao">
+								<div class="carrinho--icon"> + </div>
+							</div>
+						</div>
+
+						<div class="carrinho--iconbg carrinho--delete">
+							<img src="../assets/icons/Delete.svg" class="carrinho--icon">
+						</div>
+					</div>
+
+					<div>
+						<div class="item--nome">Duplo</div>
+						<div class="item--descricao">Italiana | 25-30 Minutos</div>
+						<div class="item--preco">R$ 22,90</div>
+					</div>
+
+					<div class="carrinho--opcoes">
+						<div class="carrinho--iconbg carrinho--opcao">
+							<div class="carrinho--icon"> - </div>
+						</div>
+						<div class="carrinho--numeroitens">1</div>
+						<div class="carrinho--iconbg carrinho--opcao">
+							<div class="carrinho--icon"> + </div>
+						</div>
+					</div>
+
+					<div class="carrinho--iconbg carrinho--delete">
+						<img src="../assets/icons/Delete.svg" class="carrinho--icon">
+					</div>
+				</div>
+
+				<div class="carrinho--item">
+					<div>
+						<img src="../assets/imagen/Suco.jpg" class="carrinho--imagem">
+					</div>
+
+					<div>
+						<div class="item--nome">Suco</div>
+						<div class="item--descricao">Italiana | 25-30 Minutos</div>
+						<div class="item--preco">R$ 5,90</div>
+					</div>
+
+					<div class="carrinho--opcoes">
+						<div class="carrinho--iconbg carrinho--opcao">
+							<div class="carrinho--icon"> - </div>
+						</div>
+						<div class="carrinho--numeroitens">1</div>
+						<div class="carrinho--iconbg carrinho--opcao">
+						<div class="carrinho--icon"> + </div>
+					</div>
+				</div>
+
+				<div class="carrinho--iconbg carrinho--delete">
+					<img src="../assets/icons/Delete.svg" class="carrinho--icon">
+				</div>
+			</div>
+		</div>
+
+			<!--CAIXA DE PREÇO-->
+
+		<div class="infopagamento">
+			<div class="item--nome left">Resumo do pedido</div>
+			<div class="item--pedido">
+				<div class="item--descricao left">Duplo</div>
+				<div class="item--descricao right">R$ 22,90</div>
+			</div>
+			<div class="item--pedido">
+				<div class="item--descricao left">Suco</div>
+				<div class="item--descricao right">R$ 5,90</div>
+			</div>
+			<div class="item--pedido">
+				<div class="item--descricao left">Taxa de entrega</div>
+				<div class="item--descricao right">R$ 3,90</div>
+			</div>
+			<div class="form-card__separator"></div>
+			<div class="item--pedido">
+				<div class="item--nome left">Total</div>
+				<div class="item--nome right">R$ 32,70</div>
+			</div>
+		</div>
+		</div>
+
+			<!--LADO DIREITO-->
+
+		<div class="pagamento--box_right">
+			<div class="pagamento--titulo">
+				<div class="item--nome align-center">Confirme o Pagamento</div>
+				<div class="item--descricao align-center">Assim que confirmado, será preparado.</div>
+			</div>
+			<div class="flex-column">
+
+				<div class="flex-column margin2remvertical">
+					<label class="input-field__label" for="card">Número do Cartão</label>
+					<div class="input-field">
+		      			<div class="input-field__input input--card">
+		     				<input type="card" id="card" placeholder="1234 5678 9101 1123" />
+		      			</div>
+		    		</div>
+	    		</div>
+	    		<div class="flex-row">
+	    			<div class="flex-column margin1remvertical">
+						<label class="input-field__label" for="expirationdate">Data de expiração</label>
+						<div class="input-field">
+			      			<div class="input-field__input input--expiration">
+			     				<input type="expirationdate" id="expirationdate" placeholder="MM/AA" />
+			      			</div>
+			    		</div>
+		    		</div>
+		    		<div class="flex-column margin1remvertical">
+			    		<label class="input-field__label" for="cvv">CVV</label>
+						<div class="input-field">
+			      			<div class="input-field__input input--cvv">
+			     				<input type="cvv" id="cvv" placeholder="***" />
+			      			</div>
+			    		</div>
+			    	</div>
+	    		</div>
+				<div class="flex-column margin2remvertical">
+		    		<label class="input-field__label" for="cardname">Nome no Cartão</label>
+					<div class="input-field">
+		      			<div class="input-field__input input--cardname">
+		     				<input type="cardname" id="cardname"/>
+		      			</div>
+		    		</div>
+		    	</div>
+			</div>
+			<a href="pedido-status.html">
+				<div class="btn btn--finalizarpedido">Confirmar</div>
+			</a>
+		</div>
+	</div>
+
+</body>
+</html>

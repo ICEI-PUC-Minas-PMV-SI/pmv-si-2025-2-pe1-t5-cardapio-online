@@ -1,0 +1,54 @@
+/* Páginas - Splash Screen */
+
+.splash-screen {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.splash-screen__loader {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+.splash-screen__loader img {
+  max-width: 150vw;
+  height: auto;
+  margin-top: var(--spacing-md);
+}
+
+/* Background overlay for splash */
+.splash-screen::before {
+  content: '';
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: -1;
+  background: radial-gradient(
+    ellipse 200% 205% at 60% 210%,
+    var(--color-secondary) 21%,
+    var(--color-primary) 74%,
+    var(--color-secondary) 100%
+  );
+}
+
+@keyframes gradientPulse {
+  0% {
+    filter: brightness(1);
+  }
+  100% {
+    filter: brightness(1.2);
+  }
+}

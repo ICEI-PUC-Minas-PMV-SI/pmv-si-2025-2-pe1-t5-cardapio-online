@@ -1,0 +1,15 @@
+/* Variáveis */
+:root {
+  --color-primary: #FE2E2E;
+  --color-secondary: #D40403;
+  --color-background: #f9f9f9;
+  --color-text: #222222;
+  --color-text-light: #666666;
+  --color-input-bg: #fff;
+  --color-shadow: rgba(0,0,0,0.1);
+  --font-size-base: 1rem;
+  --border-radius: 0.9375rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.25rem;
+}

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="../recursos/css/principal.css">
+	<link rel="stylesheet" type="text/css" href="../recursos/css/paginas/carrinho.css">
+	<title>Carrinho</title>
+	<!-- feito por Miguel J. Castro -->
+</head>
+<body>
+
+	<button onclick="document.getElementById('carrinho--modal').style.display='block'" class="carrinho--modal-btn">
+		<img src="../assets/icons/CartRed.svg" width="35px" height="35px"></button>
+
+	<div id="carrinho--modal" class="modal--content">
+
+		<div class="carrinho--sideline modal--animate-right">
+
+			<div class="carrinho--top">
+				<div class="carrinho--top-red"></div>
+				<div class="item--nome">Carrinho de compras</div>
+				<button onclick="document.getElementById('carrinho--modal').style.display='none'" class="item--nome carrinho--top-close">
+					<img src="../assets/icons/Close.svg" width="30px" height="30px">
+				</button>
+			</div>
+
+			<div class="form-card__separator lessmargin"></div>
+
+			<div class="carrinho--itemcontainer">
+				<div class="carrinho--item">
+					<div>
+						<img src="../assets/imagen/ArtesanalDuplo.jpg" class="carrinho--imagem">
+
+						<div class="carrinho--opcoes">
+							<div class="carrinho--iconbg carrinho--opcao">
+								<div class="carrinho--icon"> - </div>
+							</div>
+							<div class="carrinho--numeroitens">1</div>
+							<div class="carrinho--iconbg carrinho--opcao">
+								<div class="carrinho--icon"> + </div>
+							</div>
+						</div>
+
+						<div class="carrinho--iconbg carrinho--delete">
+							<img src="../assets/icons/Delete.svg" class="carrinho--icon">
+						</div>
+					</div>
+
+					<div>
+						<div class="item--nome">Duplo</div>
+						<div class="item--descricao">Italiana | 25-30 Minutos</div>
+						<div class="item--preco">R$ 22,90</div>
+					</div>
+
+					<div class="carrinho--opcoes">
+						<div class="carrinho--iconbg carrinho--opcao">
+							<div class="carrinho--icon"> - </div>
+						</div>
+						<div class="carrinho--numeroitens">1</div>
+						<div class="carrinho--iconbg carrinho--opcao">
+							<div class="carrinho--icon"> + </div>
+						</div>
+					</div>
+
+					<div class="carrinho--iconbg carrinho--delete">
+						<img src="../assets/icons/Delete.svg" class="carrinho--icon">
+					</div>
+				</div>
+
+				<div class="carrinho--item">
+					<div>
+						<img src="../assets/imagen/Suco.jpg" class="carrinho--imagem">
+					</div>
+
+					<div>
+						<div class="item--nome">Suco</div>
+						<div class="item--descricao">Italiana | 25-30 Minutos</div>
+						<div class="item--preco">R$ 5,90</div>
+					</div>
+
+					<div class="carrinho--opcoes">
+						<div class="carrinho--iconbg carrinho--opcao">
+							<div class="carrinho--icon"> - </div>
+						</div>
+						<div class="carrinho--numeroitens">1</div>
+						<div class="carrinho--iconbg carrinho--opcao">
+							<div class="carrinho--icon"> + </div>
+						</div>
+					</div>
+
+					<div class="carrinho--iconbg carrinho--delete">
+						<img src="../assets/icons/Delete.svg" class="carrinho--icon">
+					</div>
+				</div>
+			</div>
+
+			<div id="preco--modal">
+				<div class="infopagamento">
+					<div class="item--nome left">Resumo do pedido</div>
+					<div class="item--pedido">
+						<div class="item--descricao left">Duplo</div>
+						<div class="item--descricao right">R$ 22,90</div>
+					</div>
+					<div class="item--pedido">
+						<div class="item--descricao left">Suco</div>
+						<div class="item--descricao right">R$ 5,90</div>
+					</div>
+					<div class="item--pedido">
+						<div class="item--descricao left">Taxa de entrega</div>
+						<div class="item--descricao right">R$ 3,90</div>
+					</div>
+					<div class="form-card__separator"></div>
+					<div class="item--pedido">
+						<div class="item--nome left">Total</div>
+						<div class="item--nome right">R$ 32,70</div>
+					</div>
+				</div>
+
+				<div class="form-card__separator"></div>
+
+					<div class="pedido--endereco">
+						<div>
+							<img src="../assets/icons/Loc.svg" class="endereco--icon">
+						</div>
+						<div>
+							<p>Av, Brasil - 1234</p>
+							<p class="item--descricao nomargin">Apto 10</p>
+						</div>
+						<div class="btn--alterarendereco">Alterar</div>
+					</div>
+				<button   onclick="document.getElementById('preco--modal').style.display='none'; document.getElementById('pagamento--modal').style.display='block';" class="btn btn--finalizarpedido">
+						<img src="../assets/icons/card.svg">
+						Finalizar pedido
+				</button>
+			</div>
+
+			<div id="pagamento--modal" class="pagamento--select">
+				
+				<div class="pagamento--modo">
+					<div class="left">Pague por aqui</div>
+					<div class="right">Pague na entrega</div>
+				</div>
+
+				<div class="formaspagamento">
+					<div class="lessmargin">Formas de pagamento</div>
+					<a href="pagamento.html">
+					<img class="pagamento--pix" src="../assets/logos/pix.png">
+					<div class="flex-row"></a>
+						<a href="pagamento.html">
+						<img src="../assets/logos/paypal.png" class="pagamento--provedor"></a>
+						<a href="pagamento.html">
+						<img src="../assets/logos/mastercard.png" class="pagamento--provedor"></a>
+						<a href="pagamento.html">
+						<img src="../assets/logos/maestro.png" class="pagamento--provedor"></a>
+					</div>
+					<div class="flex-row">
+						<a href="pagamento.html">
+						<img src="../assets/logos/applepay.png" class="pagamento--provedor"></a>
+						<a href="pagamento.html">
+						<img src="../assets/logos/amazonpay.png" class="pagamento--provedor"></a>
+						<a href="pagamento.html">
+						<img src="../assets/logos/binancepay.png" class="pagamento--provedor"></a>
+					</div>
+				</div>
+			</div>
+	</div>
+</body>
+</html>

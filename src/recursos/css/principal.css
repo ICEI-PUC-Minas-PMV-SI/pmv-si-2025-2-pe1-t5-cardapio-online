@@ -1,0 +1,10 @@
+/* recursos/css/principal.css */
+@import 'base/reset.css';        /* 1. Base (Reset, Normalize) */
+@import 'base/tipografia.css';    /* 2. Base (Fontes e Tipografia) */
+@import 'config/_variaveis.css';  /* 3. Config (Variáveis, Cores) - Opcional */
+@import 'componentes.css';       /* 4. Componentes (Botões, Inputs, Cards) */
+@import 'paginas/splash.css';     /* 5. Páginas (Layouts específicos) */
+@import 'paginas/login.css';      /* 5. Páginas (Layouts específicos) */
+@import 'admin.css';             /* 6. Admin (Escopo específico) */
+@import 'utilities/_helpers.css'; /* 7. Utilities (Classes de ajuda) */
+@import 'utilities/_media-queries.css'; /* 7. Utilities (Media Queries) */

@@ -1,0 +1,265 @@
+body{
+	background-color: white;
+}
+
+.carrinho--modal-btn{
+	background-color: white;
+	border: 0;
+	color: white;
+	font-size: 1rem;
+	cursor: pointer;
+	margin-right: 1rem;
+}
+
+.modal--content{
+	display: none;
+}
+
+.modal--animate-right{
+	position:relative;
+	animation:animateright 0.4s}@keyframes animateright{from{right:-300px;opacity:0} to{right:0;opacity:1}
+	}
+
+.carrinho--sideline{
+	position: absolute;
+	right: 0;
+	top: 0;
+	height: 80vh;
+	padding: 1rem;
+}
+
+.carrinho--top-red{
+	background-color: #FE2E2E;
+	width: 100%;
+	height: .4rem;
+	position: fixed;
+	top: 0;
+	z-index: 3;
+}
+
+.carrinho--top{
+	display: flex;
+	flex-direction: row;
+}
+
+.carrinho--top-close{
+	position: absolute;
+	right: 0;
+	color: red;
+	cursor: pointer;
+	margin-right: 1rem;
+	cursor: pointer;
+	border: 0;
+	background-color: white;
+}
+
+.carrinho--itemcontainer{
+	overflow-y: auto;
+	height: 45vh;
+	padding: 0 5px;
+}
+
+.carrinho--item{
+	position: relative;
+	margin-bottom: 2vh;
+	margin-right: 2vw;
+	padding: 2rem;
+	padding-right: 1rem;
+	padding-bottom: 4rem;
+	background-color: var(--color-input-bg);
+	border-radius: var(--border-radius);
+	box-shadow: 0 4px 8px var(--color-shadow);
+	font-size: 1rem;
+	color: var(--color-text);
+	display: flex;
+	text-align: center;
+	align-items: center;
+}
+
+.carrinho--imagem{
+	border-radius: var(--border-radius);
+	height: 6rem;
+	width: 12rem;
+	display: flex;
+	left: 0;
+	object-fit: cover;
+	margin-right: 10px;
+}
+
+.carrinho--opcoes{
+	position: absolute;
+	display: flex;
+	flex-direction: row;
+	bottom: 0;
+	margin-bottom: 1rem;
+	align-items: center;
+}
+
+.carrinho--delete{
+	right: 0;
+	bottom: 0;
+	position: absolute;
+	margin-right: 5%;
+	margin-bottom: 1rem;
+}
+
+.carrinho--opcao{
+	margin-left: 1.75rem;
+	margin-right: 1.75rem;
+}
+
+.carrinho--numeroitens{
+	font-size: 2rem;
+	margin-top: .5rem;
+}
+
+.carrinho--iconbg{
+	height: 2rem;
+	width: 2rem;
+	border-radius: 100%;
+	box-shadow: 0 4px 8px var(--color-shadow);
+	background-color: #f5f5f5;
+	cursor: pointer;
+}
+
+.carrinho--icon{
+	height: 1.3rem;
+	width: 1.3rem;
+	margin: auto;
+	font-size: 120%;
+	font-weight: bolder;
+	margin-top: .4rem;
+}
+
+.item--nome{
+	font-size: 1.5rem;
+}
+
+.item--descricao{
+	font-size: 1rem;
+	color: var(--color-text-light);
+	margin-top: 1rem;
+}
+
+.item--preco{
+	font-size: 1.75rem;
+	margin-top: 1rem;
+}
+
+.infopagamento{
+	position: relative;
+	padding: 1.5rem;
+	background-color: #f5f5f5;
+	border-radius: var(--border-radius);
+	box-shadow: 0 4px 8px var(--color-shadow);
+	font-size: 1rem;
+	color: var(--color-text);
+	display: flex;
+	flex-direction: column;
+	margin-top: .5rem;
+}
+
+.item--pedido{
+	display: flex;
+	flex-direction: row;
+}
+
+.pedido--endereco{
+	color: #a991e7;
+	display: flex;
+	flex-direction: row;
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+
+.endereco--icon{
+	height: 90%;
+	margin-right: 2rem;
+	margin-top: .1rem;
+}
+
+.btn--alterarendereco{
+	position: absolute;
+	right: 0;
+	background-color: #a991e7;
+	color: white;
+	border-radius: 10rem;
+	text-align: center;
+	cursor: pointer;
+	padding: .75rem 1rem .75rem 1rem;
+	font-weight: bold;
+	margin-right: 1rem;
+}
+
+.btn--finalizarpedido{
+	text-align: center;
+	padding: 1.3rem;
+	background-color: white;
+	border: 0;
+	width: 100%;
+}
+
+.pagamento--select{
+	display: none;
+	max-width: 300px;
+}
+
+.pagamento--modo{
+	display: flex;
+	width: 475px;
+	position: relative;
+	flex-direction: row;
+	padding: 1rem 1.5rem;
+	margin-bottom: 1rem;
+	border-bottom: lightgray 2px solid;
+}
+
+.formaspagamento{
+	padding: .5remrem;
+}
+
+.pagamento--provedor{
+	width: 120px;
+	margin: 0 20px;
+	margin-bottom: 5px;
+}
+
+.pagamento--pix{
+	width: 160%;
+}
+
+.flex-column{
+	display: flex;
+	flex-direction: column;
+}
+
+.flex-row{
+	display: flex;
+	flex-direction: row;
+}
+
+.lessmargin{
+	margin-top: .5rem;
+	margin-bottom: .5rem;
+}
+
+.nomargin{
+	margin: 0;
+}
+
+.left{
+	left: 0;
+	text-align: left;
+	align-items: left;
+}
+
+.right{
+	right: 0;
+	position: absolute;
+	text-align: right;
+	margin-right: 1.5rem;
+}
+
+.align-center{
+	text-align: center;
+}
