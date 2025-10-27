@@ -1,0 +1,329 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f5f5;
+}
+
+/* Header */
+.header {
+    background-color: white;
+    padding: 15px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-box {
+    background-color: #ff4444;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.nav {
+    display: flex;
+    gap: 30px;
+}
+
+.nav a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+}
+
+.nav a.active {
+    color: #ff4444;
+    border-bottom: 2px solid #ff4444;
+    padding-bottom: 3px;
+}
+
+.header-icons {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 40px 20px;
+    background: linear-gradient(180deg, white 0%, #f5f5f5 100%);
+}
+
+.hero-logo {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #ff6b6b, #ff4444);
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+}
+
+.hero h1 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 40px;
+}
+
+/* Promotional Cards */
+.promo-cards {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    padding: 0 50px 40px;
+    flex-wrap: wrap;
+}
+
+.promo-card {
+    border-radius: 15px;
+    padding: 30px;
+    width: 280px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.promo-card.red {
+    background: linear-gradient(135deg, #ff4444, #cc0000);
+}
+
+.promo-card.yellow {
+    background: linear-gradient(135deg, #ffbb33, #ff8800);
+}
+
+.promo-card.purple {
+    background: linear-gradient(135deg, #aa66ff, #7733ff);
+}
+
+.promo-card h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.promo-card p {
+    font-size: 14px;
+    margin-bottom: 15px;
+    opacity: 0.9;
+}
+
+.promo-card button {
+    background-color: white;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.promo-card button:hover {
+    transform: scale(1.05);
+}
+
+/* Products Grid */
+.products {
+    padding: 40px 50px;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.product-card {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.product-card h4 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.product-card .rating {
+    color: #ffbb33;
+    margin-bottom: 10px;
+}
+
+.product-card .price {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ff4444;
+    margin-bottom: 15px;
+}
+
+.product-card button {
+    width: 100%;
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.product-card button:hover {
+    background-color: #cc0000;
+}
+
+/* Login Modal */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.login-modal {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    width: 400px;
+    max-width: 90%;
+    text-align: center;
+    position: relative;
+}
+
+.login-modal .user-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #ff4444, #cc0000);
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 30px;
+}
+
+.login-modal h2 {
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #666;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    font-size: 14px;
+}
+
+.form-options a {
+    color: #ff4444;
+    text-decoration: none;
+}
+
+.login-modal button {
+    width: 100%;
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.login-modal button:hover {
+    background-color: #cc0000;
+}
+
+/* Floating Button */
+.switch-page {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(255,68,68,0.3);
+    transition: all 0.3s;
+    z-index: 100;
+}
+
+.switch-page:hover {
+    background-color: #cc0000;
+    transform: scale(1.05);
+}
