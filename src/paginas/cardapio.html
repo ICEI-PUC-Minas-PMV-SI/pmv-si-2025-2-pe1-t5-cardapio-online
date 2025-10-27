@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cardápio - Get Eats</title>
+  <style>
+    /* Reset */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      min-height: 100vh;
+      padding-bottom: 80px;
+      /* Espaço para footer fixo */
+    }
+
+    /* Header Superior Vermelho */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 10rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 1rem;
+      z-index: 10;
+    }
+
+    .header-bg {
+      position: absolute;
+      top: -150px;
+      left: 50%;
+      width: 150%;
+      height: 300px;
+      transform: translateX(-50%);
+      background: linear-gradient(180deg, #FE2E2E 48%, #D40403 100%);
+      border-radius: 50%;
+    }
+
+    .header .back-icon {
+      margin-left: 50px;
+      width: 1.5rem;
+      height: 1.5rem;
+      position: relative;
+      z-index: 11;
+    }
+
+    .header .logo {
+      width: 4.75rem;
+      position: relative;
+      z-index: 11;
+    }
+
+    .header .profile-icon {
+      margin-right: 50px;
+      width: 1.5rem;
+      height: 1.5rem;
+      position: relative;
+      z-index: 8;
+    }
+
+    /* Conteúdo Principal */
+    .main-content {
+      background-color: #f9f9f900;
+      width: 90vw;
+      max-width: 400px;
+      min-width: 320px;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0 auto;
+      margin-top: 2rem;
+    }
+
+    /* Barra de Pesquisa */
+    .search-bar {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 600px;
+      width: 70vw;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      background: white;
+      border-radius: 4rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 1rem 0.75rem;
+      z-index: 15;
+    }
+
+    .search-bar .search-icon {
+      width: 1rem;
+      height: 1rem;
+      border-radius: 0.25rem;
+      margin-left: 0.5rem;
+    }
+
+    .search-bar input {
+      border: none;
+      outline: none;
+      flex-grow: 1;
+      font-size: 0.8rem;
+      color: #9999b0;
+      margin-left: 0.5rem;
+
+    }
+
+    .search-bar .filter-btn {
+      width: 1.25rem;
+      background: #f9f9f9;
+      margin-right: 0.5rem;
+    }
+
+    /* Detalhes do Restaurante */
+    .restaurant-details {
+      position: relative;
+      margin-right: 8rem;
+      display: flex;
+      flex: none;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .restaurant-details .logo-small {
+      width: 2.5rem;
+      height: 2.5rem;
+      background: url('../assets/logos/LogoCliente.jpg') no-repeat center center;
+      background-size: cover;
+      border-radius: 50%;
+      margin-right: 0.75rem;
+    }
+
+    .restaurant-details .info {
+      flex-grow: 1;
+    }
+
+    .restaurant-details .name {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #222222;
+    }
+
+    .restaurant-details .rating {
+      display: flex;
+      align-items: center;
+      font-size: 0.875rem;
+      color: #666666;
+    }
+
+    .restaurant-details .stars {
+      color: #FFD700;
+      margin-right: 0.25rem;
+    }
+
+    /* Navegação de Categorias (Tabs) */
+    .categories {
+      display: flex;
+      overflow-x: auto;
+      margin-bottom: 1.75rem;
+      padding-bottom: 0.5rem;
+      width: 100vw;
+      position: relative;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE and Edge */
+    }
+
+    .categories::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }
+
+    .categories a {
+      text-decoration: none;
+      color: #666666;
+      font-size: 1rem;
+      margin-right: 1rem;
+      margin-left: 1rem;
+      padding-bottom: 0.25rem;
+      padding-left: 1rem;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .categories a.active {
+      color: #FE2E2E;
+    }
+
+    .categories a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -0.5rem;
+      width: 100%;
+      height: 2px;
+      background: #FE2E2E;
+      z-index: 2;
+      left: 0.5rem;
+    }
+
+    .categories-line {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 260vw;
+      height: 2px;
+      background: #ccc;
+      z-index: 1;
+    }
+
+    /* Lista de Produtos */
+    .products {
+      min-width: 350px;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 4rem;
+      gap: 1.5rem;
+    }
+
+    .product-card {
+      height: 7rem;
+      display: flex;
+      background: white;
+      border-radius: 0.9375rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 0.9375rem;
+      position: relative;
+    }
+
+    .product-card .image {
+      width: 6.75rem;
+      height: 5rem;
+      align-self: center;
+      border-radius: 0.5rem;
+      margin-right: 0.8rem;
+      margin-left: 0.1rem;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .product-card .details {
+      flex-grow: 1;
+    }
+
+    .product-card .title {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #222222;
+      margin-bottom: 0.25rem;
+    }
+
+    .product-card .subtitle {
+      font-size: 0.875rem;
+      color: #666666;
+      margin-bottom: 0.5rem;
+    }
+
+    .product-card .rating {
+      display: flex;
+      align-items: center;
+      font-size: 0.875rem;
+      color: #666666;
+    }
+
+    .product-card .stars {
+      color: #FFD700;
+      margin-right: 0.25rem;
+    }
+
+      .product-card .add-btn {
+        position: absolute;
+        bottom: 0.9375rem;
+        right: 0.9375rem;
+        width: 1.5rem;
+        height: 1.5rem;
+        background: #D9D9D9;
+        border-radius: 50%;
+        color: #525252;
+        font-size: 1.8rem;
+        font-weight: lighter;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+      }
+
+    .product-card .add-btn-tablet {
+      position: absolute;
+      bottom: 0.9375rem;
+      left: 0.9375rem;
+      width: 86%;
+      height: 3rem;
+      background: linear-gradient(180deg, #FE2E2E 48%, #D40403 100%);
+      border-radius: 0.9375rem;
+      border: none;
+      color: white;
+      font-weight: bold;
+      font-size: 1.125rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(255, 255, 255, 0.5);
+    }
+
+    .product-card .discount-badge {
+      position: absolute;
+      bottom: 1.75rem;
+      right: 5rem;
+      background: #F6F1FF;
+      color: #8C6CDA;
+      padding: 0.25rem 0.6rem;
+      border-radius: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .product-card .discount-badge .percent-icon {
+      width: 0.75rem;
+      height: 0.75rem;
+    }
+
+    /* Botão Flutuante Carrinho */
+    .cart-float {
+      position: fixed;
+      bottom: 90px;
+      right: 1rem;
+      width: 4rem;
+      height: 4em;
+      margin-bottom: 1.5rem;
+      background: #FE2E2E;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      z-index: 20;
+    }
+
+    .cart-float .cart-icon {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    /* Footer Navegação */
+    .footer-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100vw;
+      height: 100px;
+      background: white;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+      z-index: 10;
+    }
+
+    .footer-nav .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #b0b0b0;
+      font-size: 0.625rem;
+    }
+
+    .footer-nav .nav-item.active {
+      color: #000000;
+    }
+
+    .footer-nav .nav-icon {
+      width: 1.25rem;
+      height: 1.25rem;
+      border-radius: 0.25rem;
+      margin-bottom: 1rem;
+    }
+
+
+    /* Media Queries para Responsividade */
+    @media (max-width: 767px) {
+      .product-card .add-btn-tablet {
+        display: none;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .product-card .add-btn {
+        width: 200px;
+        display: none;
+      }
+
+      .product-card .discount-badge {
+      display: none;
+    }
+    }
+
+    @media (max-width: 480px) {
+      .header {
+        height: 8rem;
+      }
+
+      .header .logo {
+        font-size: 1.25rem;
+      }
+
+      .search-bar {
+        top: 7rem;
+      }
+
+      .main-content {
+        padding-top: 10rem;
+      }
+    }
+
+    @media (min-width: 481px) and (max-width: 768px) {
+      .header {
+        height: 9rem;
+      }
+
+      .header .logo {
+        font-size: 1.375rem;
+      }
+
+      .search-bar {
+        top: 9rem;
+      }
+
+      .main-content {
+        padding-top: 10rem;
+      }
+
+      .product-card {
+        padding: 1rem;
+      }
+    }
+
+    @media (min-width: 768px) {
+
+      .product-card .add-btn {
+        width: 200px;
+        display: none;
+      }
+
+      .header .back-icon {
+      margin-left: 100px;
+    }
+
+    .header .profile-icon {
+      margin-right: 100px;
+    }
+
+      .main-content {
+        max-width: 500px;
+        margin: 0 auto;
+      }
+
+      .header {
+        height: 10rem;
+      }
+
+      .search-bar {
+        top: 7rem;
+      }
+
+      .restaurant-details {
+      position: relative;
+      margin-right: 0rem;
+      display: flex;
+      flex: none;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+      .categories-line {
+      width: 104vw;
+    }
+
+      .main-content {
+        padding-top: 12rem;
+      }
+
+      .products {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+      }
+
+      .product-card {
+      height: 18rem;
+      display: flex;
+      flex-direction: column;
+      background: white;
+      border-radius: 0.9375rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 0.9375rem;
+      position: relative;
+    }
+
+      .product-card .image {
+        margin-top: -12px;
+        width: 114%;
+        height: 50%;
+        border-radius: 0.9375rem 0.9375rem 0 0;
+        background-size: cover;
+        background-position: center;
+        margin-bottom: 0.5rem;
+        margin-right: 0rem;
+      }
+
+      .product-card .details {
+        flex-grow: 1;
+        margin-bottom: 0.5rem;
+      }
+
+      .product-card .add-btn-tablet {
+        width: 100%;
+        position: static;
+        margin-top: 0.5rem;
+      }
+    }
+
+@media (min-width: 820px) {
+      .header .back-icon {
+      margin-left: 112px;
+    }
+
+    .header .profile-icon {
+      margin-right: 112px;
+    }
+  }
+
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <div class="header-bg"></div>
+    <img src="../assets/icons/Voltar.svg" alt="Voltar" class="back-icon">
+    <img src="../assets/logos/GetEatsSVG.svg" alt="Get Eats Logo" class="logo logo--pequeno" />
+    <img src="../assets/icons/PerfilHeader.svg" alt="Perfil" class="profile-icon">
+  </div>
+  <div class="search-bar">
+    <img src="../assets/icons/Busca.svg" alt="Buscar" class="search-icon"> <input type="text" placeholder="Buscar no cardápio..." />
+    <img src="../assets/icons/Filtro.svg" alt="Filtro" class="filter-btn">
+  </div>
+  <div class="main-content">
+    <div class="restaurant-details">
+      <div class="logo-small"></div>
+      <div class="info">
+        <div class="name">Burguer House</div>
+        <div class="rating"> <span class="stars">★★★★★</span> 4.9 • 89 avaliações </div>
+      </div>
+    </div>
+    <div class="categories"> <a href="#" class="active">Favoritos</a> <a href="#">Novidades</a> <a href="#">Entrega
+        Grátis</a> <a href="#">Promoções</a> <a href="#">Hambúrgueres</a> <a href="#">Bebidas</a> <div class="categories-line"></div></div>
+    <div class="products">
+      <div class="product-card">
+        <div class="discount-badge">
+          <img src="../assets/icons/Percent.svg" alt="Percent" class="percent-icon">
+          15% off
+        </div>
+        <div class="image" style="background-image: url('../assets/imagen/XBacon.jpg');"></div>
+        <div class="details">
+          <div class="title">X Bacon</div>
+          <div class="subtitle">Hambúrguer com bacon • 20 min</div>
+          <div class="rating"> <span class="stars">★★★★★</span> 4.8 </div>
+        </div>
+        <button class="add-btn-tablet">Adicionar</button>
+        <div class="add-btn">+</div>
+      </div>
+      <div class="product-card">
+        <div class="image" style="background-image: url('../assets/imagen/ChickenBurguer.jpg');"></div>
+        <div class="details">
+          <div class="title">Chicken Burguer</div>
+          <div class="subtitle">Hambúrguer de frango • 18 min</div>
+          <div class="rating"> <span class="stars">★★★★☆</span> 4.6 </div>
+        </div>
+        <button class="add-btn-tablet">Adicionar</button>
+        <div class="add-btn">+</div>
+      </div>
+      
+      <div class="product-card">
+        <div class="image" style="background-image: url('../assets/imagen/Australiano.jpg');"></div>
+        <div class="details">
+          <div class="title">Australiano</div>
+          <div class="subtitle">Hambúrguer australiano • 22 min</div>
+          <div class="rating"> <span class="stars">★★★★★</span> 4.9 </div>
+        </div>
+        <button class="add-btn-tablet">Adicionar</button>
+        <div class="add-btn">+</div>
+      </div>
+      <div class="product-card">
+        <div class="image" style="background-image: url('../assets/imagen/CreamBurguer.jpg');"></div>
+        <div class="details">
+          <div class="title">Cream Burguer</div>
+          <div class="subtitle">Hambúrguer cremoso • 19 min</div>
+          <div class="rating"> <span class="stars">★★★★☆</span> 4.7 </div>
+        </div>
+        <button class="add-btn-tablet">Adicionar</button>
+        <div class="add-btn">+</div>
+      </div>
+      <div class="product-card">
+        <div class="image" style="background-image: url('../assets/imagen/CrispyBurguer.jpg');"></div>
+        <div class="details">
+          <div class="title">Crispy Burguer</div>
+          <div class="subtitle">Hambúrguer crispy • 20 min</div>
+          <div class="rating"> <span class="stars">★★★★☆</span> 4.6 </div>
+        </div>
+        <button class="add-btn-tablet">Adicionar</button>
+        <div class="add-btn">+</div>
+      </div>
+      <div class="product-card">
+        <div class="image" style="background-image: url('../assets/imagen/XBurguer.jpg');"></div>
+        <div class="details">
+          <div class="title">X Burguer</div>
+          <div class="subtitle">Clássico com queijo • 15 min</div>
+          <div class="rating"> <span class="stars">★★★★☆</span> 4.5 </div>
+        </div>
+        <button class="add-btn-tablet">Adicionar</button>
+        <div class="add-btn">+</div>
+      </div>
+      <div class="product-card">
+        <div class="image" style="background-image: url('../assets/imagen/CheddarDuplo.jpg');"></div>
+        <div class="details">
+          <div class="title">Cheddar Duplo</div>
+          <div class="subtitle">Hambúrguer duplo com cheddar • 24 min</div>
+          <div class="rating"> <span class="stars">★★★★★</span> 4.9 </div>
+        </div>
+        <button class="add-btn-tablet">Adicionar</button>
+        <div class="add-btn">+</div>
+      </div>
+      <div class="product-card">
+        <div class="image" style="background-image: url('../assets/imagen/ArtesanalDuplo.jpg');"></div>
+        <div class="details">
+          <div class="title">Artesanal Duplo</div>
+          <div class="subtitle">Hambúrguer artesanal duplo • 25 min</div>
+          <div class="rating"> <span class="stars">★★★★★</span> 4.9 </div>
+        </div>
+        <button class="add-btn-tablet">Adicionar</button>
+        <div class="add-btn">+</div>
+      </div>
+    </div>
+  </div>
+  <div class="cart-float">
+    <img src="../assets/icons/Cart.svg" alt="Carrinho" class="cart-icon">
+  </div>
+  <div class="footer-nav"> <a href="#" class="nav-item active">
+      <img src="../assets/icons/HomeBar.svg" alt="Início" class="nav-icon"> Início
+    </a> <a href="#" class="nav-item">
+      <img src="../assets/icons/BuscaBar.svg" alt="Buscar" class="nav-icon"> Buscar
+    </a> <a href="#" class="nav-item">
+      <img src="../assets/icons/s3Bar.svg" alt="Favoritos" class="nav-icon"> Favoritos
+    </a> <a href="#" class="nav-item">
+      <img src="../assets/icons/PerfilBar.svg" alt="Perfil" class="nav-icon"> Perfil
+    </a> </div>
+</body>
+
+</html>

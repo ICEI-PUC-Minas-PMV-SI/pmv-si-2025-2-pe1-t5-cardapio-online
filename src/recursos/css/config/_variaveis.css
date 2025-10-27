@@ -2,6 +2,8 @@
 :root {
   --color-primary: #FE2E2E;
   --color-secondary: #D40403;
+  --color-primaryADM: #000000;
+  --color-secondaryADM: #535353;
   --color-background: #f9f9f9;
   --color-text: #222222;
   --color-text-light: #666666;

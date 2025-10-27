@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Login</title>
+<link rel="stylesheet" href="../recursos/css/principal.css">
+<link rel="stylesheet" href="../recursos/css/paginas/loginADM.css">
+</head>
+<body>
+  <div class="form-card">
+    <div class="form-card__header">
+      <div class="form-card__header-bg"></div>
+      <img src="../assets/logos/GetEatsSVG.svg" alt="Get Eats Logo" class="logo logo--pequeno" />
+    </div>
+
+    <div class="form-card__notch"></div>
+    <div class="form-card__title">Entre na sua conta</div>
+
+    <label class="input-field__label" for="email">Email</label>
+    <div class="input-field">
+      <div class="input-field__input">
+        <div class="input-field__icon"></div>
+        <input type="email" id="email" placeholder="seu@email.com" />
+      </div>
+    </div>
+
+    <label class="input-field__label" for="password">Senha</label>
+    <div class="input-field">
+      <div class="input-field__input">
+        <div class="input-field__icon"></div>
+        <input type="password" id="password" placeholder="••••••••" />
+        <div class="input-field__eye"></div>
+      </div>
+    </div>
+
+    <div class="checkbox-group">
+      <input type="checkbox" class="checkbox-group__input" id="remember" />
+      <label class="checkbox-group__label" for="remember">Lembrar de mim</label>
+    </div>
+
+    <button class="btn btn--primario">Entrar</button>
+
+    <div class="form-card__forgot-password">Esqueceu a senha?</div>
+
+    <div class="form-card__separator">ou</div>
+
+    <button class="social-btn">
+      Entrar com credenciais de gerente
+    </button>
+
+    <button class="social-btn">
+      <div class="social-btn__icon"></div>
+      Continuar com Apple
+    </button>
+
+    <div class="form-card__bottom-text">Conheça nossos serviços</div>
+  </div>
+<script src="../recursos/js/login.js"></script>
+</body>
+</html>
