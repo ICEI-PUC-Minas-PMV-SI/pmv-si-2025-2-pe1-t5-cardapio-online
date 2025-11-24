@@ -29,10 +29,10 @@ A aplicação integra funcionalidades administrativas para proprietários, como 
 
 | Etapa         | Atividades |
 |  :----:   | ----------- |
-| ETAPA 1         |[Documentação de Contexto](docs/context.md) <br> [Especificação do Projeto](docs/especification.md) |
-| ETAPA 2         |[Projeto de Interface](docs/interface.md) <br> [Template Padrão](docs/template.md) |
-| ETAPA 3         |[Programação de Funcionalidades - HTML e CSS](docs/development.md) |
-| ETAPA 4        |[Programação de Funcionalidades - Javascript](docs/development.md) <br> [Testes de Software ](docs/tests.md) |
+| ETAPA 1         |[Documentação de Contexto](docs/context-geteats.md) <br> [Especificação do Projeto](docs/especification-geteats.md) |
+| ETAPA 2         |[Projeto de Interface](docs/interface-geteats.md) <br> [Template Padrão](docs/template-geteats.md) |
+| ETAPA 3         |[Programação de Funcionalidades - HTML e CSS](docs/development-geteats.md) |
+| ETAPA 4        |[Programação de Funcionalidades - Javascript](docs/development.md) <br> [Testes de Software ](docs/tests-geteats.md) |
 | ETAPA 5         | [Apresentação](presentation/README.md) |
 
 # Código
