@@ -65,12 +65,13 @@ body {
   width: 90vw;
   max-width: 400px;
   min-width: 320px;
+  min-height: 932px;
   height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 auto;
   margin-top: 2rem;
+  padding-top: 0;
 }
 
 /* Barra de Pesquisa */
@@ -117,8 +118,6 @@ body {
   position: relative;
   margin-right: 8rem;
   display: flex;
-  flex: none;
-  align-items: center;
   margin-bottom: 2rem;
   margin-top: 0.70rem;
 }
@@ -175,7 +174,7 @@ body {
   color: var(--color-text-light);
   font-size: 1rem;
   margin-right: 1rem;
-  margin-left: 1rem;
+  margin-left: 1.5rem;
   padding-bottom: 0.25rem;
   padding-left: 1rem;
   white-space: nowrap;
@@ -194,7 +193,7 @@ body {
   height: 2px;
   background: var(--color-primaryADM);
   z-index: 2;
-  left: 0.5rem;
+  left: 0.905rem;
 }
 
 .categories-line {
@@ -342,6 +341,29 @@ body {
 }
 
 .cart-float .cart-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/* Botão Flutuante Update */
+.update-float {
+  position: fixed;
+  bottom: 90px;
+  right: 1rem;
+  width: 4rem;
+  height: 4em;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(180deg, var(--color-primaryADM) 48%, var(--color-secondaryADM) 100%);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 8px var(--color-shadow);
+  z-index: 20;
+  cursor: pointer;
+}
+
+.update-float .update-icon {
   width: 1.5rem;
   height: 1.5rem;
 }

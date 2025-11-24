@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Meus Pedidos - Get Eats</title>
+<link rel="stylesheet" href="../recursos/css/principal.css">
+<link rel="stylesheet" href="../recursos/css/paginas/pedidos.css">
+</head>
+<body>
+  <div class="header">
+    <div class="header-bg"></div>
+    <img src="../assets/icons/Voltar.svg" alt="Voltar" class="back-icon">
+    <img src="../assets/logos/GetEatsSVG.svg" alt="Get Eats Logo" class="logo logo--pequeno" />
+    <img src="../assets/icons/PerfilHeader.svg" alt="Perfil" class="profile-icon" id="profile-link">
+  </div>
+
+  <div class="main-content">
+    <div class="page-title">Meus Pedidos</div>
+
+    <!-- Abas de Pedidos -->
+    <div class="tabs">
+      <div class="tab active" data-tab="atuais">Pedidos Atuais</div>
+      <div class="tab" data-tab="historico">Histórico</div>
+    </div>
+
+    <!-- Conteúdo das Abas -->
+    <div class="tab-content">
+      <!-- Pedidos Atuais -->
+      <div id="atuais" class="tab-pane active">
+        <div class="orders-list" id="pedidos-atuais">
+          <!-- Pedidos atuais serão renderizados dinamicamente -->
+        </div>
+      </div>
+
+      <!-- Histórico de Pedidos -->
+      <div id="historico" class="tab-pane">
+        <div class="orders-list" id="pedidos-historico">
+          <!-- Histórico será renderizado dinamicamente -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Navegação -->
+  <div class="footer-nav">
+    <a href="cardapio.html" class="nav-item">
+      <img src="../assets/icons/HomeFooter.svg" alt="Início" class="nav-icon"> Início
+    </a>
+    <a href="pedidos.html" class="nav-item active">
+      <img src="../assets/icons/Pedidos.svg" alt="Pedidos" class="nav-icon"> Pedidos
+    </a>
+    <a href="#" class="nav-item">
+      <img src="../assets/icons/BuscaFooter.svg" alt="Buscar" class="nav-icon"> Buscar
+    </a>
+    <a href="perfil.html" class="nav-item">
+      <img src="../assets/icons/PerfilFooter.svg" alt="Perfil" class="nav-icon"> Perfil
+    </a>
+  </div>
+
+<script src="../recursos/js/auth.js"></script>
+<script src="../recursos/js/carrinho.js"></script>
+<script src="../recursos/js/pedidos.js"></script>
+</body>
+</html>

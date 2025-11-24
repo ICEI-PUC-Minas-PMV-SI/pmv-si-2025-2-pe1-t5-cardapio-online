@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Acompanhar Pedido - Get Eats</title>
+<link rel="stylesheet" href="../recursos/css/principal.css">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--color-background);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container {
+  width: 90vw;
+  max-width: 400px;
+  min-width: 320px;
+  height: auto;
+  min-height: 720px;
+  background: var(--color-background);
+  border-radius: 0 0 40px 40px;
+  padding: 0 1.25rem 1.25rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-card__header {
+  position: relative;
+  top: 160px;
+  left: 0;
+  width: 100vw;
+  height: 10rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  z-index: 1;
+}
+
+.form-card__header-bg {
+  position: absolute;
+  top: -290px;
+  left: 50%;
+  width: 150%;
+  height: 300px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, var(--color-primary) 48%, var(--color-secondary) 100%);
+  border-radius: 50%;
+}
+
+.form-card__header img.logo {
+  position: relative;
+  width: 5rem !important;
+  height: auto !important;
+  user-select: none;
+  z-index: 10;
+  margin-top: -8rem;
+}
+
+.notch {
+  display: none;
+}
+
+.page-title {
+  margin-top: 12% !important;
+  margin-bottom: 1.875rem;
+  font-size: 1.5rem;
+  color: var(--color-text);
+  text-align: center;
+  font-weight: bold;
+}
+
+.status-card {
+  width: 100%;
+  max-width: 350px;
+  background: white;
+  border-radius: 0.9375rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.status-icon {
+  width: 4rem;
+  height: 4rem;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #e8f5e8;
+}
+
+.status-icon img {
+  width: 2rem;
+  height: 2rem;
+}
+
+.status-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #222222;
+  margin-bottom: 0.5rem;
+}
+
+.status-description {
+  font-size: 1rem;
+  color: #666666;
+  margin-bottom: 1rem;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(180deg, var(--color-primary) 48%, var(--color-secondary) 100%);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.progress-section {
+  margin-bottom: 1rem;
+}
+
+.progress-label {
+  font-size: 0.875rem;
+  color: #666666;
+  margin-bottom: 0.25rem;
+  text-align: left;
+}
+
+.order-details {
+  width: 100%;
+  max-width: 350px;
+  background: white;
+  border-radius: 0.9375rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.order-details h2 {
+  font-size: 1.25rem;
+  font-weight: lighter;
+  color: #222222;
+  margin-bottom: 1rem;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: #666666;
+}
+
+.summary-item span:first-child {
+  text-align: left;
+}
+
+.summary-item span:last-child {
+  text-align: right;
+  font-weight: bold;
+  color: #222222;
+}
+
+.summary-divider {
+  border: none;
+  height: 1px;
+  background-color: #cccccc;
+  margin: 1rem 0;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.125rem;
+  font-weight: lighter;
+  color: #222222;
+}
+
+.delivery-info {
+  width: 100%;
+  max-width: 350px;
+  background: white;
+  border-radius: 0.9375rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.delivery-info h2 {
+  font-size: 1.25rem;
+  font-weight: lighter;
+  color: #222222;
+  margin-bottom: 1rem;
+}
+
+.delivery-route {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.route-point {
+  text-align: center;
+  flex: 1;
+}
+
+.route-point .icon {
+  width: 2rem;
+  height: 2rem;
+  margin: 0 auto 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.route-point.origin .icon {
+  background: #e8f5e8;
+}
+
+.route-point.destination .icon {
+  background: #ffe8e8;
+}
+
+.route-point .icon img {
+  width: 1rem;
+  height: 1rem;
+}
+
+.route-point .label {
+  font-size: 0.875rem;
+  color: #666666;
+  font-weight: bold;
+}
+
+.route-line {
+  flex: 1;
+  height: 2px;
+  background: #e0e0e0;
+  margin: 0 0.5rem;
+  position: relative;
+}
+
+.route-line::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: var(--route-progress, 50%);
+  height: 6px;
+  background: linear-gradient(180deg, var(--color-primary) 48%, var(--color-secondary) 100%);
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.delivery-person {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background: #f9f9f9;
+  border-radius: 0.5rem;
+}
+
+.delivery-person .avatar {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  font-weight: bold;
+  color: #666;
+}
+
+.delivery-person .info h3 {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #222222;
+  margin-bottom: 0.25rem;
+}
+
+.delivery-person .info p {
+  font-size: 0.875rem;
+  color: #666666;
+  margin: 0;
+}
+
+.btn-primary {
+  width: 100%;
+  height: 4rem;
+  padding-bottom: 1rem;
+  background: linear-gradient(180deg, var(--color-primary) 48%, var(--color-secondary) 100%);
+  border-radius: var(--border-radius);
+  border: none;
+  color: white;
+  font-weight: bold;
+  font-size: 1.125rem;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(255, 255, 255, 0.5);
+}
+
+.btn-secondary {
+  width: 100%;
+  height: 4rem;
+  margin-top: 1rem;
+  background: var(--color-input-bg);
+  border-radius: var(--border-radius);
+  border: none;
+  color: var(--color-text);
+  font-weight: bold;
+  font-size: 1.125rem;
+  cursor: pointer;
+  box-shadow: 0 4px 8px var(--color-shadow);
+}
+
+/* Media Queries */
+@media (max-width: 480px) {
+  .form-card__header {
+    height: 10rem;
+  }
+
+  .form-card__header img.logo {
+    width: 7rem;
+    transform: translateY(2rem);
+  }
+
+  .page-title {
+    margin-top: 10.5rem;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .container {
+    max-width: 500px;
+    padding: 0 1.5rem 1.5rem 1.5rem;
+  }
+
+  .form-card__header img.logo {
+    width: 10rem;
+    transform: translateY(3rem);
+    margin-top: 3rem;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+    margin-top: 9rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .form-card__header img.logo {
+  position: relative;
+  width: 5rem !important;
+  height: auto !important;
+  user-select: none;
+  z-index: 10;
+  margin-top: -8rem;
+}
+
+  .container {
+    max-width: 500px;
+  }
+
+  .page-title {
+    margin-top: 10.5rem;
+  }
+
+  .status-card {
+  min-width: 460px;
+}
+  .order-details {
+    min-width: 460px;
+}
+  .delivery-info {
+    min-width: 460px;
+  }
+
+}
+@media (min-width: 820px) {
+  .container {
+    max-width: 600px;
+    padding: 0 1.5rem 1.5rem 1.5rem;
+  }
+
+  .form-card__header img.logo {
+    width: 8rem;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 800px;
+    padding: 0 3rem 3rem 3rem;
+  }
+
+  .form-card__header img.logo {
+    width: 8rem;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+  }
+}
+</style>
+</head>
+<body>
+  <div class="form-card">
+    <div class="form-card__header">
+      <div class="form-card__header-bg"></div>
+      <img src="../assets/logos/GetEatsSVG.svg" alt="Get Eats Logo" class="logo logo--pequeno" />
+    </div>
+
+    <div class="form-card__notch"></div>
+
+    <p class="page-title">Acompanhar Pedido</p>
+
+    <!-- Status do Pedido -->
+    <div class="status-card">
+      <div class="status-icon">
+        <img src="../assets/icons/Check.svg" alt="Status" id="status-icon" />
+      </div>
+      <h3 class="status-title" id="status-title">Pedido Confirmado</h3>
+      <p class="status-description" id="status-description">Seu pedido foi confirmado e está sendo preparado.</p>
+
+      <!-- Barra de Preparação -->
+      <div class="progress-section">
+        <div class="progress-label">Preparação</div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-preparacao" style="width: 25%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detalhes do Pedido -->
+    <div class="order-details">
+      <h2>Resumo do Pedido</h2>
+      <div class="summary-item">
+        <span>Número do Pedido:</span>
+        <span id="numero-pedido">#123456</span>
+      </div>
+      <div class="summary-item">
+        <span>Endereço de Entrega:</span>
+        <span id="endereco-entrega">Carregando...</span>
+      </div>
+      <div class="summary-item">
+        <span>Tempo Estimado:</span>
+        <span id="tempo-estimado">30-45 minutos</span>
+      </div>
+      <hr class="summary-divider">
+      <div class="summary-total">
+        <span>Total:</span>
+        <span id="total-pedido">R$ 0,00</span>
+      </div>
+    </div>
+
+    <!-- Informações de Entrega -->
+    <div class="delivery-info">
+      <h2>Entrega</h2>
+      <div class="delivery-route">
+        <div class="route-point origin">
+          <div class="icon">
+            <img src="../assets/icons/Loc.svg" alt="Origem" />
+          </div>
+          <div class="label">Burguer House</div>
+        </div>
+        <div class="route-line"></div>
+        <div class="route-point destination">
+          <div class="icon">
+            <img src="../assets/icons/Loc.svg" alt="Destino" />
+          </div>
+          <div class="label">Seu Endereço</div>
+        </div>
+      </div>
+
+      <div class="delivery-person">
+        <div class="avatar" id="entregador-avatar">JD</div>
+        <div class="info">
+          <h3 id="entregador-nome">João Silva</h3>
+          <p id="entregador-info">Entregador • Moto • 5.0 ★</p>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn">Atualizar Status</button>
+    <button class="btn-secondary" id="back-to-home">Voltar ao Início</button>
+  </div>
+
+  <!-- Scripts necessários -->
+  <script src="../recursos/js/auth.js"></script>
+  <script src="../recursos/js/carrinho.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Elementos da página
+      const numeroPedidoEl = document.getElementById('numero-pedido');
+      const enderecoEntregaEl = document.getElementById('endereco-entrega');
+      const totalPedidoEl = document.getElementById('total-pedido');
+      const backToHomeBtn = document.getElementById('back-to-home');
+      const statusTitleEl = document.getElementById('status-title');
+      const statusDescriptionEl = document.getElementById('status-description');
+      const progressPreparacaoEl = document.getElementById('progress-preparacao');
+      const statusIconEl = document.getElementById('status-icon');
+      const tempoEstimadoEl = document.getElementById('tempo-estimado');
+      const entregadorNomeEl = document.getElementById('entregador-nome');
+      const entregadorAvatarEl = document.getElementById('entregador-avatar');
+      const entregadorInfoEl = document.getElementById('entregador-info');
+      const routeLineEl = document.querySelector('.route-line');
+      const atualizarBtn = document.querySelector('.btn'); // <-- Adicionado
+
+      // Estados possíveis do pedido (mantidos como antes)
+      const statusPedidos = [
+        {
+          titulo: 'Pedido Confirmado',
+          descricao: 'Seu pedido foi confirmado e está sendo preparado.',
+          progresso: 25,
+          icone: '../assets/icons/Check.svg',
+          tempo: '30-45 minutos'
+        },
+        {
+          titulo: 'Preparando Pedido',
+          descricao: 'Estamos preparando seu pedido com todo cuidado.',
+          progresso: 50,
+          icone: '../assets/icons/Check.svg',
+          tempo: '25-40 minutos'
+        },
+        {
+          titulo: 'Saiu para Entrega',
+          descricao: 'Seu pedido saiu para entrega e está a caminho.',
+          progresso: 75,
+          icone: '../assets/icons/Check.svg',
+          tempo: '15-25 minutos'
+        },
+        {
+          titulo: 'Entregue',
+          descricao: 'Seu pedido foi entregue com sucesso!',
+          progresso: 100,
+          icone: '../assets/icons/Check.svg',
+          tempo: 'Entregue'
+        }
+      ];
+
+      // Entregadores simulados (mantidos como antes)
+      const entregadores = [
+        { nome: 'João Silva', avatar: 'JS', info: 'Entregador • Moto • 5.0 ★' },
+        { nome: 'Maria Santos', avatar: 'MS', info: 'Entregadora • Carro • 4.9 ★' },
+        { nome: 'Pedro Costa', avatar: 'PC', info: 'Entregador • Moto • 4.8 ★' },
+        { nome: 'Ana Oliveira', avatar: 'AO', info: 'Entregadora • Bicicleta • 5.0 ★' }
+      ];
+
+      // Função para gerar número de pedido único (1 dígito) (mantida como antes)
+      function gerarNumeroPedido() {
+        const random = Math.floor(Math.random() * 9) + 1;
+        return random.toString();
+      }
+      
+      // Carregar dados do pedido
+      function carregarDadosPedido() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const pedidoId = urlParams.get('id');
+
+        if (pedidoId) {
+          const pedidosAtuais = JSON.parse(localStorage.getItem('pedidos_atuais') || '[]');
+          const historicoPedidos = JSON.parse(localStorage.getItem('historico_pedidos') || '[]');
+
+          let pedidoEncontrado = pedidosAtuais.find(p => p.id === pedidoId);
+          if (!pedidoEncontrado) {
+            pedidoEncontrado = historicoPedidos.find(p => p.id === pedidoId);
+          }
+
+          if (pedidoEncontrado) {
+            numeroPedidoEl.textContent = `#${pedidoEncontrado.id}`;
+            enderecoEntregaEl.textContent = pedidoEncontrado.endereco;
+            totalPedidoEl.textContent = `R$ ${pedidoEncontrado.total.toFixed(2).replace('.', ',')}`;
+
+            // NOVO: Desativa o botão se o pedido foi carregado do histórico (Entregue)
+            if (pedidoEncontrado.status === 'entregue') {
+              if (atualizarBtn) {
+                atualizarBtn.disabled = true;
+                atualizarBtn.textContent = 'Pedido Entregue';
+              }
+            } else {
+              if (atualizarBtn) {
+                atualizarBtn.disabled = false;
+                atualizarBtn.textContent = 'Atualizar Status';
+              }
+            }
+            
+            // Salvar pedido atual para uso nas funções de status (seja em andamento ou do histórico)
+            localStorage.setItem('pedido_atual', JSON.stringify(pedidoEncontrado));
+            return;
+          }
+        }
+
+        // Fallback: carregar pedido atual
+        const pedidoAtual = JSON.parse(localStorage.getItem('pedido_atual') || 'null');
+
+        // ... (restante do bloco de fallback carregarDadosPedido mantido como antes) ...
+        if (pedidoAtual) {
+          numeroPedidoEl.textContent = `#${pedidoAtual.id}`;
+          enderecoEntregaEl.textContent = pedidoAtual.endereco;
+          totalPedidoEl.textContent = `R$ ${pedidoAtual.total.toFixed(2).replace('.', ',')}`;
+        } else {
+          // Fallback para dados antigos
+          let numeroPedido = localStorage.getItem('numero_pedido_atual');
+          if (!numeroPedido) {
+            numeroPedido = gerarNumeroPedido();
+            localStorage.setItem('numero_pedido_atual', numeroPedido);
+          }
+          numeroPedidoEl.textContent = `#${numeroPedido}`;
+
+          const usuarioLogado = authManager.obterUsuarioLogado();
+          const endereco = carrinhoManager.obterEndereco();
+          if (endereco) {
+            enderecoEntregaEl.textContent = endereco;
+          } else if (usuarioLogado && usuarioLogado.endereco) {
+            enderecoEntregaEl.textContent = usuarioLogado.endereco;
+          }
+
+          let totalPedido = localStorage.getItem('pedido_total_confirmado');
+          if (!totalPedido) {
+            const resumoCarrinho = carrinhoManager.obterResumo();
+            totalPedido = resumoCarrinho.total.toFixed(2).replace('.', ',');
+          }
+          totalPedidoEl.textContent = `R$ ${totalPedido}`;
+        }
+      }
+
+      // Função para mover pedido para histórico quando entregue
+      function moverParaHistorico(pedido) {
+        // Atualiza o status e data de entrega
+        pedido.status = 'entregue';
+        pedido.dataEntrega = new Date().toISOString();
+
+        // Garante que, mesmo no fallback, o entregador seja anexado ao objeto antes de salvar no histórico
+        if (!pedido.entregador) {
+            const entregadorIndex = localStorage.getItem('entregador_pedido_atual');
+            if (entregadorIndex) {
+                pedido.entregador = entregadores[parseInt(entregadorIndex)];
+            }
+        }
+
+        // Adicionar ao histórico
+        const historicoPedidos = JSON.parse(localStorage.getItem('historico_pedidos') || '[]');
+        historicoPedidos.push(pedido);
+        localStorage.setItem('historico_pedidos', JSON.stringify(historicoPedidos));
+
+        // Remover dos pedidos atuais (se existir)
+        const pedidosAtuais = JSON.parse(localStorage.getItem('pedidos_atuais') || '[]');
+        const index = pedidosAtuais.findIndex(p => p.id === pedido.id);
+        if (index > -1) {
+          pedidosAtuais.splice(index, 1);
+          localStorage.setItem('pedidos_atuais', JSON.stringify(pedidosAtuais));
+        }
+
+        // CORREÇÃO CRÍTICA: Limpar TODAS as chaves de tracking de forma absoluta
+        localStorage.removeItem('pedido_atual');
+        localStorage.removeItem('pedido_status_atual');
+        localStorage.removeItem('entregador_pedido_atual');
+        localStorage.removeItem('pedido_timestamp_inicio'); 
+        localStorage.removeItem('numero_pedido_atual'); 
+      }
+
+      // Simular status do pedido baseado no tempo estimado
+      function simularStatusPedido() {
+        let pedidoAtual = JSON.parse(localStorage.getItem('pedido_atual') || 'null');
+        const statusFinal = statusPedidos[3]; // 'Entregue'
+
+        if (pedidoAtual) {
+            
+            // --- PROTEÇÃO CRÍTICA PÓS-ENTREGA ---
+            if (pedidoAtual.status === 'entregue') {
+                // Se o pedido está explicitamente 'entregue' (carregado do histórico), 
+                // apenas exibe os dados finais e RETORNA, bloqueando qualquer simulação/alteração.
+                // Esta lógica também é executada em carregarDadosPedido() para o botão.
+                statusTitleEl.textContent = statusFinal.titulo;
+                statusDescriptionEl.textContent = statusFinal.descricao;
+                progressPreparacaoEl.style.width = '100%';
+                routeLineEl.style.setProperty('--route-progress', '100%');
+                tempoEstimadoEl.textContent = statusFinal.tempo;
+
+                if (pedidoAtual.entregador) {
+                  entregadorNomeEl.textContent = pedidoAtual.entregador.nome;
+                  entregadorAvatarEl.textContent = pedidoAtual.entregador.avatar;
+                  entregadorInfoEl.textContent = pedidoAtual.entregador.info;
+                }
+                return; 
+          }
+            // ------------------------------------
+            
+            // Lógica de cálculo de tempo e status (PARA PEDIDOS EM ANDAMENTO)
+            const tempoDecorrido = Date.now() - pedidoAtual.timestampInicio;
+            const minutosDecorridos = tempoDecorrido / (1000 * 60);
+            const tempoEstimadoTotal = 2; // Minutos para a simulação inteira (Avanço mais rápido)
+            const progressoTotal = Math.min((minutosDecorridos / tempoEstimadoTotal) * 100, 100);
+
+            let statusAtual = 0;
+            if (progressoTotal >= 25) statusAtual = 1; 
+            if (progressoTotal >= 50) statusAtual = 2; // Saiu para entrega
+            if (progressoTotal >= 100) statusAtual = 3; // Entregue
+
+            // ATRIBUIÇÃO E PERSISTÊNCIA DO ENTREGADOR (Apenas se não tem e está em rota)
+            if (statusAtual >= 2 && !pedidoAtual.entregador) {
+                const entregadorIndex = Math.floor(Math.random() * entregadores.length);
+                const entregadorEscolhido = entregadores[entregadorIndex];
+                
+                // Salva o entregador no objeto do pedido
+                pedidoAtual.entregador = entregadorEscolhido;
+                
+                // Re-salva o objeto pedido atualizado no localStorage
+                localStorage.setItem('pedido_atual', JSON.stringify(pedidoAtual));
+            }
+
+          // Se atingiu o status 3 (Entregue) no ciclo atual
+          if (statusAtual === 3) {
+            // Mover para histórico e limpar chaves temporárias
+            moverParaHistorico(pedidoAtual);
+
+             // NOVO: Desativar e alterar o botão após mover para histórico
+             if (atualizarBtn) {
+                atualizarBtn.disabled = true;
+                atualizarBtn.textContent = 'Pedido Entregue';
+            }
+
+             // Exibir status final após mover
+            statusTitleEl.textContent = statusFinal.titulo;
+            statusDescriptionEl.textContent = statusFinal.descricao;
+            progressPreparacaoEl.style.width = '100%';
+            routeLineEl.style.setProperty('--route-progress', '100%');
+            tempoEstimadoEl.textContent = statusFinal.tempo;
+
+             // O entregador já foi persistido no objeto antes de mover para o histórico
+             if (pedidoAtual.entregador) {
+              entregadorNomeEl.textContent = pedidoAtual.entregador.nome;
+              entregadorAvatarEl.textContent = pedidoAtual.entregador.avatar;
+              entregadorInfoEl.textContent = pedidoAtual.entregador.info;
+            }
+
+             // Sai da função
+            return;
+          }
+
+          // Aplicar status (Em andamento: 0, 1, 2)
+          const status = statusPedidos[statusAtual];
+          statusTitleEl.textContent = status.titulo;
+          statusDescriptionEl.textContent = status.descricao;
+
+          // ... (restante da lógica de progresso e exibição do entregador mantida como antes) ...
+            
+            // Cálculo de progresso e tempo restante
+          let progressoPreparacao = 0;
+          if (progressoTotal <= 25) {
+            progressoPreparacao = (progressoTotal / 25) * 100;
+          } else {
+            progressoPreparacao = 100;
+          }
+          progressPreparacaoEl.style.width = `${progressoPreparacao}%`;
+          routeLineEl.style.setProperty('--route-progress', `${progressoTotal}%`);
+
+          const minutosRestantes = Math.max(0, tempoEstimadoTotal - minutosDecorridos);
+          if (minutosRestantes > 0) {
+            const minutosInteiros = Math.floor(minutosRestantes);
+            tempoEstimadoEl.textContent = `${minutosInteiros} minuto${minutosInteiros !== 1 ? 's' : ''}`;
+          } else {
+            tempoEstimadoEl.textContent = status.tempo;
+          }
+
+          localStorage.setItem('pedido_status_atual', statusAtual.toString());
+
+          // Atualizar a exibição do entregador
+          if (pedidoAtual.entregador) {
+            entregadorNomeEl.textContent = pedidoAtual.entregador.nome;
+            entregadorAvatarEl.textContent = pedidoAtual.entregador.avatar;
+            entregadorInfoEl.textContent = pedidoAtual.entregador.info;
+          } else {
+                entregadorNomeEl.textContent = 'Aguardando Entregador';
+                entregadorAvatarEl.textContent = '?';
+                entregadorInfoEl.textContent = 'Encontrando o melhor motorista...';
+            }
+        } else {
+            // --- INÍCIO DO FALLBACK PARA COMPATIBILIDADE ---
+            // ... (o bloco de fallback foi mantido, mas é menos relevante agora devido às limpezas) ...
+          const timestampInicio = localStorage.getItem('pedido_timestamp_inicio');
+          if (!timestampInicio) {
+            localStorage.setItem('pedido_timestamp_inicio', Date.now().toString());
+            return;
+          }
+
+          // ... (Restante do fallback é igual)
+            const tempoDecorrido = Date.now() - parseInt(timestampInicio);
+          const minutosDecorridos = tempoDecorrido / (1000 * 60);
+
+          const tempoEstimadoTotal = 30; // minutos
+          const progressoTotal = Math.min((minutosDecorridos / tempoEstimadoTotal) * 100, 100);
+
+          let statusAtual = 0;
+          if (progressoTotal >= 25) statusAtual = 1; 
+          if (progressoTotal >= 50) statusAtual = 2; 
+          if (progressoTotal >= 100) statusAtual = 3; 
+
+          const status = statusPedidos[statusAtual];
+          statusTitleEl.textContent = status.titulo;
+          statusDescriptionEl.textContent = status.descricao;
+
+          let progressoPreparacao = 0;
+          if (progressoTotal <= 25) {
+            progressoPreparacao = (progressoTotal / 25) * 100;
+          } else {
+            progressoPreparacao = 100;
+          }
+
+          progressPreparacaoEl.style.width = `${progressoPreparacao}%`;
+
+          routeLineEl.style.setProperty('--route-progress', `${progressoTotal}%`);
+
+          const minutosRestantes = Math.max(0, tempoEstimadoTotal - minutosDecorridos);
+          if (minutosRestantes > 0) {
+            const minutosInteiros = Math.floor(minutosRestantes);
+            tempoEstimadoEl.textContent = `${minutosInteiros} minuto${minutosInteiros !== 1 ? 's' : ''}`;
+          } else {
+            tempoEstimadoEl.textContent = status.tempo;
+          }
+
+          localStorage.setItem('pedido_status_atual', statusAtual.toString());
+
+          // Escolher entregador (USANDO CHAVES ISOLADAS APENAS NESTE FALLBACK)
+          if (statusAtual >= 2) {
+            let entregadorIndex = localStorage.getItem('entregador_pedido_atual');
+            if (!entregadorIndex) {
+              entregadorIndex = Math.floor(Math.random() * entregadores.length);
+              localStorage.setItem('entregador_pedido_atual', entregadorIndex.toString());
+            }
+            const entregador = entregadores[parseInt(entregadorIndex)];
+            entregadorNomeEl.textContent = entregador.nome;
+            entregadorAvatarEl.textContent = entregador.avatar;
+            entregadorInfoEl.textContent = entregador.info;
+          } else {
+                entregadorNomeEl.textContent = 'Aguardando Entregador';
+                entregadorAvatarEl.textContent = '?';
+                entregadorInfoEl.textContent = 'Encontrando o melhor motorista...';
+            }
+            // --- FIM DO FALLBACK ---
+        }
+      }
+      
+      // Event listener para voltar ao início (mantido como antes)
+      if (backToHomeBtn) {
+        backToHomeBtn.addEventListener('click', function() {
+          // Limpar todas as chaves de tracking
+          localStorage.removeItem('pedido_status_atual');
+          localStorage.removeItem('pedido_timestamp_inicio');
+          localStorage.removeItem('numero_pedido_atual');
+          localStorage.removeItem('entregador_pedido_atual');
+          localStorage.removeItem('pedido_atual');
+          window.location.href = 'cardapio.html';
+        });
+      }
+
+      // Event listener para atualizar status (Mantido, mas agora o botão será desativado na lógica principal)
+      if (atualizarBtn) {
+        atualizarBtn.addEventListener('click', function() {
+          // Avançar status manualmente para demonstração
+          let statusAtual = parseInt(localStorage.getItem('pedido_status_atual') || '0');
+          
+              // Proteção adicional para não avançar se já está Entregue
+              const pedidoAtual = JSON.parse(localStorage.getItem('pedido_atual') || 'null');
+              if (pedidoAtual && pedidoAtual.status === 'entregue') return;
+              if (statusAtual === 3) return;
+
+
+          if (statusAtual < 3) {
+            statusAtual++;
+            localStorage.setItem('pedido_status_atual', statusAtual.toString());
+            
+             // Ajusta o timestamp para simular o tempo (2 minutos de avanço por clique)
+            const timestampInicio = parseInt(localStorage.getItem('pedido_timestamp_inicio') || Date.now());
+             const novoTimestamp = timestampInicio - (2 * 60 * 1000); 
+             localStorage.setItem('pedido_timestamp_inicio', novoTimestamp.toString());
+            
+             simularStatusPedido();
+          }
+        });
+      }
+
+      // Inicializar página
+      carregarDadosPedido();
+      simularStatusPedido();
+    });
+  </script>
+</body>
+</html>

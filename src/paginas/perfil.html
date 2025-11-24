@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Perfil - Get Eats</title>
+<link rel="stylesheet" href="../recursos/css/principal.css">
+<link rel="stylesheet" href="../recursos/css/paginas/perfil.css">
+</head>
+<body>
+  <div class="header">
+    <div class="header-bg"></div>
+    <img src="../assets/icons/Voltar.svg" alt="Voltar" class="back-icon">
+    <img src="../assets/icons/PerfilHeader.svg" alt="Perfil" class="profile-icon" />
+  </div>
+
+  <div class="main-content">
+    <div class="user-details">
+      <div class="logo-small">
+        <img src="../assets/icons/PerfilHeader.svg" alt="Foto do Usuário">
+      </div>
+      <div class="info">
+        <div class="name" id="user-name">Nome do Usuário</div>
+        <div class="address" id="user-address">Endereço do Usuário</div>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <h2 class="section-title">Informações Pessoais</h2>
+      <div class="info-item">
+        <label class="info-label">Nome Completo</label>
+        <div class="info-value" id="nome">Carregando...</div>
+      </div>
+      <div class="info-item">
+        <label class="info-label">Email</label>
+        <div class="info-value" id="email">Carregando...</div>
+      </div>
+      <div class="info-item">
+        <label class="info-label">CPF</label>
+        <div class="info-value" id="cpf">Carregando...</div>
+      </div>
+      <div class="info-item">
+        <label class="info-label">Telefone</label>
+        <div class="info-value" id="contato">Carregando...</div>
+      </div>
+      <div class="info-item">
+        <label class="info-label">Endereço</label>
+        <div class="info-value" id="endereco">Carregando...</div>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <h2 class="section-title">Ações da Conta</h2>
+      <button class="btn btn--secundario" id="ir-cardapio">Ir para Cardápio</button>
+      <button class="btn btn--secundario" id="editar-perfil">Editar Perfil</button>
+      <button class="btn btn--secundario" id="alterar-senha">Alterar Senha</button>
+      <button class="btn btn--danger" id="logout">Sair da Conta</button>
+    </div>
+  </div>
+
+  <!-- Modal de Edição de Perfil -->
+  <div id="edit-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Editar Perfil</h3>
+        <span class="modal-close">&times;</span>
+      </div>
+      <div class="modal-body">
+        <label class="input-field__label" for="edit-nome">Nome</label>
+        <div class="input-field">
+          <div class="input-field__input">
+            <div class="input-field__icon"></div>
+            <input type="text" id="edit-nome" placeholder="Seu nome completo" />
+          </div>
+        </div>
+
+        <label class="input-field__label" for="edit-email">Email</label>
+        <div class="input-field">
+          <div class="input-field__input">
+            <div class="input-field__icon"></div>
+            <input type="email" id="edit-email" placeholder="seu@email.com" />
+          </div>
+        </div>
+
+        <label class="input-field__label" for="edit-contato">Contato</label>
+        <div class="input-field">
+          <div class="input-field__input">
+            <div class="input-field__icon"></div>
+            <input type="tel" id="edit-contato" placeholder="(00) 00000-0000" />
+          </div>
+        </div>
+
+        <label class="input-field__label" for="edit-endereco">Endereço</label>
+        <div class="input-field">
+          <div class="input-field__input">
+            <div class="input-field__icon"></div>
+            <input type="text" id="edit-endereco" placeholder="Rua, número, bairro, cidade" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn--secundario" id="cancel-edit">Cancelar</button>
+        <button class="btn btn--primario" id="save-edit">Salvar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Alteração de Senha -->
+  <div id="password-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Alterar Senha</h3>
+        <span class="modal-close">&times;</span>
+      </div>
+      <div class="modal-body">
+        <label class="input-field__label" for="current-password">Senha Atual</label>
+        <div class="input-field">
+          <div class="input-field__input">
+            <div class="input-field__icon"></div>
+            <input type="password" id="current-password" placeholder="••••••••" />
+            <img class="input-field__eye" src="../assets/icons/NãoVer.svg" alt="Mostrar senha" />
+          </div>
+        </div>
+
+        <label class="input-field__label" for="new-password">Nova Senha</label>
+        <div class="input-field">
+          <div class="input-field__input">
+            <div class="input-field__icon"></div>
+            <input type="password" id="new-password" placeholder="••••••••" />
+            <img class="input-field__eye" src="../assets/icons/NãoVer.svg" alt="Mostrar senha" />
+          </div>
+        </div>
+
+        <label class="input-field__label" for="confirm-new-password">Confirmar Nova Senha</label>
+        <div class="input-field">
+          <div class="input-field__input">
+            <div class="input-field__icon"></div>
+            <input type="password" id="confirm-new-password" placeholder="••••••••" />
+            <img class="input-field__eye" src="../assets/icons/NãoVer.svg" alt="Mostrar senha" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn--secundario" id="cancel-password">Cancelar</button>
+        <button class="btn btn--primario" id="save-password">Salvar</button>
+      </div>
+    </div>
+  </div>
+
+<script src="../recursos/js/auth.js"></script>
+<script src="../recursos/js/perfil.js"></script>
+</body>
+</html>

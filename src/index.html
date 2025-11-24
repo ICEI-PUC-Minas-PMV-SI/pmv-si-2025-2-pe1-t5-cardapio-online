@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Get Eats Splash Screen</title>
+    
+    <link rel="stylesheet" href="./recursos/css/principal.css">
+    
+    <style>
+        /* Página - Splash Screen */
+        .splash-screen {
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            background: radial-gradient(
+                ellipse 200% 205% at 60% 210%,
+                var(--color-secondary) 21%,
+                var(--color-primary) 74%,
+                var(--color-secondary) 100%
+            );
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            /* Transição para suavizar o desaparecimento */
+            transition: opacity 0.7s ease-in-out; 
+        }
+
+        /* Classe para iniciar o desaparecimento */
+        .splash-screen.fade-out {
+            opacity: 0;
+        }
+
+        .splash-screen__loader {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            /* COMBINA ANIMAÇÃO DE REVELAÇÃO E PULSAÇÃO */
+            animation: 
+                logoReveal 1.5s ease-out forwards, /* Revelação suave */
+                logoPulse 2s infinite alternate 1.5s; /* Pulsação, começando após a revelação */
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        @keyframes logoReveal {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        
+        /* Keyframes para a pulsação suave */
+        @keyframes logoPulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); } /* Pulsa para 5% maior */
+        }
+
+
+        .splash-screen__loader img {
+            max-width: 150vw;
+            height: auto;
+            margin-top: var(--spacing-md);
+        }
+    </style>
+</head>
+<body>
+    <div class="splash-screen" id="splashScreen">
+        <div class="splash-screen__loader">
+            <img src="./assets/logos/GetEatsSVG.svg" alt="Get Eats Logo" />
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const splashScreen = document.getElementById('splashScreen');
+            
+            // TEMPO DE EXIBIÇÃO: (5 segundos)
+            const tempoDeEspera = 5000; 
+            
+            // Duração do fade-out
+            const tempoDeTransicao = 700; 
+
+            setTimeout(() => {
+                // 1. Inicia o desaparecimento suave da splash screen
+                splashScreen.classList.add('fade-out');
+
+                // 2. Após o fade-out, executa o redirecionamento
+                setTimeout(() => {
+                    // Verifica se é desktop (largura >= 1024px)
+                    if (window.innerWidth >= 1024) {
+                        // Redireciona para o cardápio com parâmetro para abrir modal de login
+                        window.location.href = './paginas/cardapio.html?openLogin=true';
+                    } else {
+                        // Redireciona para a página de login (mobile)
+                        window.location.href = './paginas/login.html';
+                    }
+                }, tempoDeTransicao);
+
+            }, tempoDeEspera);
+        });
+    </script>
+</body>
+</html>

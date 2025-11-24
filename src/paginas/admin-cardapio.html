@@ -9,126 +9,152 @@
   <link rel="stylesheet" href="../recursos/css/paginas/cardapioADM.css">
 </head>
 
+<style>
+  
+  @media (min-width: 768px){
+    body{
+      display: none;
+    }
+  }
+  .categories {
+    align-items: center !important;
+  }
+
+  .categories a{
+    padding-left: 2rem !important;
+  }
+
+  .product-card .discount-badge {
+    max-width: 6rem;
+            bottom: 0.75rem;
+            left: 8.5rem;
+  }
+
+</style>
+
 <body>
   <div class="header">
     <div class="header-bg"></div>
     <img src="../assets/icons/Voltar.svg" alt="Voltar" class="back-icon">
     <img src="../assets/logos/GetEatsSVG.svg" alt="Get Eats Logo" class="logo logo--pequeno" />
-    <img src="../assets/icons/PerfilHeader.svg" alt="Perfil" class="profile-icon">
+  <img src="../assets/icons/PerfilHeader.svg" alt="Perfil" class="profile-icon" id="profile-icon">
   </div>
   <div class="search-bar">
     <img src="../assets/icons/Busca.svg" alt="Buscar" class="search-icon"> <input type="text" placeholder="Buscar no cardápio..." />
-    <img src="../assets/icons/Filtro.svg" alt="Filtro" class="filter-btn">
+    
   </div>
   <div class="main-content">
     <div class="restaurant-details">
-      <div class="logo-small"></div>
-      <div class="info">
-        <div class="name">Burguer House</div>
-        <div class="rating">Gerencie seu cardápio </div>
-      </div>
+    <div class="logo-small"></div>
+    <div class="info">
+      <div class="name">Burguer House</div>
+      <div class="rating">Gerencie seu cardápio </div>
     </div>
-    <div class="categories"> <a href="#" class="active">Editar</a> <a href="#">Exlcuir</a> <a href="#">Adicionar</a> <a href="#">Promoções</a><div class="categories-line"></div></div>
-    <div class="products">
-      <div class="product-card">
-        <div class="discount-badge">
-          <img src="../assets/icons/Percent.svg" alt="Percent" class="percent-icon">
-          15% off
-        </div>
-        <div class="image" style="background-image: url('../assets/imagen/XBacon.jpg');"></div>
-        <div class="details">
-          <div class="title">X Bacon</div>
-          <div class="subtitle">Hambúrguer com bacon • 20 min</div>
-          <div class="rating"> <span class="stars">★★★★★</span> 4.8 </div>
-        </div>
-        <button class="add-btn-tablet">Editar</button>
-        <div class="add-btn"><img src="../assets/icons/Delete.svg" alt="Delete"></div>
-      </div>
-      <div class="product-card">
-        <div class="image" style="background-image: url('../assets/imagen/ChickenBurguer.jpg');"></div>
-        <div class="details">
-          <div class="title">Chicken Burguer</div>
-          <div class="subtitle">Hambúrguer de frango • 18 min</div>
-          <div class="rating"> <span class="stars">★★★★☆</span> 4.6 </div>
-        </div>
-        <button class="add-btn-tablet">Editar</button>
-        <div class="add-btn"><img src="../assets/icons/Delete.svg" alt="Delete"></div>
-      </div>
-      
-      <div class="product-card">
-        <div class="image" style="background-image: url('../assets/imagen/Australiano.jpg');"></div>
-        <div class="details">
-          <div class="title">Australiano</div>
-          <div class="subtitle">Hambúrguer australiano • 22 min</div>
-          <div class="rating"> <span class="stars">★★★★★</span> 4.9 </div>
-        </div>
-        <button class="add-btn-tablet">Editar</button>
-        <div class="add-btn"><img src="../assets/icons/Delete.svg" alt="Delete"></div>
-      </div>
-      <div class="product-card">
-        <div class="image" style="background-image: url('../assets/imagen/CreamBurguer.jpg');"></div>
-        <div class="details">
-          <div class="title">Cream Burguer</div>
-          <div class="subtitle">Hambúrguer cremoso • 19 min</div>
-          <div class="rating"> <span class="stars">★★★★☆</span> 4.7 </div>
-        </div>
-        <button class="add-btn-tablet">Editar</button>
-        <div class="add-btn"><img src="../assets/icons/Delete.svg" alt="Delete"></div>
-      </div>
-      <div class="product-card">
-        <div class="image" style="background-image: url('../assets/imagen/CrispyBurguer.jpg');"></div>
-        <div class="details">
-          <div class="title">Crispy Burguer</div>
-          <div class="subtitle">Hambúrguer crispy • 20 min</div>
-          <div class="rating"> <span class="stars">★★★★☆</span> 4.6 </div>
-        </div>
-        <button class="add-btn-tablet">Editar</button>
-        <div class="add-btn"><img src="../assets/icons/Delete.svg" alt="Delete"></div>
-      </div>
-      <div class="product-card">
-        <div class="image" style="background-image: url('../assets/imagen/XBurguer.jpg');"></div>
-        <div class="details">
-          <div class="title">X Burguer</div>
-          <div class="subtitle">Clássico com queijo • 15 min</div>
-          <div class="rating"> <span class="stars">★★★★☆</span> 4.5 </div>
-        </div>
-        <button class="add-btn-tablet">Editar</button>
-        <div class="add-btn"><img src="../assets/icons/Delete.svg" alt="Delete"></div>
-      </div>
-      <div class="product-card">
-        <div class="image" style="background-image: url('../assets/imagen/CheddarDuplo.jpg');"></div>
-        <div class="details">
-          <div class="title">Cheddar Duplo</div>
-          <div class="subtitle">Hambúrguer duplo com cheddar • 24 min</div>
-          <div class="rating"> <span class="stars">★★★★★</span> 4.9 </div>
-        </div>
-        <button class="add-btn-tablet">Editar</button>
-        <div class="add-btn"><img src="../assets/icons/Delete.svg" alt="Delete"></div>
-      </div>
-      <div class="product-card">
-        <div class="image" style="background-image: url('../assets/imagen/ArtesanalDuplo.jpg');"></div>
-        <div class="details">
-          <div class="title">Artesanal Duplo</div>
-          <div class="subtitle">Hambúrguer artesanal duplo • 25 min</div>
-          <div class="rating"> <span class="stars">★★★★★</span> 4.9 </div>
-        </div>
-        <button class="add-btn-tablet">Editar</button>
-        <div class="add-btn"><img src="../assets/icons/Delete.svg" alt="Delete"></div>
-      </div>
+  </div>
+    <div class="categories"> <a href="#" class="active">Editar</a> <a href="#">Adicionar</a> <a href="#">Promoções</a><div class="categories-line"></div></div>
+    <div class="products" id="products-container">
+      <!-- Produtos serão carregados dinamicamente aqui -->
     </div>
   </div>
   
-  <div class="footer-nav"> <a href="admin-cardapio.html" class="nav-item active">
-      <img src="../assets/icons/HomeBar.svg" alt="Início" class="nav-icon"> Início
+  <div class="footer-nav"> <a href="#" class="nav-item active">
+      <img src="../assets/icons/HomeFooter.svg" alt="Início" class="nav-icon"> Início
     </a> <a href="#" class="nav-item">
-      <img src="../assets/icons/Busca.svg" alt="Buscar" class="nav-icon"> Buscar
-    </a>
-    <a href="admin-estatisticas.html" class="nav-item">
+      <img src="../assets/icons/Help.svg" alt="Pedidos" class="nav-icon"> Assistência
+    <a href="estatisticasADM.html" class="nav-item">
       <img src="../assets/icons/Estátisticas.svg" alt="Estatísticas" class="nav-icon"> Estatísticas
     </a>
-    <a href="#" class="nav-item">
-      <img src="../assets/icons/PerfilBar.svg" alt="Perfil" class="nav-icon"> Perfil
-    </a> </div>
+    <a href="perfilADM.html" class="nav-item">
+      <img src="../assets/icons/PerfilFooter.svg" alt="Perfil" class="nav-icon"> Perfil
+  </div>
+
+
+
+  <script src="../recursos/js/api.js"></script>
+  <script src="../recursos/js/admin.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const backIcon = document.querySelector('.back-icon');
+      if (backIcon) {
+        backIcon.addEventListener('click', function() {
+          window.history.back();
+        });
+      }
+
+      // Event listener para ícone de perfil
+      const profileIcon = document.getElementById('profile-icon');
+      if (profileIcon) {
+        profileIcon.addEventListener('click', function() {
+          window.location.href = 'perfilADM.html';
+        });
+      }
+
+      // Carregar produtos dinamicamente
+      adminManager.carregarProdutosAdmin();
+
+      // Funcionalidade de busca
+      const searchInput = document.querySelector('.search-bar input');
+
+      searchInput.addEventListener('input', function () {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        adminManager.filtrarProdutos(searchTerm);
+      });
+
+      // Funcionalidade das categorias
+      const categoryLinks = document.querySelectorAll('.categories a');
+
+      function showAllProducts() {
+        adminManager.filtrarProdutos('');
+      }
+
+      function showPromotionProducts() {
+        adminManager.filtrarProdutos('', 'promocao');
+      }
+
+      // Check URL parameters for initial filter
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('filter') === 'promocoes') {
+        // Set Promoções as active and filter products
+        categoryLinks.forEach(l => l.classList.remove('active'));
+        const promocoesLink = Array.from(categoryLinks).find(link => link.textContent.trim() === 'Promoções');
+        if (promocoesLink) {
+          promocoesLink.classList.add('active');
+          showPromotionProducts();
+        }
+      }
+
+      categoryLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+
+          // Remove active class from all links
+          categoryLinks.forEach(l => l.classList.remove('active'));
+
+          // Add active class to clicked link
+          this.classList.add('active');
+
+          const text = this.textContent.trim();
+
+          if (text === 'Adicionar') {
+            window.location.href = 'addprodutoADM.html';
+          } else if (text === 'Editar') {
+            showAllProducts();
+          } else if (text === 'Promoções') {
+            showPromotionProducts();
+          }
+        });
+      });
+
+      // Event listener for Assistência button
+      const assistenciaLink = Array.from(document.querySelectorAll('.footer-nav a')).find(a => a.textContent.trim().includes('Assistência'));
+      if (assistenciaLink) {
+        assistenciaLink.addEventListener('click', function(e) {
+          e.preventDefault();
+          alert('Chamado aberto! Aguarde retorno do assistente.');
+        });
+      }
+    });
+  </script>
 </body>
 
 </html>

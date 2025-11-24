@@ -1,0 +1,57 @@
+src/
+│
+├─ index.html                  ← Página inicial / login do cliente
+├─ admin.html                  ← Página de login do administrador
+│
+├─ paginas/                    ← Cada tela do sistema em HTML
+│   ├─ admin-cardapio.html     ← Lista de produtos e categorias
+│   ├─ carrinho.html           ← Itens selecionados pelo cliente
+│   ├─ pagamento.html          ← Escolha da forma de pagamento
+│   ├─ pedido-status.html      ← Acompanhamento do pedido
+│   ├─ admin-dashboard.html    ← Estatísticas e visão geral (ADM)
+│   ├─ cadastro.html           ← Página de cadastro
+│   ├─ login.html              ← Página de login
+│   ├─ perfil.html             ← Perfil do usuário
+│   ├─ pedidos.html            ← Histórico de pedidos
+│   ├─ addprodutoADM.html      ← Adicionar produto (ADM)
+│   ├─ editarprodutoADM.html   ← Editar produto (ADM)
+│   ├─ estatisticasADM.html    ← Estatísticas (ADM)
+│   ├─ perfilADM.html          ← Perfil do administrador
+│   ├─ pedido-confirmado.html  ← Confirmação de pedido
+│   ├─ splash.html             ← Tela de splash
+│   ├─ splashADM.html          ← Tela de splash ADM
+│   └─ ... (outras telas, incluindo páginas de produtos específicos como artesanalduplo.html, australiano.html, etc.)
+│
+├─ recursos/
+│   ├─ css/
+│   │   ├─ principal.css       ← Estilos globais (cores, tipografia, layout base)
+│   │   ├─ admin.css           ← Estilos exclusivos do painel do administrador
+│   │   ├─ base/               ← Estilos base
+│   │   ├─ config/             ← Configurações de CSS
+│   │   ├─ paginas/            ← Estilos específicos de páginas
+│   │   └─ utilities/          ← Utilitários CSS
+│   │
+│   ├─ js/
+│   │   ├─ carrinho.js         ← Lógica para adicionar/remover itens
+│   │   ├─ pagamento.js        ← Processamento e validação do pagamento
+│   │   ├─ produto.js          ← Ações nas páginas de produto
+│   │   ├─ admin.js            ← Funções de administração (CRUD, métricas)
+│   │   ├─ api.js              ← Comunicação com backend / requisições (futuro)
+│   │   ├─ auth.js             ← Autenticação
+│   │   ├─ cadastro.js         ← Lógica de cadastro
+│   │   ├─ login.js            ← Lógica de login
+│   │   ├─ perfil.js           ← Lógica de perfil
+│   │   ├─ pedidos.js          ← Lógica de pedidos
+│   │   └─ ... (outros arquivos JS como authADM.js, desktop-*.js, etc.)
+│   │
+├─ assets/                     ← Logos, ícones, fotos de produtos
+│   ├─ icons/                  ← Ícones
+│   ├─ imagen/                 ← Imagens
+│   └─ logos/                  ← Logos
+│
+├─ componentes/                ← Trechos de HTML reaproveitáveis
+│   ├─ cabecalho.html
+│   ├─ rodape.html
+│   └─ card-produto.html
+│
+

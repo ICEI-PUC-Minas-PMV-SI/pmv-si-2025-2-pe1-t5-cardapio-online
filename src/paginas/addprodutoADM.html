@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Adicionar Produto ADM - Get Eats</title>
+  <link rel="stylesheet" href="../recursos/css/principal.css">
+  <link rel="stylesheet" href="../recursos/css/paginas/cardapioADM.css">
+</head>
+
+<style>
+  @media (min-width: 768px){
+    body{
+      display: none;
+    }
+  }
+
+  .input-field__labelOFF{
+    display: none;;
+  }
+  .categories {
+    align-items: center !important;
+  }
+
+  .categories a{
+    padding-left: 2rem !important;
+  }
+.btn.btn--primario {
+  width: 100%;
+  height: 4rem;
+  background: linear-gradient(176deg, var(--color-primaryADM) 48%, var(--color-secondaryADM) 100%);
+}
+
+
+
+/* Botão Flutuante Carrinho */
+        .cart-float {
+            position: fixed;
+            bottom: 90px;
+            right: 1rem;
+            width: 4rem;
+            height: 4em;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(176deg, var(--color-primaryADM) 48%, var(--color-secondaryADM) 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 20;
+            cursor: pointer;
+        }
+
+        .cart-float .cart-icon {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+</style>
+
+<body>
+  <div class="header">
+    <div class="header-bg"></div>
+    <img src="../assets/icons/Voltar.svg" alt="Voltar" class="back-icon">
+    <img src="../assets/logos/GetEatsSVG.svg" alt="Get Eats Logo" class="logo logo--pequeno" />
+    <img src="../assets/icons/PerfilHeader.svg" alt="Perfil" class="profile-icon" id="profile-icon">
+  </div>
+  <div class="search-bar">
+    <img src="../assets/icons/Busca.svg" alt="Buscar" class="search-icon"> <input type="text" placeholder="Buscar no cardápio..." />
+  </div>
+  <div class="main-content">
+    <div class="restaurant-details">
+      <div class="logo-small"></div>
+      <div class="info">
+        <div class="name">Burguer House</div>
+        <div class="rating">Adicione um novo produto</div>
+      </div>
+    </div>
+    <div class="categories"> <a href="#">Editar</a> <a href="#" class="active">Adicionar</a> <a href="#">Promoções</a><div class="categories-line"></div></div>
+    <div class="form-card">
+
+      <label class="input-field__label" for="nomeprod">Nome do produto</label>
+      <div class="input-field">
+        <div class="input-field__input">
+          <input type="text" id="nomeprod" placeholder="Nome do produto" />
+        </div>
+      </div>
+
+      <label class="input-field__label" for="descricao">Descrição do produto</label>
+      <div class="input-field">
+        <div class="input-field__input">
+          <textarea id="descricao" placeholder="Descrição do produto" rows="3"></textarea>
+        </div>
+      </div>
+
+      <label class="input-field__label" for="preco">Preço</label>
+      <div class="input-field">
+        <div class="input-field__input">
+          <input type="number" id="preco" placeholder="R$ 0,00" step="0.01" />
+        </div>
+      </div>
+
+      <label class="input-field__label" for="categoria">Categoria</label>
+      <div class="input-field">
+        <div class="input-field__input">
+          <select id="categoria">
+            <option value="">Selecione uma categoria</option>
+            <option value="hamburgueres">Hambúrgueres</option>
+            <option value="bebidas">Bebidas</option>
+            <option value="acompanhamentos">Acompanhamentos</option>
+          </select>
+        </div>
+      </div>
+
+      <label class="input-field__label" for="tempo">Tempo de preparo</label>
+      <div class="input-field">
+        <div class="input-field__input">
+          <input type="number" id="tempo" placeholder="minutos" />
+        </div>
+      </div>
+
+      <label class="input-field__labelOFF" for="imagem">Imagem do produto</label>
+      <div class="input-field">
+        <div class="input-field__inputOFF">
+          <input type="file" id="imagem" accept="image/*" style="display: none;" />
+        </div>
+      </div>
+
+      <button class="btn btn--primario" id="adicionar-produto-btn">Adicionar Produto</button>
+    </div>
+  </div>
+
+  <div class="cart-float" id="img-update-btn">
+        <img src="../assets/icons/ImgUpdate.svg" alt="Selecionar Imagem" class="cart-icon">
+    </div>
+
+  <div class="footer-nav"> <a href="./admin-cardapio.html" class="nav-item active" >
+      <img src="../assets/icons/HomeFooter.svg" alt="Início" class="nav-icon" > Início
+    </a>
+     <a href="#" class="nav-item">
+      <img src="../assets/icons/Help.svg" alt="Pedidos" class="nav-icon"> Assistência
+    <a href="./estatisticasADM.html" class="nav-item">
+      <img src="../assets/icons/Estátisticas.svg" alt="Estatísticas" class="nav-icon"> Estatísticas
+    </a>
+    <a href="perfilADM.html" class="nav-item">
+      <img src="../assets/icons/PerfilFooter.svg" alt="Perfil" class="nav-icon"> Perfil
+  </div>
+
+  <script src="../recursos/js/api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const backIcon = document.querySelector('.back-icon');
+      if (backIcon) {
+        backIcon.addEventListener('click', function() {
+          window.history.back();
+        });
+      }
+
+      // Event listener para ícone de perfil
+      const profileIcon = document.getElementById('profile-icon');
+      if (profileIcon) {
+        profileIcon.addEventListener('click', function() {
+          window.location.href = 'perfilADM.html';
+        });
+      }
+
+      // Funcionalidade das categorias
+      const categoryLinks = document.querySelectorAll('.categories a');
+
+      categoryLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+
+          // Remove active class from all links
+          categoryLinks.forEach(l => l.classList.remove('active'));
+
+          // Add active class to clicked link
+          this.classList.add('active');
+
+          const text = this.textContent.trim();
+
+          if (text === 'Editar') {
+            window.location.href = 'admin-cardapio.html';
+          } else if (text === 'Adicionar') {
+            // Already on add page, do nothing
+          } else if (text === 'Promoções') {
+            window.location.href = 'admin-cardapio.html?filter=promocoes';
+          }
+        });
+      });
+
+      // Event listener for image update button
+      const imgUpdateBtn = document.getElementById('img-update-btn');
+      if (imgUpdateBtn) {
+        imgUpdateBtn.addEventListener('click', function() {
+          document.getElementById('imagem').click();
+        });
+      }
+
+      // Event listener for Assistência button
+      const assistenciaLink = Array.from(document.querySelectorAll('.footer-nav a')).find(a => a.textContent.trim().includes('Assistência'));
+      if (assistenciaLink) {
+        assistenciaLink.addEventListener('click', function(e) {
+          e.preventDefault();
+          alert('Chamado aberto! Aguarde retorno do assistente.');
+        });
+      }
+
+      // Funcionalidade de adicionar produto
+      const adicionarBtn = document.getElementById('adicionar-produto-btn');
+      if (adicionarBtn) {
+        adicionarBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+
+          const nome = document.getElementById('nomeprod').value.trim();
+          const descricao = document.getElementById('descricao').value.trim();
+          const preco = parseFloat(document.getElementById('preco').value);
+          const categoria = document.getElementById('categoria').value;
+          const tempo = parseInt(document.getElementById('tempo').value);
+          const imagemInput = document.getElementById('imagem');
+          const imagem = imagemInput.files[0];
+
+          // Validação
+          if (!nome || !descricao || isNaN(preco) || !categoria || isNaN(tempo)) {
+            alert('Por favor, preencha todos os campos obrigatórios.');
+            return;
+          }
+
+          if (preco <= 0) {
+            alert('O preço deve ser maior que zero.');
+            return;
+          }
+
+          if (tempo <= 0) {
+            alert('O tempo de preparo deve ser maior que zero.');
+            return;
+          }
+
+          // Processar imagem
+          let imagemUrl = '';
+          if (imagem) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+              imagemUrl = e.target.result;
+              salvarProduto();
+            };
+            reader.readAsDataURL(imagem);
+          } else {
+            salvarProduto();
+          }
+
+          function salvarProduto() {
+            const produto = {
+              id: Date.now(), // ID único baseado no timestamp
+              nome: nome,
+              descricao: descricao,
+              preco: preco,
+              categoria: categoria,
+              tempo: tempo,
+              imagem: imagemUrl,
+              rating: 0,
+              estrelas: '★★★★☆'
+            };
+
+            // Salvar no localStorage
+            const produtos = JSON.parse(localStorage.getItem('produtos') || '[]');
+            produtos.push(produto);
+            localStorage.setItem('produtos', JSON.stringify(produtos));
+
+            // Disparar evento personalizado para atualizar outras abas
+            window.dispatchEvent(new CustomEvent('produtoAdicionado', { detail: produto }));
+
+            alert('Produto adicionado com sucesso!');
+            // Limpar formulário
+            document.getElementById('nomeprod').value = '';
+            document.getElementById('descricao').value = '';
+            document.getElementById('preco').value = '';
+            document.getElementById('categoria').value = '';
+            document.getElementById('tempo').value = '';
+            document.getElementById('imagem').value = '';
+          }
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>

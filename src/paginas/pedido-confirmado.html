@@ -35,7 +35,7 @@ body {
   align-items: center;
 }
 
-.header {
+.form-card__header {
   position: relative;
   top: 120px;
   left: 0;
@@ -47,9 +47,9 @@ body {
   z-index: 1;
 }
 
-.header-bg {
+.form-card__header-bg {
   position: absolute;
-  top: -150px;
+  top: -290px;
   left: 50%;
   width: 150%;
   height: 300px;
@@ -58,12 +58,13 @@ body {
   border-radius: 50%;
 }
 
-.header img.logo {
+.form-card__header img.logo {
   position: relative;
-  width: 12rem;
+  width: 5rem !important;
+  height: auto !important;
   user-select: none;
   z-index: 10;
-  margin-top: 1rem;
+  margin-top: -12rem;
 }
 
 .notch {
@@ -85,43 +86,89 @@ body {
   color: var(--color-text-light);
   text-align: center;
   margin-bottom: 2rem;
+  margin-top: 4rem;
 }
 
 .check-icon {
-  width: 4rem;
-  height: 4rem;
-  background: var(--color-primary);
+  width: 8rem;
+  height: 8rem;
+  background: white;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 1.5rem;
+  position: fixed;
+  top: 150px;
+  left: 40%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .check-icon img {
-  width: 2rem;
-  height: 2rem;
+  width: 4.2rem;
+  height: 5rem;
 }
 
 .order-details {
   width: 100%;
-  background: var(--color-input-bg);
-  border-radius: var(--border-radius);
-  padding: 1.25rem;
-  box-shadow: 0 4px 8px var(--color-shadow);
+  max-width: 350px;
+  background: white;
+  border-radius: 0.9375rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
   margin-bottom: 2rem;
 }
 
-.order-details h3 {
-  font-size: 1.125rem;
-  color: var(--color-text);
-  margin-bottom: 0.5rem;
+.order-details h2 {
+  font-size: 1.25rem;
+  font-weight: lighter;
+  color: #222222;
+  margin-bottom: 1rem;
 }
 
-.order-details p {
-  font-size: 0.875rem;
-  color: var(--color-text-light);
-  margin-bottom: 0.25rem;
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: #666666;
+}
+
+.summary-item span:first-child {
+  text-align: left;
+}
+
+.summary-item span:last-child {
+  text-align: right;
+  font-weight: bold;
+  color: #222222;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.125rem;
+  font-weight: lighter;
+  color: #222222;
+  margin-top: 1rem;
+}
+
+.summary-total span:first-child {
+  text-align: left;
+}
+
+.summary-total span:last-child {
+  text-align: right;
+}
+
+.summary-divider {
+  border: none;
+  height: 1px;
+  background-color: #cccccc;
+  margin: 1rem 0;
 }
 
 .btn-primary {
@@ -154,11 +201,11 @@ body {
 /* Media Queries */
 
 @media (max-width: 480px) {
-  .header {
+  .form-card__header {
     height: 10rem;
   }
 
-  .header img.logo {
+  .form-card__header img.logo {
     width: 7rem;
     transform: translateY(2rem);
   }
@@ -174,7 +221,7 @@ body {
     padding: 0 1.5rem 1.5rem 1.5rem;
   }
 
-  .header img.logo {
+  .form-card__header img.logo {
     width: 10rem;
     transform: translateY(3rem);
     margin-top: 3rem;
@@ -186,19 +233,51 @@ body {
   }
 }
 
-@media (min-width: 769px) {
-  .header img.logo {
-    width: 8rem;
-    transform: translateY(2rem);
-  }
+@media (min-width: 768px) {
+  .form-card__header {
+  position: relative;
+  top: 120px;
+  left: 0;
+  width: 100vw;
+  height: 10rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  z-index: 1;
+}
+
+.form-card__header-bg {
+  position: absolute;
+  top: -358px;
+  left: 50%;
+  width: 150%;
+  height: 300px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, var(--color-primary) 48%, var(--color-secondary) 100%);
+  border-radius: 50%;
+}
+
+.form-card__header img.logo {
+  position: relative;
+  width: 5rem !important;
+  height: auto !important;
+  user-select: none;
+  z-index: 10;
+  margin-top: -16rem;
+}
 
   .container {
     max-width: 500px;
   }
 
-  .confirmation-title {
-    margin-top: 10.5rem;
+  .confirmation-message {
+    margin-top: 1rem;
+    margin-bottom: 3rem;
   }
+
+  .order-details {
+    min-width: 460px;
+}
 }
 
 @media (min-width: 820px) {
@@ -207,7 +286,7 @@ body {
     padding: 0 1.5rem 1.5rem 1.5rem;
   }
 
-  .header img.logo {
+  .form-card__header img.logo {
     width: 8rem;
   }
 
@@ -223,7 +302,7 @@ body {
     padding: 0 3rem 3rem 3rem;
   }
 
-  .header img.logo {
+  .form-card__header img.logo {
     width: 8rem;
   }
 
@@ -242,23 +321,130 @@ body {
     </div>
 
     <div class="form-card__notch"></div>
-    <h1 class="confirmation-title">Pedido Confirmado!</h1>
     <div class="check-icon">
       <img src="../assets/icons/Check.svg" alt="Check" />
     </div>
 
-    <p class="confirmation-message">Seu pedido foi realizado com sucesso. Em breve você receberá atualizações sobre o status da entrega.</p>
+    <p class="confirmation-message">Seu pedido foi realizado com sucesso.</p>
 
     <div class="order-details">
-      <h3>Detalhes do Pedido</h3>
-      <p><strong>Número do Pedido:</strong> #123456</p>
-      <p><strong>Tempo Estimado:</strong> 30-45 minutos</p>
-      <p><strong>Endereço de Entrega:</strong> Rua Exemplo, 123 - Bairro, Cidade</p>
-      <p><strong>Total:</strong> R$ 45,90</p>
+      <h2>Detalhes do Pedido</h2>
+      <div class="summary-item">
+        <span>Número do Pedido:</span>
+        <span>#123456</span>
+      </div>
+      <div class="summary-item">
+        <span>Tempo Estimado:</span>
+        <span>30-45 minutos</span>
+      </div>
+      <div class="summary-item">
+        <span>Endereço de Entrega:</span>
+        <span>Rua Exemplo, 123 - Bairro, Cidade</span>
+      </div>
+      <hr class="summary-divider">
+      <div class="summary-total">
+        <span>Total:</span>
+        <span>R$ 45,90</span>
+      </div>
     </div>
 
-    <button class="btn">Acompanhar Pedido</button>
-    <button class="btn">Voltar ao Início</button>
+    <button class="btn" id="acompanhar-pedido-btn">Acompanhar Pedido</button>
+    <button class="btn" id="back-to-home">Voltar ao Início</button>
   </div>
+
+  <!-- Incluir scripts necessários -->
+  <script src="../recursos/js/auth.js"></script>
+  <script src="../recursos/js/carrinho.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Elementos da página
+      const summaryItems = document.querySelectorAll('.summary-item');
+      const numeroPedidoEl = summaryItems[0].querySelector('span:last-child');
+      const enderecoEntregaEl = summaryItems[2].querySelector('span:last-child');
+      const totalEl = document.querySelector('.summary-total span:last-child');
+      const backToHomeBtn = document.getElementById('back-to-home');
+
+      // Gerar número de pedido único
+      const numeroPedido = gerarNumeroPedido();
+      numeroPedidoEl.textContent = numeroPedido;
+
+      // Obter dados do usuário logado
+      const usuarioLogado = authManager.obterUsuarioLogado();
+
+      // Obter endereço de entrega
+      const endereco = carrinhoManager.obterEndereco();
+      if (endereco) {
+        enderecoEntregaEl.textContent = endereco;
+      } else if (usuarioLogado && usuarioLogado.endereco) {
+        enderecoEntregaEl.textContent = usuarioLogado.endereco;
+      }
+
+      // Calcular e exibir total
+      const resumoCarrinho = carrinhoManager.obterResumo();
+      const totalFormatado = resumoCarrinho.total.toFixed(2).replace('.', ',');
+      totalEl.textContent = `R$ ${totalFormatado}`;
+
+      // Salvar total para usar na página de acompanhamento
+      localStorage.setItem('pedido_total_confirmado', totalFormatado);
+
+      // Entregadores simulados
+      const entregadores = [
+        { nome: 'João Silva', avatar: 'JS', info: 'Entregador • Moto • 5.0 ★' },
+        { nome: 'Maria Santos', avatar: 'MS', info: 'Entregadora • Carro • 4.9 ★' },
+        { nome: 'Pedro Costa', avatar: 'PC', info: 'Entregador • Moto • 4.8 ★' },
+        { nome: 'Ana Oliveira', avatar: 'AO', info: 'Entregadora • Bicicleta • 5.0 ★' }
+      ];
+
+      // Atribuir entregador aleatório para este pedido
+      const entregadorIndex = Math.floor(Math.random() * entregadores.length);
+      const entregador = entregadores[entregadorIndex];
+
+      // Criar e salvar pedido completo no histórico
+      const pedidoCompleto = {
+        id: numeroPedido.replace('#', ''),
+        data: new Date().toISOString(),
+        status: 'confirmado',
+        itens: resumoCarrinho.itens || [],
+        total: resumoCarrinho.total,
+        endereco: enderecoEntregaEl.textContent,
+        timestampInicio: Date.now(),
+        entregador: entregador
+      };
+
+      // Salvar pedido atual
+      localStorage.setItem('pedido_atual', JSON.stringify(pedidoCompleto));
+
+      // Adicionar aos pedidos atuais
+      const pedidosAtuais = JSON.parse(localStorage.getItem('pedidos_atuais') || '[]');
+      pedidosAtuais.push(pedidoCompleto);
+      localStorage.setItem('pedidos_atuais', JSON.stringify(pedidosAtuais));
+
+      // Limpar carrinho após confirmação
+      carrinhoManager.limparCarrinho();
+
+      // Event listener para voltar ao início
+      if (backToHomeBtn) {
+        backToHomeBtn.addEventListener('click', function() {
+          window.location.href = 'cardapio.html';
+        });
+      }
+
+      // Event listener para acompanhar pedido
+      const acompanharBtn = document.getElementById('acompanhar-pedido-btn');
+      if (acompanharBtn) {
+        acompanharBtn.addEventListener('click', function() {
+          window.location.href = 'pedido-status.html';
+        });
+      }
+
+      // Função para gerar número de pedido único
+      function gerarNumeroPedido() {
+        const timestamp = Date.now();
+        const random = Math.floor(Math.random() * 1000);
+        return `#${timestamp}${random}`;
+      }
+    });
+  </script>
 </body>
 </html>

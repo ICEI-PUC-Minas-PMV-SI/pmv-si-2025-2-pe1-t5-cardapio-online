@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Produto - Get Eats</title>
+  <link rel="stylesheet" href="../recursos/css/principal.css">
+  <link rel="stylesheet" href="../recursos/css/paginas/produto.css">
+  <script src="../recursos/js/auth.js"></script>
+  <script src="../recursos/js/carrinho.js"></script>
+  <script src="../recursos/js/produto.js"></script>
+
+</head>
+
+<body>
+  <div class="header">
+    <img src="../assets/icons/Voltar.svg" alt="Voltar" class="back-icon">
+    <img src="../assets/icons/PerfilHeader.svg" alt="Perfil" class="profile-icon">
+  </div>
+  <div class="product-image" style="background-image: url('../assets/imagen/CreamBurguer.jpg'); background-size: cover; background-position: center; width: 100vw; height: 44vh; position: absolute; top: 0; left: 0; z-index: 1;">
+    <div class="floating-icon">
+      <img src="../assets/icons/s2Produto.svg" alt="Produto">
+    </div>
+  </div>
+  <div class="discount-badge">
+    <img src="../assets/icons/Percent.svg" alt="Percent" class="percent-icon">
+    15% off
+  </div>
+  <div class="location-badge">
+    <img src="../assets/icons/Loc.svg" alt="Location" class="loc-icon">
+    Av, Brasil - 1234
+  </div>
+
+  <div class="product-info">
+    <h1 class="product-title">Cream Burguer</h1>
+    <div class="product-rating">
+       <span class="stars">★★★★☆</span> 4.7 (141 avaliações)
+    </div>
+    <p class="product-description">Hambúrguer cremoso e irresistível! Blend especial de carnes com cream cheese derretido, cebola caramelizada, alface crocante e molho especial. Uma experiência única de sabores suaves e intensos.</p>
+    <div class="add-ingredients">
+      <h2>Adicionar ingrediente:</h2>
+      <div class="ingredients-buttons">
+        <button class="ingredient-btn">Extra Bacon</button>
+        <button class="ingredient-btn">Extra Queijo</button>
+        <button class="ingredient-btn">Alface Extra</button>
+        <button class="ingredient-btn">Tomate Extra</button>
+      </div>
+    </div>
+    <div class="add-sauces">
+      <h2>Adicionar molhos:</h2>
+      <div class="sauces-buttons">
+        <button class="sauce-btn" data-value="sim">
+          <img src="../assets/icons/YeahSauce.svg" alt="Sim" class="sauce-icon">
+        </button>
+        <button class="sauce-btn" data-value="nao">
+          <img src="../assets/icons/NoSauce.svg" alt="Não" class="sauce-icon">
+        </button>
+      </div>
+    </div>
+    <div class="add-drinks">
+      <h2>Deseja algo pra beber:</h2>
+      <div class="drinks-buttons">
+        <button class="drink-btn">Refrigerante</button>
+        <button class="drink-btn">Suco</button>
+        <button class="drink-btn">Água</button>
+      </div>
+    </div>
+    <div class="add-accompaniments">
+      <h2>Adicionar acompanhamento:</h2>
+      <div class="accompaniments-buttons">
+        <button class="accompaniment-btn">Batata Frita</button>
+        <button class="accompaniment-btn">Onion Rings</button>
+        <button class="accompaniment-btn">Salada</button>
+      </div>
+    </div>
+
+
+
+  
+  </div>
+
+  <div class="footer-nav">
+    <div class="price">R$30,00</div>
+    <button class="add-to-cart-btn">
+      <img src="../assets/icons/Cart.svg" alt="Cart" class="cart-icon">
+      Adicionar
+    </button>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const backIcon = document.querySelector('.back-icon');
+      if (backIcon) {
+        backIcon.addEventListener('click', function() {
+          window.history.back();
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>

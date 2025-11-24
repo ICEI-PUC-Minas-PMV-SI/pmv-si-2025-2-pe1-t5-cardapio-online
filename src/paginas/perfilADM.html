@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Perfil ADM - Get Eats</title>
+<link rel="stylesheet" href="../recursos/css/principal.css">
+<link rel="stylesheet" href="../recursos/css/paginas/perfilADM.css">
+</head>
+
+<style>
+  @media (min-width: 768px){
+    body{
+      display: none;
+    }
+  }
+</style>
+<body>
+  <div class="header">
+    <div class="header-bg"></div>
+    <img src="../assets/icons/Voltar.svg" alt="Voltar" class="back-icon">
+    <img src="../assets/icons/PerfilHeader.svg" alt="Perfil" class="profile-icon" />
+  </div>
+
+  <div class="main-content">
+    <div class="user-details">
+      <div class="logo-small">
+        <img src="../assets/icons/PerfilHeader.svg" alt="Foto do Usuário">
+      </div>
+      <div class="info">
+        <div class="name" id="user-name">Administrador</div>
+        <div class="address" id="user-address">Status: Logado</div>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <h2 class="section-title">Informações do Administrador</h2>
+      <div class="info-item">
+        <label class="info-label">Usuário:</label>
+        <div class="info-value" id="admin-user">Carregando...</div>
+      </div>
+      <div class="info-item">
+        <label class="info-label">Status:</label>
+        <div class="info-value" id="admin-status">Carregando...</div>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <h2 class="section-title">Ações da Conta</h2>
+      <button class="btn btn--secundario" id="ir-cardapio">Ir para Cardápio ADM</button>
+      <button class="btn btn--danger" id="logout">Sair da Conta</button>
+    </div>
+  </div>
+
+<script src="../recursos/js/authADM.js"></script>
+<script src="../recursos/js/perfilADM.js"></script>
+</body>
+</html>

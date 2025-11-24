@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Produto - Get Eats</title>
+  <link rel="stylesheet" href="../recursos/css/principal.css">
+  <link rel="stylesheet" href="../recursos/css/paginas/produto.css">
+  <script src="../recursos/js/auth.js"></script>
+  <script src="../recursos/js/carrinho.js"></script>
+  <script src="../recursos/js/produto.js"></script>
+
+</head>
+
+<body>
+  <div class="header">
+    <img src="../assets/icons/Voltar.svg" alt="Voltar" class="back-icon">
+    <img src="../assets/icons/PerfilHeader.svg" alt="Perfil" class="profile-icon">
+  </div>
+  <div class="product-image" style="background-image: url('../assets/imagen/Agua.jpg'); background-size: cover; background-position: center; width: 100vw; height: 44vh; position: absolute; top: 0; left: 0; z-index: 1;">
+    <div class="floating-icon">
+      <img src="../assets/icons/s2Produto.svg" alt="Produto">
+    </div>
+  </div>
+
+  <div class="location-badge">
+    <img src="../assets/icons/Loc.svg" alt="Location" class="loc-icon">
+    Av, Brasil - 1234
+  </div>
+
+  <div class="product-info">
+    <h1 class="product-title">Água</h1>
+    <div class="product-rating">
+       <span class="stars">★★★★☆</span> 4.6 (98 avaliações)
+    </div>
+    <p class="product-description">Água mineral fresca e pura, perfeita para acompanhar suas refeições. Refresco natural sem adição de açúcares ou conservantes.</p>
+
+  
+  </div>
+
+  <div class="footer-nav">
+    <div class="price">R$3,00</div>
+    <button class="add-to-cart-btn">
+      <img src="../assets/icons/Cart.svg" alt="Cart" class="cart-icon">
+      Adicionar
+    </button>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const backIcon = document.querySelector('.back-icon');
+      if (backIcon) {
+        backIcon.addEventListener('click', function() {
+          window.history.back();
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>

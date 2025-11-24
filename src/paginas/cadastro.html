@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cadastro</title>
+<link rel="stylesheet" href="../recursos/css/principal.css">
+<link rel="stylesheet" href="../recursos/css/paginas/cadastro.css">
+</head>
+<body>
+  <div class="form-card">
+    <div class="form-card__header">
+      <div class="form-card__header-bg"></div>
+      <img src="../assets/logos/GetEatsSVG.svg" alt="Get Eats Logo" class="logo logo--pequeno" />
+    </div>
+
+    <div class="form-card__notch"></div>
+    <div class="form-card__title">Criar conta</div>
+
+    <label class="input-field__label" for="nome">Nome</label>
+    <div class="input-field">
+      <div class="input-field__input">
+        <div class="input-field__icon"></div>
+        <input type="text" id="nome" placeholder="Seu nome completo" />
+      </div>
+    </div>
+
+    <label class="input-field__label" for="email">Email</label>
+    <div class="input-field">
+      <div class="input-field__input">
+        <div class="input-field__icon"></div>
+        <input type="email" id="email" placeholder="seu@email.com" />
+      </div>
+    </div>
+
+    <label class="input-field__label" for="cpf">CPF</label>
+    <div class="input-field">
+      <div class="input-field__input">
+        <div class="input-field__icon"></div>
+        <input type="text" id="cpf" placeholder="000.000.000-00" />
+      </div>
+    </div>
+
+    <label class="input-field__label" for="contato">Contato</label>
+    <div class="input-field">
+      <div class="input-field__input">
+        <div class="input-field__icon"></div>
+        <input type="tel" id="contato" placeholder="(00) 00000-0000" />
+      </div>
+    </div>
+
+    <label class="input-field__label" for="endereco">Endereço</label>
+    <div class="input-field">
+      <div class="input-field__input">
+        <div class="input-field__icon"></div>
+        <input type="text" id="endereco" placeholder="Rua, número, bairro, cidade" />
+      </div>
+    </div>
+
+    <label class="input-field__label" for="password">Senha</label>
+    <div class="input-field">
+      <div class="input-field__input">
+        <div class="input-field__icon"></div>
+        <input type="password" id="password" placeholder="••••••••" />
+        <img class="input-field__eye" src="../assets/icons/NãoVer.svg" alt="Mostrar senha" />
+      </div>
+    </div>
+
+    <label class="input-field__label" for="confirm-password">Confirmar Senha</label>
+    <div class="input-field">
+      <div class="input-field__input">
+        <div class="input-field__icon"></div>
+        <input type="password" id="confirm-password" placeholder="••••••••" />
+        <img class="input-field__eye" src="../assets/icons/NãoVer.svg" alt="Mostrar senha" />
+      </div>
+    </div>
+
+    <div class="checkbox-group">
+      <input type="checkbox" class="checkbox-group__input" id="terms" />
+      <label class="checkbox-group__label" for="terms">Aceito os termos e condições</label>
+    </div>
+
+    <button class="btn btn--primario">Criar conta</button>
+
+    <div class="form-card__separator">ou</div>
+
+    <button class="social-btn" onclick="alert('Funcionalidade em desenvolvimento');">
+      <div class="social-btn__icon"><img src="../assets/icons/Google.svg" alt="Google" /></div>
+      Continuar com Google
+    </button>
+
+    <button class="social-btn" onclick="alert('Funcionalidade em desenvolvimento');">
+      <div class="social-btn__icon"><img src="../assets/icons/Apple.svg" alt="Apple" /></div>
+      Continuar com Apple
+    </button>
+
+    <div class="form-card__bottom-text">Já tem uma conta? <a href="login.html">Entrar</a></div>
+  </div>
+<script src="../recursos/js/auth.js"></script>
+<script src="../recursos/js/cadastro.js"></script>
+</body>
+</html>

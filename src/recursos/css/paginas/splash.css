@@ -5,7 +5,12 @@
   width: 100vw;
   overflow: hidden;
   font-family: Arial, sans-serif;
-  background: transparent;
+  background: radial-gradient(
+    ellipse 200% 205% at 60% 210%,
+    var(--color-secondary) 21%,
+    var(--color-primary) 74%,
+    var(--color-secondary) 100%
+  );
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,35 +25,19 @@
   align-items: center;
   height: 100vh;
   width: 100vw;
+  animation: logoReveal 2s ease-out forwards;
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+@keyframes logoReveal {
+  0% { opacity: 0; transform: scale(0.9); }
+  60% { opacity: 0; transform: scale(0.9); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
 .splash-screen__loader img {
   max-width: 150vw;
   height: auto;
   margin-top: var(--spacing-md);
-}
-
-/* Background overlay for splash */
-.splash-screen::before {
-  content: '';
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  z-index: -1;
-  background: radial-gradient(
-    ellipse 200% 205% at 60% 210%,
-    var(--color-secondary) 21%,
-    var(--color-primary) 74%,
-    var(--color-secondary) 100%
-  );
-}
-
-@keyframes gradientPulse {
-  0% {
-    filter: brightness(1);
-  }
-  100% {
-    filter: brightness(1.2);
-  }
 }

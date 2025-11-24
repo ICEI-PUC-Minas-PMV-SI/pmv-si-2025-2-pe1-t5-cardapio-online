@@ -2,667 +2,4521 @@
 <html lang="pt-BR">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cardápio - Get Eats</title>
-  <style>
-    * {
-      box-sizing: border-box;
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cardápio - Get Eats</title>
+    <style>
+        /* Reset */
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Control Classes */
+        .desktop-only {
+            display: none;
+        }
+
+        .mobile-only {
+            display: block;
+        }
+
+        .logo-desktop {
+            display: none;
+        }
+
+        .highlights-container {
+            display: none;
+        }
+
+        .profile-icon--desktop {
+    display: none;
+}
+
+.cart-modal-overlay {
+    display: none;
+}
+
+
+/* ------------------------------------------- */
+/* 1. OVERLAY (Fundo Escuro e Centralização) */
+/* ------------------------------------------- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo escurecido */
+    z-index: 2000; /* Garante que fique acima de tudo */
+    
+    /* MODAL OCULTO POR PADRÃO */
+    display: none; 
+    
+    /* Centralização: O display: flex será ativado via JS na classe .modal-open */
+    justify-content: center;
+    align-items: center;
+}
+
+/* ------------------------------------------- */
+/* 2. CONTEÚDO DO MODAL (CARD BRANCO) */
+/* ------------------------------------------- */
+.modal-content--auth {
+    background-color: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px; /* Largura do modal */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    position: relative;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.auth-header {
+    text-align: center;
+    position: relative;
+}
+
+.auth-header .auth-icon {
+    display: block;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 0 auto 10px;
+    padding: 5px; /* Espaçamento interno para o ícone */
+}
+
+.auth-header h2 {
+    font-size: 1.5em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.close-modal-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 0.5rem;
+    cursor: pointer;
+    color: #999;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+/* ------------------------------------------- */
+/* 3. FORMULÁRIO E INPUTS */
+/* ------------------------------------------- */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.input-field__label {
+    display: block;
+    text-align: left;
+    margin-bottom: 0.5rem;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #666;
+}
+
+.input-field {
+    position: relative;
+}
+
+.input-field__input {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+    font-size: 1em;
+    background: white;
+}
+
+.input-field__input input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    color: #333;
+}
+
+.input-field__input input::placeholder {
+    color: #999;
+}
+
+.input-field__icon {
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.5rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
+
+/* Input field icons - Scoped to desktop modals only to avoid conflicts with mobile */
+
+@media (min-width: 1024px) {
+    /* Login modal icons */
+    #login-modal .input-field--email .input-field__icon {
+        background-image: url('../assets/icons/Email.svg');
     }
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f9f9f9;
-      min-height: 100vh;
-      padding-bottom: 80px;
-      /* Espaço para footer fixo */
+    #login-modal .input-field--password .input-field__icon {
+        background-image: url('../assets/icons/Senha.svg');
     }
 
-    .header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 10rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 1rem;
-      z-index: 10;
+    /* Signup modal icons */
+    #auth-modal label[for="signup-name"] ~ .input-field .input-field__icon {
+        background-image: url('../assets/icons/Nome.svg');
     }
 
-    .header-bg {
-      position: absolute;
-      top: -150px;
-      left: 50%;
-      width: 150%;
-      height: 300px;
-      transform: translateX(-50%);
-      background: linear-gradient(180deg, #FE2E2E 48%, #D40403 100%);
-      border-radius: 50%;
+    #auth-modal label[for="signup-email"] ~ .input-field .input-field__icon {
+        background-image: url('../assets/icons/Email.svg');
     }
 
-    .header .back-icon {
-      margin-left: 50px;
-      width: 1.5rem;
-      height: 1.5rem;
-      position: relative;
-      z-index: 11;
+    #auth-modal label[for="signup-cpf"] ~ .input-field .input-field__icon {
+        background-image: url('../assets/icons/Cpf.svg');
     }
 
-    .header .logo {
-      width: 4.75rem;
-      position: relative;
-      z-index: 11;
+    #auth-modal label[for="signup-contato"] ~ .input-field .input-field__icon {
+        background-image: url('../assets/icons/Phone.svg');
     }
 
-    .header .profile-icon {
-      margin-right: 50px;
-      width: 1.5rem;
-      height: 1.5rem;
-      position: relative;
-      z-index: 8;
+    #auth-modal label[for="signup-endereco"] ~ .input-field .input-field__icon {
+        background-image: url('../assets/icons/Endereço.svg');
     }
 
-    /* Conteúdo Principal */
-    .main-content {
-      background-color: #f9f9f900;
-      width: 90vw;
-      max-width: 400px;
-      min-width: 320px;
-      height: auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin: 0 auto;
-      margin-top: 2rem;
+    #auth-modal label[for="signup-password"] ~ .input-field .input-field__icon {
+        background-image: url('../assets/icons/Senha.svg');
     }
 
-    /* Barra de Pesquisa */
-    .search-bar {
-      position: fixed;
-      left: 50%;
-      transform: translateX(-50%);
-      max-width: 600px;
-      width: 70vw;
-      height: 50px;
-      display: flex;
-      align-items: center;
-      background: white;
-      border-radius: 4rem;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      padding: 1rem 0.75rem;
-      z-index: 15;
+    #auth-modal label[for="signup-confirm-password"] ~ .input-field .input-field__icon {
+        background-image: url('../assets/icons/Senha.svg');
     }
 
-    .search-bar .search-icon {
-      width: 1rem;
-      height: 1rem;
-      border-radius: 0.25rem;
-      margin-left: 0.5rem;
+    /* Profile edit modal icons */
+    #profile-edit-modal label[for="profile-edit-nome"] ~ .input-field .input-field__icon {
+        background-image: url('../assets/icons/Nome.svg');
     }
 
-    .search-bar input {
-      border: none;
-      outline: none;
-      flex-grow: 1;
-      font-size: 0.8rem;
-      color: #9999b0;
-      margin-left: 0.5rem;
-
+    #profile-edit-modal label[for="profile-edit-email"] ~ .input-field .input-field__icon {
+        background-image: url('../assets/icons/Email.svg');
     }
 
-    .search-bar .filter-btn {
-      width: 1.25rem;
-      background: #f9f9f9;
-      margin-right: 0.5rem;
+    #profile-edit-modal label[for="profile-edit-contato"] ~ .input-field .input-field__icon {
+        background-image: url('../assets/icons/Phone.svg');
     }
 
-    /* Detalhes do Restaurante */
-    .restaurant-details {
-      position: relative;
-      margin-right: 8rem;
-      display: flex;
-      flex: none;
-      align-items: center;
-      margin-bottom: 2rem;
+    #profile-edit-modal label[for="profile-edit-endereco"] ~ .input-field .input-field__icon {
+        background-image: url('../assets/icons/Endereço.svg');
     }
 
-    .restaurant-details .logo-small {
-      width: 2.5rem;
-      height: 2.5rem;
-      background: url('../assets/logos/LogoCliente.jpg') no-repeat center center;
-      background-size: cover;
-      border-radius: 50%;
-      margin-right: 0.75rem;
+    /* Profile password modal icons */
+    #profile-password-modal label[for="profile-current-password"] ~ .input-field .input-field__icon,
+    #profile-password-modal label[for="profile-new-password"] ~ .input-field .input-field__icon,
+    #profile-password-modal label[for="profile-confirm-new-password"] ~ .input-field .input-field__icon {
+        background-image: url('../assets/icons/Senha.svg');
     }
 
-    .restaurant-details .info {
-      flex-grow: 1;
+    /* Social buttons - Scoped to desktop modals */
+    #auth-modal .social-btn:first-of-type .social-btn__icon,
+    #login-modal .social-btn:first-of-type .social-btn__icon {
+        background-image: url('../assets/icons/Google.svg');
     }
 
-    .restaurant-details .name {
-      font-size: 1.25rem;
-      font-weight: bold;
-      color: #222222;
+    #auth-modal .social-btn:last-of-type .social-btn__icon,
+    #login-modal .social-btn:last-of-type .social-btn__icon {
+        background-image: url('../assets/icons/Apple.svg');
     }
+}
 
-    .restaurant-details .rating {
-      display: flex;
-      align-items: center;
-      font-size: 0.875rem;
-      color: #666666;
-    }
+.input-field__eye {
+    width: 1rem;
+    height: 1rem;
+    cursor: pointer;
+}
 
-    .restaurant-details .stars {
-      color: #FFD700;
-      margin-right: 0.25rem;
-    }
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
 
-    /* Navegação de Categorias (Tabs) */
-    .categories {
-      display: flex;
-      overflow-x: auto;
-      margin-bottom: 1.75rem;
-      padding-bottom: 0.5rem;
-      width: 100vw;
-      position: relative;
-      scrollbar-width: none; /* Firefox */
-      -ms-overflow-style: none; /* IE and Edge */
-    }
+.checkbox-group__input {
+    width: 1rem;
+    height: 1rem;
+}
 
-    .categories::-webkit-scrollbar {
-      display: none; /* Chrome, Safari, Opera */
-    }
+.checkbox-group__label {
+    font-size: 0.9em;
+    color: #666;
+    cursor: pointer;
+}
 
-    .categories a {
-      text-decoration: none;
-      color: #666666;
-      font-size: 1rem;
-      margin-right: 1rem;
-      margin-left: 1rem;
-      padding-bottom: 0.25rem;
-      padding-left: 1rem;
-      white-space: nowrap;
-      position: relative;
-    }
+.btn {
+    width: 100%;
+    height: 3rem;
+    background: linear-gradient(180deg, #FE2E2E 48%, #D40403 100%);
+    border: none;
+    border-radius: 0.9375rem;
+    color: white;
+    font-weight: bold;
+    font-size: 1.125rem;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.5);
+    transition: transform 0.2s;
+}
 
-    .categories a.active {
-      color: #FE2E2E;
-    }
+.btn:hover {
+    transform: translateY(-1px);
+}
 
-    .categories a.active::after {
-      content: '';
-      position: absolute;
-      bottom: -0.5rem;
-      width: 100%;
-      height: 2px;
-      background: #FE2E2E;
-      z-index: 2;
-      left: 0.5rem;
-    }
+.form-card__separator {
+    text-align: center;
+    margin: 1rem 0;
+    color: #666;
+    font-weight: bold;
+    position: relative;
+}
 
-    .categories-line {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 260vw;
-      height: 2px;
-      background: #ccc;
-      z-index: 1;
-    }
+.form-card__separator::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #ddd;
+    z-index: 1;
+}
 
-    /* Lista de Produtos */
-    .products {
-      min-width: 350px;
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 4rem;
-      gap: 1.5rem;
-    }
+.form-card__separator::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    padding: 0 0.5rem;
+    z-index: 2;
+}
 
-    .product-card {
-      height: 7rem;
-      display: flex;
-      background: white;
-      border-radius: 0.9375rem;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      padding: 0.9375rem;
-      position: relative;
-    }
+.social-btn {
+    width: 100%;
+    height: 3rem;
+    border: 2px solid #ddd;
+    border-radius: 0.5rem;
+    background: white;
+    color: #666;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: border-color 0.2s;
+}
 
-    .product-card .image {
-      width: 6.75rem;
-      height: 5rem;
-      align-self: center;
-      border-radius: 0.5rem;
-      margin-right: 0.8rem;
-      margin-left: 0.1rem;
-      background-size: cover;
-      background-position: center;
-    }
+.social-btn:hover {
+    border-color: #FE2E2E;
+}
 
-    .product-card .details {
-      flex-grow: 1;
-    }
+.social-btn__icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    background: url('../assets/icons/Google.svg') no-repeat center center;
+    background-size: contain;
+}
 
-    .product-card .title {
-      font-size: 1rem;
-      font-weight: bold;
-      color: #222222;
-      margin-bottom: 0.25rem;
-    }
+.social-btn:nth-child(2) .social-btn__icon {
+    background: url('../assets/icons/Apple.svg') no-repeat center center;
+    background-size: contain;
+}
 
-    .product-card .subtitle {
-      font-size: 0.875rem;
-      color: #666666;
-      margin-bottom: 0.5rem;
-    }
+/* Desktop Modal Icons */
+#login-modal .input-field--email .input-field__icon {
+    background-image: url('../assets/icons/Email.svg');
+}
 
-    .product-card .rating {
-      display: flex;
-      align-items: center;
-      font-size: 0.875rem;
-      color: #666666;
-    }
+#login-modal .input-field--password .input-field__icon {
+    background-image: url('../assets/icons/Senha.svg');
+}
 
-    .product-card .stars {
-      color: #FFD700;
-      margin-right: 0.25rem;
-    }
+#auth-modal .input-field--user .input-field__icon {
+    background-image: url('../assets/icons/User.svg');
+}
 
-      .product-card .add-btn {
-        position: absolute;
-        bottom: 0.9375rem;
-        right: 0.9375rem;
-        width: 1.5rem;
-        height: 1.5rem;
-        background: #D9D9D9;
-        border-radius: 50%;
-        color: #525252;
-        font-size: 1.8rem;
-        font-weight: lighter;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-      }
+#auth-modal .input-field--email .input-field__icon {
+    background-image: url('../assets/icons/Email.svg');
+}
 
-    .product-card .add-btn-tablet {
-      position: absolute;
-      bottom: 0.9375rem;
-      left: 0.9375rem;
-      width: 86%;
-      height: 3rem;
-      background: linear-gradient(180deg, #FE2E2E 48%, #D40403 100%);
-      border-radius: 0.9375rem;
-      border: none;
-      color: white;
-      font-weight: bold;
-      font-size: 1.125rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      box-shadow: 0 4px 6px rgba(255, 255, 255, 0.5);
-    }
+#auth-modal .input-field--password .input-field__icon {
+    background-image: url('../assets/icons/Senha.svg');
+}
 
-    .product-card .discount-badge {
-      position: absolute;
-      bottom: 1.75rem;
-      right: 5rem;
-      background: #F6F1FF;
-      color: #8C6CDA;
-      padding: 0.25rem 0.6rem;
-      border-radius: 0.5rem;
-      font-size: 0.75rem;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-    }
+#profile-edit-modal .input-field .input-field__icon {
+    background-image: url('../assets/icons/User.svg');
+}
 
-    .product-card .discount-badge .percent-icon {
-      width: 0.75rem;
-      height: 0.75rem;
-    }
+#profile-password-modal .input-field .input-field__icon {
+    background-image: url('../assets/icons/Senha.svg');
+}
 
-    /* Botão Flutuante Carrinho */
-    .cart-float {
-      position: fixed;
-      bottom: 90px;
-      right: 1rem;
-      width: 4rem;
-      height: 4em;
-      margin-bottom: 1.5rem;
-      background: #FE2E2E;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      z-index: 20;
-    }
+#auth-modal .social-btn:first-of-type .social-btn__icon,
+#login-modal .social-btn:first-of-type .social-btn__icon {
+    background-image: url('../assets/icons/Google.svg');
+}
 
-    .cart-float .cart-icon {
-      width: 1.5rem;
-      height: 1.5rem;
-    }
+#auth-modal .social-btn:last-of-type .social-btn__icon,
+#login-modal .social-btn:last-of-type .social-btn__icon {
+    background-image: url('../assets/icons/Apple.svg');
+}
 
-    .footer-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100vw;
-      height: 100px;
-      background: white;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
-      z-index: 10;
-    }
+.form-card__bottom-text {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.9em;
+    color: #666;
+}
 
-    .footer-nav .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-decoration: none;
-      color: #b0b0b0;
-      font-size: 0.625rem;
-    }
+.form-card__bottom-text a {
+    color: #FE2E2E;
+    text-decoration: none;
+}
 
-    .footer-nav .nav-item.active {
-      color: #000000;
-    }
+/* ------------------------------------------- */
+/* 4. CLASSE DE ABERTURA (Adicionada via JS) */
+/* ------------------------------------------- */
+/* Essa classe será aplicada ao BODY. Ela torna o modal visível. */
+.modal-open-auth #auth-modal {
+    display: flex; /* Exibe o overlay e centraliza o conteúdo */
+}
 
-    .footer-nav .nav-icon {
-      width: 1.25rem;
-      height: 1.25rem;
-      border-radius: 0.25rem;
-      margin-bottom: 1rem;
-    }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            min-height: 100vh;
+            padding-bottom: 80px;
+            /* Espaço para footer fixo */
+        }
+
+        /* Header Superior Vermelho */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 10rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+            z-index: 10;
+        }
+
+        .header-bg {
+            position: absolute;
+            top: -150px;
+            left: 50%;
+            width: 150%;
+            height: 300px;
+            transform: translateX(-50%);
+            background: linear-gradient(180deg, #FE2E2E 48%, #D40403 100%);
+            border-radius: 50%;
+        }
+
+        .header .back-icon {
+            margin-left: 50px;
+            width: 1.5rem;
+            height: 1.5rem;
+            position: relative;
+            z-index: 11;
+        }
+
+        .header .logo {
+            width: 4.75rem;
+            position: relative;
+            z-index: 11;
+        }
+
+        .header .profile-icon {
+            margin-right: 50px;
+            width: 1.5rem;
+            height: 1.5rem;
+            position: relative;
+            z-index: 16;
+            cursor: pointer;
+        }
+
+        /* Conteúdo Principal */
+        .main-content {
+            background-color: #f9f9f900;
+            width: 90vw;
+            max-width: 400px;
+            min-width: 320px;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 auto;
+            margin-top: 2rem;
+        }
+
+        /* Barra de Pesquisa */
+        .search-bar {
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 600px;
+            width: 70vw;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 4rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0.75rem;
+            z-index: 15;
+        }
+
+        .search-bar .search-icon {
+            width: 1rem;
+            height: 1rem;
+            border-radius: 0.25rem;
+            margin-left: 0.5rem;
+        }
+
+        .search-bar input {
+            border: none;
+            outline: none;
+            flex-grow: 1;
+            font-size: 0.8rem;
+            color: #9999b0;
+            margin-left: 0.5rem;
+
+        }
+
+        .search-bar .filter-btn {
+            background: none;
+            border: none;
+            padding: 0;
+            margin-right: 0.5rem;
+            cursor: pointer;
+        }
+
+        .search-bar .filter-icon {
+            width: 1rem;
+            height: 1rem;
+        }
 
 
-    /* Media Queries para Responsividade */
-    @media (max-width: 767px) {
-      .product-card .add-btn-tablet {
+
+
+
+        /* Detalhes do Restaurante */
+        .restaurant-details {
+            position: relative;
+            margin-right: 8rem;
+            display: flex;
+            flex: none;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .restaurant-details .logo-small {
+            width: 2.5rem;
+            height: 2.5rem;
+            background: url('../assets/logos/LogoCliente.jpg') no-repeat center center;
+            background-size: cover;
+            border-radius: 50%;
+            margin-right: 0.75rem;
+        }
+
+        .restaurant-details .info {
+            flex-grow: 1;
+        }
+
+        .restaurant-details .name {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #222222;
+        }
+
+        .restaurant-details .rating {
+            display: flex;
+            align-items: center;
+            font-size: 0.875rem;
+            color: #666666;
+        }
+
+        .restaurant-details .stars {
+            color: #FFD700;
+            margin-right: 0.25rem;
+        }
+
+        /* Navegação de Categorias (Tabs) */
+        .categories {
+            display: flex;
+            overflow-x: auto;
+            margin-bottom: 1.75rem;
+            padding-bottom: 0.5rem;
+            width: 100vw;
+            position: relative;
+            scrollbar-width: none;
+            /* Firefox */
+            -ms-overflow-style: none;
+            /* IE and Edge */
+        }
+
+        .categories::-webkit-scrollbar {
+            display: none;
+            /* Chrome, Safari, Opera */
+        }
+
+        .categories a {
+            text-decoration: none;
+            color: #666666;
+            font-size: 1rem;
+            margin-right: 1rem;
+            margin-left: 1rem;
+            padding-bottom: 0.25rem;
+            padding-left: 1rem;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .categories a.active {
+            color: #FE2E2E;
+        }
+
+        .categories a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            width: 100%;
+            height: 2px;
+            background: #FE2E2E;
+            z-index: 2;
+            left: 0.5rem;
+        }
+
+        .categories-line {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 260vw;
+            height: 2px;
+            background: #ccc;
+            z-index: 1;
+        }
+
+        /* Lista de Produtos */
+        .products {
+            min-width: 380px;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 6.5rem;
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            height: 7rem;
+            display: flex;
+            background: white;
+            border-radius: 0.9375rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 0.9375rem;
+            position: relative;
+        }
+
+        .product-card .image {
+            width: 6.75rem;
+            height: 5rem;
+            align-self: center;
+            border-radius: 0.5rem;
+            margin-right: 0.8rem;
+            margin-left: 0.1rem;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .product-card .details {
+            flex-grow: 1;
+        }
+
+        .product-card .title {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #222222;
+            margin-bottom: 0.25rem;
+        }
+
+        .product-card .subtitle {
+            font-size: 0.875rem;
+            color: #666666;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-card .rating {
+            display: flex;
+            align-items: center;
+            font-size: 0.875rem;
+            color: #666666;
+        }
+
+        .product-card .stars {
+            color: #FFD700;
+            margin-right: 0.25rem;
+        }
+
+        .product-card .add-btn {
+            position: absolute;
+            bottom: 0.9375rem;
+            right: 0.9375rem;
+            width: 1.5rem;
+            height: 1.5rem;
+            background: #D9D9D9;
+            border-radius: 50%;
+            color: #525252;
+            font-size: 1.8rem;
+            font-weight: lighter;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .product-card .add-btn-tablet {
+            position: absolute;
+            bottom: 0.9375rem;
+            left: 0.9375rem;
+            width: 86%;
+            height: 3rem;
+            background: linear-gradient(180deg, #FE2E2E 48%, #D40403 100%);
+            border-radius: 0.9375rem;
+            border: none;
+            color: white;
+            font-weight: bold;
+            font-size: 1.125rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(255, 255, 255, 0.5);
+        }
+
+        .product-card .discount-badge {
+            position: absolute;
+            bottom: 0.75rem;
+            left: 8.5rem;
+            background: #F6F1FF;
+            color: #8C6CDA;
+            padding: 0.25rem 0.6rem;
+            border-radius: 0.5rem;
+            font-size: 0.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .product-card .discount-badge .percent-icon {
+            width: 0.75rem;
+            height: 0.75rem;
+        }
+
+        /* Botão Flutuante Carrinho */
+        .cart-float {
+            position: fixed;
+            bottom: 90px;
+            right: 1rem;
+            width: 4rem;
+            height: 4em;
+            margin-bottom: 1.5rem;
+            background: #FE2E2E;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 20;
+            cursor: pointer;
+        }
+
+        .cart-float .cart-icon {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+
+        .cart-float .cart-counter {
+            position: absolute;
+            top: -0.5rem;
+            right: -0.5rem;
+            background: #FFD700;
+            color: #000;
+            border-radius: 50%;
+            width: 1.5rem;
+            height: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: none;
+        }
+
+        /* Footer Navegação */
+        .footer-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100vw;
+            height: 100px;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        .footer-nav .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #b0b0b0;
+            font-size: 0.625rem;
+        }
+
+        .footer-nav .nav-item.active {
+            color: #000000;
+        }
+
+        .footer-nav .nav-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: 0.25rem;
+            margin-bottom: 1rem;
+        }
+
+
+        /* Media Queries para Responsividade */
+        @media (max-width: 767px) {
+            .product-card .add-btn-tablet {
+                display: none;
+            }
+
+            .main-content {
+                padding-top: 12rem;
+            }
+
+            .product-grid {
+                display: flex;
+                flex-direction: column;
+                gap: 1.5rem;
+                margin-bottom: 6.5rem;
+            }
+        }
+
+
+
+        @media (max-width: 480px) {
+            .header {
+                height: 8rem;
+            }
+
+            .header .logo {
+                font-size: 1.25rem;
+            }
+
+            .search-bar {
+                top: 7rem;
+            }
+
+            .main-content {
+                padding-top: 10rem;
+            }
+
+            .product-grid {
+                min-width: 380px;
+            }
+        }
+
+        @media (min-width: 481px) and (max-width: 768px) {
+            .header {
+                height: 9rem;
+            }
+
+            .header .logo {
+                font-size: 1.375rem;
+            }
+
+            .search-bar {
+                top: 9rem;
+            }
+
+            .main-content {
+                padding-top: 10rem;
+            }
+
+            .product-card {
+                padding: 1rem;
+            }
+        }
+
+
+
+        @media (min-width: 768px) and (max-width: 1023px) {
+
+            /* Header Tablet - Similar to Mobile */
+            .header {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 10rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0 1rem;
+                z-index: 10;
+            }
+
+            .header-bg {
+                position: absolute;
+                top: -150px;
+                left: 50%;
+                width: 150%;
+                height: 300px;
+                transform: translateX(-50%);
+                background: linear-gradient(180deg, #FE2E2E 48%, #D40403 100%);
+                border-radius: 50%;
+            }
+
+            .header .back-icon {
+                margin-left: 120px;
+                width: 1.5rem;
+                height: 1.5rem;
+                position: relative;
+                z-index: 11;
+            }
+
+            .header .logo {
+                width: 4.75rem;
+                position: relative;
+                z-index: 11;
+            }
+
+            .header .profile-icon {
+                margin-right: 120px;
+                width: 1.5rem;
+                height: 1.5rem;
+                position: relative;
+                z-index: 16;
+                cursor: pointer;
+            }
+
+            /* Barra de Pesquisa Tablet */
+            .search-bar {
+                position: fixed;
+                left: 50%;
+                transform: translateX(-50%);
+                top: 8rem;
+                width: 65vw;
+                max-width: 600px;
+                height: 3rem;
+                background: white;
+                border-radius: 2rem;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                padding: 0.5rem 1rem;
+                z-index: 15;
+                display: flex;
+                align-items: center;
+            }
+
+            .search-bar .search-icon {
+                width: 1rem;
+                height: 1rem;
+                margin-left: 0;
+            }
+
+            .search-bar input {
+                font-size: 1rem;
+                margin-left: 0.5rem;
+                flex-grow: 1;
+            }
+
+            .search-bar .filter-btn {
+                margin-right: 0;
+            }
+
+            .search-bar .filter-icon {
+                width: 1rem;
+                height: 1rem;
+            }
+
+            /* Conteúdo Principal Tablet */
+            .main-content {
+                max-width: 800px;
+                top: 10rem;
+                padding-top: 8rem;
+            }
+
+            .restaurant-details {
+                position: relative;
+                margin-bottom: 2rem;
+                margin-top: 2rem;
+                margin-left: 8rem;
+                justify-content: center;
+                ;
+            }
+
+            .restaurant-details .name {
+                font-size: 1.25rem;
+            }
+
+            .restaurant-details .rating {
+                font-size: 0.9rem;
+            }
+
+            /* Categorias Tablet */
+            .categories {
+                width: 100%;
+                justify-content: center;
+                margin-bottom: 2rem;
+                padding-bottom: 0.5rem;
+            }
+
+            .categories a {
+                font-size: 1rem;
+                margin: 0 0.75rem;
+                padding-bottom: 0.5rem;
+            }
+
+            .categories-line {
+                width: 100%;
+                height: 1px;
+                background: #ccc;
+            }
+
+            /* Produtos Tablet */
+            .product-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 250px);
+                gap: 1.5rem;
+                margin-bottom: 4rem;
+            }
+
+            .product-card {
+                height: 18rem;
+                background: white;
+                border-radius: 0.9375rem;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                position: relative;
+                transition: transform 0.2s;
+            }
+
+            .product-card:hover {
+                transform: translateY(-5px);
+            }
+
+            .product-card .image {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 55%;
+                border-radius: 0.9375rem 0.9375rem 0 0;
+                background-size: cover;
+                background-position: center;
+                z-index: 1;
+            }
+
+            .product-card .details {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                padding: 2rem;
+                background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.7));
+                border-radius: 0 0 0.9375rem 0.9375rem;
+            }
+
+            .product-card .title {
+                font-size: 1rem;
+                margin-bottom: 0.25rem;
+                color: #222222;
+            }
+
+            .product-card .subtitle {
+                font-size: 0.875rem;
+                margin-bottom: 0.5rem;
+                color: #666666;
+            }
+
+            .product-card .rating {
+                font-size: 0.875rem;
+                color: #666666;
+            }
+
+            .product-card .add-btn-tablet {
+                position: absolute;
+                bottom: 0.5rem;
+                right: 0.5rem;
+                width: auto;
+                height: 2.5rem;
+                padding: 0 1rem;
+                font-size: 1rem;
+                background: linear-gradient(180deg, #FE2E2E 48%, #D40403 100%);
+                border-radius: 0.9375rem;
+                border: none;
+                color: white;
+                font-weight: bold;
+                cursor: pointer;
+                box-shadow: 0 4px 6px rgba(255, 255, 255, 0.5);
+            }
+
+            .product-card .add-btn {
+                display: none;
+            }
+
+            .product-card .discount-badge {
+                position: absolute;
+                bottom: 5rem;
+                left: 6.5rem;
+                background: #F6F1FF;
+                color: #8C6CDA;
+                padding: 0.25rem 0.6rem;
+                border-radius: 0.5rem;
+                font-size: 0.75rem;
+                font-weight: bold;
+                z-index: 1;
+            }
+
+            /* Footer Tablet */
+
+
+            /* Cart Float Tablet */
+            .cart-float {
+                bottom: 6rem;
+                right: 2rem;
+                width: 4rem;
+                height: 4rem;
+            }
+
+            .cart-float .cart-icon {
+                width: 1.6rem;
+                height: 2rem;
+            }
+
+            .header-options,
+            .promotion,
+            .free-delivery {
+                display: none;
+            }
+        }
+
+        @media (max-width: 1024px) {
+
+            .header-options,
+            .promotion,
+            .free-delivery {
+                display: none;
+            }
+        }
+
+        @media (min-width: 1024px) {
+
+            /* Header Desktop */
+            body {
+                background-color: #fff;
+            }
+
+            .profile-icon--mobile {
         display: none;
-      }
     }
 
-    @media (min-width: 768px) {
-      .product-card .add-btn {
-        width: 200px;
-        display: none;
-      }
 
-      .product-card .discount-badge {
-      display: none;
-    }
-    }
+            .header {
+                height: 20rem;
+                background: #f5f5f5;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                position: fixed;
+                top: 0;
+                width: 80vw;
+                min-width: 1200px;
+                left: 50%;
+                transform: translateX(-50%);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0 2rem;
+                z-index: 10;
+            }
 
-    @media (max-width: 480px) {
-      .header {
-        height: 8rem;
-      }
-
-      .header .logo {
-        font-size: 1.25rem;
-      }
-
-      .search-bar {
-        top: 7rem;
-      }
-
-      .main-content {
-        padding-top: 10rem;
-      }
+            .profile-icon--desktop {
+        /* Garante que o ícone desktop seja visível e tenha o mesmo tamanho do mobile, se houver */
+        display: block;
+        /* Se precisar de um tamanho específico no desktop: */
+        width: 24px;
+        height: 24px;
     }
 
-    @media (min-width: 481px) and (max-width: 768px) {
-      .header {
-        height: 9rem;
-      }
+            .header-bg {
+                display: none;
+            }
 
-      .header .logo {
-        font-size: 1.375rem;
-      }
+            .header .back-icon {
+                display: none;
+            }
 
-      .search-bar {
-        top: 9rem;
-      }
+            .header .logo {
+                display: none;
+            }
 
-      .main-content {
-        padding-top: 10rem;
-      }
+            .header .logo-desktop {
+                display: block;
+                width: 5rem;
+                position: static;
+                margin-left: 6rem;
+                margin-bottom: 14rem;
+            }
 
-      .product-card {
-        padding: 1rem;
-      }
-    }
+            .header-options {
+                white-space: nowrap;
+                display: flex;
+                align-items: center;
+                gap: 2rem;
+                margin-left: 1rem;
+                margin-bottom: 14rem;
+                justify-content: space-between;
 
-    @media (min-width: 768px) {
+            }
 
-      .product-card .add-btn {
-        width: 200px;
-        display: none;
-      }
+            .promotion,
+            .free-delivery {
+                font-size: 0.9rem;
+                color: #666666;
+                font-weight: bold;
 
-      .header .back-icon {
-      margin-left: 100px;
-    }
+            }
 
-    .header .profile-icon {
-      margin-right: 100px;
-    }
+            .header .search-bar {
+                position:static;
+                width: 30vw;
+                max-width: 400px;
+                height: 2.5rem;
+                background: #fff;
+                border-radius: 1.25rem;
+                padding: 0.5rem 1rem;
+                align-items: center;
+                margin-bottom: 14rem;
+                margin-left: 20rem;
 
-      .main-content {
-        max-width: 500px;
-        margin: 0 auto;
-      }
+            }
 
-      .header {
-        height: 10rem;
-      }
+            .header .search-bar .search-icon {
+                width: 1rem;
+                height: 1rem;
+                margin-left: 0;
+            }
 
-      .search-bar {
-        top: 7rem;
-      }
+            .header .search-bar input {
+                font-size: 0.9rem;
+                margin-left: 0.5rem;
+                flex-grow: 1;
+                background: transparent;
+                border: none;
+                outline: none;
+            }
 
-      .restaurant-details {
-      position: relative;
-      margin-right: 0rem;
-      display: flex;
-      flex: none;
-      align-items: center;
-      margin-bottom: 2rem;
-    }
+            .header .search-bar .filter-btn {
+                margin-right: 0;
+            }
 
-      .categories-line {
-      width: 104vw;
-    }
+            .header .search-bar .filter-icon {
+                width: 1rem;
+                height: 1rem;
+            }
 
-      .main-content {
-        padding-top: 12rem;
-      }
+            .header .profile-icon {
+                width: 1.5rem;
+                height: 1.5rem;
+                margin-right: 8rem;
+                margin-bottom: 14rem;
 
-      .products {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.5rem;
-      }
+            }
 
-      .product-card {
-      height: 18rem;
-      display: flex;
-      flex-direction: column;
-      background: white;
-      border-radius: 0.9375rem;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      padding: 0.9375rem;
-      position: relative;
-    }
+            /* Animação de fade-out no scroll para elementos do header desktop */
+            .header.fade-out .logo-desktop,
+            .header.fade-out .header-options,
+            .header.fade-out .search-bar,
+            .header.fade-out .profile-icon {
+                opacity: 0;
+                transform: translateY(-20px);
+                transition: opacity 0.3s ease, transform 0.3s ease;
+            }
 
-      .product-card .image {
-        margin-top: -12px;
-        width: 114%;
-        height: 50%;
-        border-radius: 0.9375rem 0.9375rem 0 0;
-        background-size: cover;
-        background-position: center;
-        margin-bottom: 0.5rem;
-        margin-right: 0rem;
-      }
+            .header .logo-desktop,
+            .header .header-options,
+            .header .search-bar,
+            .header .profile-icon {
+                transition: opacity 0.3s ease, transform 0.3s ease;
+            }
 
-      .product-card .details {
-        flex-grow: 1;
-        margin-bottom: 0.5rem;
-      }
+            /* Conteúdo Principal Desktop */
+            .main-content {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding-top: 8rem;
+            }
 
-      .product-card .add-btn-tablet {
-        width: 100%;
-        position: static;
-        margin-top: 0.5rem;
-      }
-    }
+            .restaurant-details {
+                margin-bottom: 2rem;
+                justify-content: center;
+                z-index: 10;
+                padding-left: 8rem;
+            }
 
-@media (min-width: 820px) {
-      .header .back-icon {
-      margin-left: 112px;
-    }
+            .restaurant-details .name {
+                font-size: 1.5rem;
+            }
 
-    .header .profile-icon {
-      margin-right: 112px;
-    }
-  }
+            .restaurant-details .rating {
+                font-size: 1rem;
+            }
 
-  </style>
+            /* NOVO: Container dos Cards de Destaque (Highlights) */
+    .highlights-container {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    margin-top: 3rem;
+    z-index: 11;
+}
+
+.highlight-card {
+    width: 330px;
+    height: 180px;
+    border-radius: 1.2rem;
+    position: relative;
+
+    color: white;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Alinha o conteúdo informativo ao topo */
+    text-decoration: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.highlight-card:hover {
+    transform: translateY(-5px);
+}
+
+.highlight-card .highlight-info {
+    position: relative;
+    z-index: 2;
+    padding-bottom: 0.5rem;
+}
+
+.highlight-card .title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+    padding-left: 3rem;
+    padding-bottom: 2rem;
+
+}
+
+.highlight-card .subtitle {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    padding-left: 2rem;
+    padding-bottom: 2px;
+}
+
+.highlight-card .price {
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding-left: 2rem;
+
+}
+
+/* ESTILO DA IMAGEM DO PRODUTO */
+.highlight-card .highlight-image {
+    position: absolute;
+    object-fit: contain;
+    z-index: 1; /* Deve ser menor que o texto (info) */
+
+    /* VALORES PADRÃO - Ajuste fino nas classes específicas */
+    right: 5px;
+    bottom: -25px; /* Desloca a imagem para fora e para baixo */
+    width: 150px;
+    height: auto;
+
+    /* Sombra que simula a flutuação do produto, como na Imagem 2 */
+    filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.3));
+}
+
+.highlight-card--red .highlight-image--burger {
+    bottom: -35px !important;
+}
+
+.highlight-card--purple .highlight-image--fries {
+    /* IMPORTANTE: Garanta que position: absolute está ativo, se não estiver já no .highlight-image */
+    position: absolute;
+
+    /* AJUSTES FINAIS: Mantenha os valores que você quer */
+    width: 140px !important; /* Use !important apenas para depuração, se necessário */
+    bottom: -45px !important;
+    /* Garante que o cone fique com a sombra do efeito */
+    filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.3));
+}
+
+/* Cores dos Cards */
+.highlight-card--red {
+    background: linear-gradient(180deg, #FE2E2E 48%, #D40403 100%);
+}
+.highlight-card--orange {
+    background: linear-gradient(120deg, #FAA606 32%, #ffcb47 100%);;
+}
+.highlight-card--purple {
+    background: linear-gradient(120deg, #7B248D 52%, #A144B6 100%);
+}
+
+/* Ajustes Específicos para Imagens (Ex: Hambúrguer é maior, Suco é mais fino) */
+.highlight-image--burger {
+    width: 180px; /* Mais largo */
+    bottom: -30px; /* Desloca mais para baixo */
+    right: 0px;
+}
+.highlight-image--juice {
+    width: 100px;
+    bottom: -10px;
+    right: 20px;
+}
+.highlight-image--fries {
+    width: 130px;
+    bottom: -20px;
+    right: 10px;
+}
+
+            /* Categorias Desktop */
+            .categories {
+                display: none;
+            }
+
+            /* Produtos Desktop */
+            .product-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 280px);
+                gap: 3rem;
+                margin-bottom: 4rem;
+                z-index: 10;
+                margin-top: 2rem;
+            }
+
+            .product-card {
+                height: 20rem;
+                background: white;
+                border-radius: 0.9375rem;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                position: relative;
+                transition: transform 0.2s;
+            }
+
+            .product-card:hover {
+                transform: translateY(-5px);
+            }
+
+            .product-card .image {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 55%;
+                border-radius: 0.9375rem 0.9375rem 0 0;
+                background-size: cover;
+                background-position: center;
+                z-index: 1;
+            }
+
+            .product-card .details {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                padding: 1rem;
+                background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.7));
+                border-radius: 0 0 0.9375rem 0.9375rem;
+            }
+
+            .product-card .title {
+                font-size: 1.1rem;
+                margin-bottom: 0.25rem;
+                color: #222222;
+            }
+
+            .product-card .subtitle {
+                font-size: 0.9rem;
+                margin-bottom: 3.5rem;
+                color: #666666;
+            }
+
+            .product-card .rating {
+                font-size: 0.9rem;
+                color: #666666;
+            }
+
+            .product-card .add-btn-tablet {
+                position: absolute;
+                bottom: 0.5rem;
+                right: 0.5rem;
+                width: auto;
+                height: 2.5rem;
+                padding: 0 1rem;
+                font-size: 1rem;
+                background: linear-gradient(180deg, #FE2E2E 48%, #D40403 100%);
+                border-radius: 0.9375rem;
+                border: none;
+                color: white;
+                font-weight: bold;
+                cursor: pointer;
+                box-shadow: 0 4px 6px rgba(255, 255, 255, 0.5);
+            }
+
+            .product-card .add-btn {
+                display: none;
+            }
+
+            .product-card .discount-badge {
+                position: absolute;
+                bottom: 7rem;
+                left: 6rem;
+                background: #F6F1FF;
+                color: #8C6CDA;
+                padding: 0.25rem 0.6rem;
+                border-radius: 0.5rem;
+                font-size: 0.75rem;
+                font-weight: bold;
+                z-index: 1;
+            }
+
+            /* Footer Desktop */
+            .footer-nav {
+                display: none;
+            }
+
+            /* Cart Float Desktop */
+            .cart-float {
+                bottom: 2rem;
+                right: 2rem;
+                width: 3rem;
+                height: 3rem;
+            }
+
+            .cart-float .cart-icon {
+                width: 1.2rem;
+                height: 1.2rem;
+            }
+
+            /* Modal do Carrinho Desktop */
+            .cart-modal-overlay {
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 3000;
+                justify-content: flex-end;
+                align-items: stretch;
+            }
+
+            .cart-modal-content {
+                background-color: white;
+                width: 400px;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+                box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
+                animation: slideInFromRight 0.3s ease;
+            }
+
+            @keyframes slideInFromRight {
+                from { transform: translateX(100%); }
+                to { transform: translateX(0); }
+            }
+
+            .cart-modal-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1.5rem;
+                border-bottom: 1px solid #e0e0e0;
+                background: #f9f9f9;
+            }
+
+            .cart-modal-header h2 {
+                margin: 0;
+                font-size: 1.5rem;
+                font-weight: bold;
+                color: #222222;
+            }
+
+            .cart-modal-close {
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                color: #666666;
+                cursor: pointer;
+                padding: 0.5rem;
+            }
+
+            .cart-modal-body {
+                flex: 1;
+                overflow-y: auto;
+                padding: 1rem;
+            }
+
+            .cart-coupon-bar {
+                display: flex;
+                align-items: center;
+                background: white;
+                border-radius: 2rem;
+                padding: 0.75rem 1rem;
+                margin-bottom: 1rem;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            .cart-coupon-bar input {
+                border: none;
+                outline: none;
+                flex-grow: 1;
+                font-size: 0.9rem;
+                color: #666666;
+            }
+
+            .cart-apply-btn {
+                background: linear-gradient(180deg, #FE2E2E 48%, #D40403 100%);
+                color: white;
+                border: none;
+                border-radius: 1rem;
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+                font-weight: bold;
+                cursor: pointer;
+                margin-left: 0.5rem;
+            }
+
+            .cart-items {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .cart-item {
+                display: flex;
+                background: white;
+                border-radius: 0.9375rem;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                padding: 1rem;
+                position: relative;
+            }
+
+            .cart-item .left-side {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-right: 1rem;
+            }
+
+            .cart-item .image {
+                width: 4rem;
+                height: 3rem;
+                border-radius: 0.5rem;
+                background-size: cover;
+                background-position: center;
+                margin-bottom: 0.5rem;
+            }
+
+            .cart-item .quantity {
+                display: flex;
+                align-items: center;
+                font-size: 0.875rem;
+                color: #666666;
+            }
+
+            .cart-item .quantity .qty-btn {
+                width: 1.5rem;
+                height: 1.5rem;
+                background: #f0f0f0;
+                border-radius: 50%;
+                color: #525252;
+                font-size: 1rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                margin: 0 0.25rem;
+                border: none;
+            }
+
+            .cart-item .details {
+                flex-grow: 1;
+            }
+
+            .cart-item .title {
+                font-size: 1rem;
+                font-weight: bold;
+                color: #222222;
+                margin-bottom: 0.25rem;
+            }
+
+            .cart-item .price {
+                font-size: 1rem;
+                font-weight: bold;
+                color: #222222;
+                margin-bottom: 0.125rem;
+            }
+
+            .cart-item .delivery-time {
+                font-size: 0.875rem;
+                color: #666666;
+            }
+
+            .delete-icon {
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                width: 1.5rem;
+                height: 1.5rem;
+                background: #f0f0f0;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+            }
+
+            .delete-icon img {
+                width: 0.75rem;
+            }
+
+            .cart-order-summary {
+                background: white;
+                border-radius: 0.9375rem;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .cart-order-summary h3 {
+                font-size: 1.25rem;
+                font-weight: lighter;
+                color: #222222;
+                margin: 0 0 1rem 0;
+            }
+
+            .cart-summary-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 0.5rem;
+                font-size: 1rem;
+                color: #666666;
+            }
+
+            .cart-summary-item span:first-child {
+                text-align: left;
+            }
+
+            .cart-summary-item span:last-child {
+                text-align: right;
+                font-weight: bold;
+                color: #222222;
+            }
+
+            .cart-summary-divider {
+                border: none;
+                height: 1px;
+                background-color: #cccccc;
+                margin: 1rem 0;
+            }
+
+            .cart-summary-total {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                font-size: 1.125rem;
+                font-weight: lighter;
+                color: #222222;
+            }
+
+            .cart-summary-total span:first-child {
+                text-align: left;
+            }
+
+            .cart-summary-total span:last-child {
+                text-align: right;
+            }
+
+            .cart-delivery-address {
+                background: white;
+                border-radius: 0.9375rem;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                padding: 1rem;
+                margin-bottom: 1rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .cart-address-info {
+                display: flex;
+                align-items: center;
+                font-size: 1rem;
+                color: #222222;
+            }
+
+            .cart-loc-icon {
+                width: 1.25rem;
+                height: 1.25rem;
+                margin-right: 0.5rem;
+            }
+
+            .cart-change-btn {
+                background: linear-gradient(180deg, #9779e2 48%, #7f5fce 100%);
+                color: white;
+                border: none;
+                border-radius: 2rem;
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+                font-weight: bold;
+                cursor: pointer;
+            }
+
+            .cart-modal-footer {
+                padding: 1rem;
+                background: white;
+                border-top: 1px solid #e0e0e0;
+            }
+
+            .cart-finalize-btn {
+                width: 100%;
+                background: linear-gradient(180deg, #FE2E2E 48%, #D40403 100%);
+                color: white;
+                border: none;
+                border-radius: 1rem;
+                padding: 1rem;
+                font-size: 1rem;
+                font-weight: bold;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.5rem;
+            }
+
+            .cart-finalize-btn .cart-icon {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+
+            /* Estilos específicos para o modal de pagamento */
+            .payment-summary {
+                margin-bottom: 2rem;
+            }
+
+            .payment-summary h3 {
+                font-size: 1.25rem;
+                font-weight: lighter;
+                color: #222222;
+                margin: 0 0 1rem 0;
+            }
+
+            .payment-summary-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 0.5rem;
+                font-size: 1rem;
+                color: #666666;
+            }
+
+            .payment-summary-item span:first-child {
+                text-align: left;
+            }
+
+            .payment-summary-item span:last-child {
+                text-align: right;
+                font-weight: bold;
+                color: #222222;
+            }
+
+            .payment-summary-divider {
+                border: none;
+                height: 1px;
+                background-color: #cccccc;
+                margin: 1rem 0;
+            }
+
+            .payment-summary-total {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                font-size: 1.125rem;
+                font-weight: lighter;
+                color: #222222;
+            }
+
+            .payment-summary-total span:first-child {
+                text-align: left;
+            }
+
+            .payment-summary-total span:last-child {
+                text-align: right;
+            }
+
+            .payment-methods {
+                margin-bottom: 2rem;
+            }
+
+            .payment-methods h3 {
+                font-size: 1.25rem;
+                font-weight: lighter;
+                color: #222222;
+                margin: 0 0 1rem 0;
+            }
+
+            .payment-method-btn {
+                width: 100%;
+                background: white;
+                border: 2px solid #e0e0e0;
+                border-radius: 0.5rem;
+                padding: 1rem;
+                margin-bottom: 1rem;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: border-color 0.2s;
+            }
+
+            .payment-method-btn:hover {
+                border-color: #FE2E2E;
+            }
+
+            .payment-method-btn img {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .payment-separator {
+                text-align: center;
+                margin: 1rem 0;
+                color: #666666;
+                font-weight: bold;
+            }
+
+            .credit-card-form {
+                background: white;
+                border-radius: 0.5rem;
+                padding: 1rem;
+                border: 1px solid #e0e0e0;
+            }
+
+            .credit-card-form label {
+                display: block;
+                margin-top: 1rem;
+                margin-bottom: 0.5rem;
+                font-size: 0.9rem;
+                font-weight: bold;
+                color: #666666;
+            }
+
+            .credit-card-form input {
+                width: 100%;
+                padding: 0.75rem;
+                border: 1px solid #ddd;
+                border-radius: 0.5rem;
+                font-size: 1rem;
+                box-sizing: border-box;
+            }
+
+            .card-details-row {
+                display: flex;
+                gap: 1rem;
+                margin-top: 1rem;
+            }
+
+            .card-field {
+                flex: 1;
+            }
+
+            .card-field label {
+                margin-top: 0;
+            }
+
+            /* Estilos específicos para o modal de confirmação */
+            .confirmation-message {
+                font-size: 1rem;
+                color: #666666;
+                margin-bottom: 2rem;
+                text-align: center;
+            }
+
+            .order-details-card {
+                background: white;
+                border-radius: 0.9375rem;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                padding: 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .order-details-card h3 {
+                font-size: 1.25rem;
+                font-weight: lighter;
+                color: #222222;
+                margin: 0 0 1rem 0;
+            }
+
+            .confirmation-summary-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 0.5rem;
+                font-size: 1rem;
+                color: #666666;
+            }
+
+            .confirmation-summary-item span:first-child {
+                text-align: left;
+            }
+
+            .confirmation-summary-item span:last-child {
+                text-align: right;
+                font-weight: bold;
+                color: #222222;
+            }
+
+            .confirmation-divider {
+                border: none;
+                height: 1px;
+                background-color: #cccccc;
+                margin: 1rem 0;
+            }
+
+            .confirmation-total {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                font-size: 1.125rem;
+                font-weight: lighter;
+                color: #222222;
+            }
+
+            .confirmation-total span:first-child {
+                text-align: left;
+            }
+
+            .confirmation-total span:last-child {
+                text-align: right;
+            }
+
+            .confirmation-actions {
+                display: flex;
+                gap: 1rem;
+            }
+
+            .confirmation-btn {
+                flex: 1;
+                padding: 1rem;
+                border: none;
+                border-radius: 0.5rem;
+                font-size: 1rem;
+                font-weight: bold;
+                cursor: pointer;
+                text-align: center;
+            }
+
+            .confirmation-btn.secondary {
+                background: #f0f0f0;
+                color: #666666;
+            }
+
+            .confirmation-btn.primary {
+                background: linear-gradient(180deg, #FE2E2E 48%, #D40403 100%);
+                color: white;
+            }
+        }
+
+        @media (min-width: 1324px) {
+            .product-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 280px);
+                gap: 3rem;
+                margin-bottom: 4rem;
+            }
+        }
+
+/* Desktop Modal Styles for Profile - Consistent with Mobile */
+.modal-content--profile {
+    background-color: #f3f3f3;
+    margin: 10% auto;
+    padding: 0;
+    border-radius: 1rem;
+    width: 90%;
+    height: auto;
+    max-width: 400px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    animation: slideIn 0.3s ease;
+    position: relative;
+}
+
+@media (min-width: 1024px) {
+
+
+.form-card__separator::before,
+.form-card__separator::after {
+  display: none;
+}
+}
+
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.profile-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: black;
+}
+
+.close-modal-btn {
+    font-size: 1.5rem;
+    font-weight: bold;
+    top: 1.75rem;
+    right: 1rem;
+    color: #999;
+    cursor: pointer;
+    line-height: 1;
+    background: none;
+    border: none;
+    font-family: sans-serif;
+}
+
+.close-modal-btn:hover {
+    color: var(--color-text);
+}
+
+.profile-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 1rem;
+    background: red;
+    border-radius: 12px;
+    color: rgb(0, 0, 0);
+    margin-bottom: 1rem;
+}
+
+.user-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 8px var(--color-shadow);
+}
+
+.user-avatar img {
+    width: 1.5rem;
+    height: 1.5rem;
+    filter: brightness(0) invert(1);
+}
+
+.user-details h3 {
+    margin: 0 0 5px 0;
+    font-size: 1.2em;
+    color: white;
+    font-weight: 600;
+}
+
+.user-details p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9em;
+}
+
+.profile-section {
+    width: 100%;
+    background: white;
+    border-radius: 0.9375rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: lighter;
+    color: #222222;
+    margin: 0 0 1rem 0;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    color: #666666;
+}
+
+.info-item:last-child {
+    margin-bottom: 0;
+}
+
+.info-label {
+    text-align: left;
+    font-weight: normal;
+}
+
+.info-value {
+    text-align: right;
+    font-weight: bold;
+    color: #222222;
+    padding: 0;
+    background: none;
+    border: none;
+    box-shadow: none;
+}
+
+.profile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9375rem;
+}
+
+.profile-edit-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9375rem;
+}
+
+.profile-password-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9375rem;
+}
+
+.profile-btn {
+    width: 100%;
+    height: 4rem;
+    border: none;
+    border-radius: 0.9375rem;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-btn:not(.logout-btn) {
+    background: white;
+    color: var(--color-text);
+}
+
+.profile-btn:not(.logout-btn):hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.logout-btn {
+    background:red;
+    color: white;
+    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.5);
+}
+
+.logout-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.5);
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Estilos para o Modal de Acompanhamento do Pedido Desktop */
+.status-card {
+    width: 100%;
+    max-width: 350px;
+    background: white;
+    border-radius: 0.9375rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.status-icon {
+    width: 4rem;
+    height: 4rem;
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #e8f5e8;
+}
+
+.status-icon img {
+    width: 2rem;
+    height: 2rem;
+}
+
+.status-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #222222;
+    margin-bottom: 0.5rem;
+}
+
+.status-description {
+    font-size: 1rem;
+    color: #666666;
+    margin-bottom: 1rem;
+}
+
+.progress-section {
+    margin-bottom: 1rem;
+}
+
+.progress-label {
+    font-size: 0.875rem;
+    color: #666666;
+    margin-bottom: 0.25rem;
+    text-align: left;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(180deg, #FE2E2E 48%, #D40403 100%);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.order-details {
+    width: 100%;
+    max-width: 350px;
+    background: white;
+    border-radius: 0.9375rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.order-details h2 {
+    font-size: 1.25rem;
+    font-weight: lighter;
+    color: #222222;
+    margin-bottom: 1rem;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    color: #666666;
+}
+
+.summary-item span:first-child {
+    text-align: left;
+}
+
+.summary-item span:last-child {
+    text-align: right;
+    font-weight: bold;
+    color: #222222;
+}
+
+.summary-divider {
+    border: none;
+    height: 1px;
+    background-color: #cccccc;
+    margin: 1rem 0;
+}
+
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.125rem;
+    font-weight: lighter;
+    color: #222222;
+}
+
+.summary-total span:first-child {
+    text-align: left;
+}
+
+.summary-total span:last-child {
+    text-align: right;
+}
+
+.delivery-info {
+    width: 100%;
+    max-width: 350px;
+    background: white;
+    border-radius: 0.9375rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.delivery-info h2 {
+    font-size: 1.25rem;
+    font-weight: lighter;
+    color: #222222;
+    margin-bottom: 1rem;
+}
+
+.delivery-route {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.route-point {
+    text-align: center;
+    flex: 1;
+}
+
+.route-point .icon {
+    width: 2rem;
+    height: 2rem;
+    margin: 0 auto 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.route-point.origin .icon {
+    background: #e8f5e8;
+}
+
+.route-point.destination .icon {
+    background: #ffe8e8;
+}
+
+.route-point .icon img {
+    width: 1rem;
+    height: 1rem;
+}
+
+.route-point .label {
+    font-size: 0.875rem;
+    color: #666666;
+    font-weight: bold;
+}
+
+.route-line {
+    flex: 1;
+    height: 2px;
+    background: #e0e0e0;
+    margin: 0 0.5rem;
+    position: relative;
+}
+
+.route-line::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 0;
+    width: var(--route-progress, 50%);
+    height: 6px;
+    background: linear-gradient(180deg, #FE2E2E 48%, #D40403 100%);
+    border-radius: 3px;
+    transition: width 0.5s ease;
+}
+
+.delivery-person {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background: #f9f9f9;
+    border-radius: 0.5rem;
+}
+
+.delivery-person .avatar {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    font-weight: bold;
+    color: #666;
+}
+
+.delivery-person .info h3 {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #222222;
+    margin-bottom: 0.25rem;
+}
+
+.delivery-person .info p {
+    font-size: 0.875rem;
+    color: #666666;
+    margin: 0;
+}
+
+.btn {
+    width: 100%;
+    height: 4rem;
+    background: linear-gradient(180deg, #FE2E2E 48%, #D40403 100%);
+    border-radius: 0.9375rem;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 1.125rem;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.5);
+}
+
+.btn-secondary {
+    width: 100%;
+    height: 4rem;
+    margin-top: 1rem;
+    background: #f0f0f0;
+    border-radius: 0.9375rem;
+    border: none;
+    color: #666666;
+    font-weight: bold;
+    font-size: 1.125rem;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Modal de Pedidos Desktop */
+.pedidos-modal-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 3100;
+    justify-content: flex-end;
+    align-items: stretch;
+    display: none;
+}
+
+.pedidos-modal-content {
+    background-color: white;
+    width: 400px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
+    animation: slideInFromRight 0.3s ease;
+}
+
+.pedidos-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+    background: #f9f9f9;
+}
+
+.pedidos-modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #222222;
+}
+
+.pedidos-modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #666666;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.pedidos-modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+.pedidos-tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 95.5%;
+    overflow: hidden;
+}
+
+.pedidos-tab {
+    flex: 1;
+    padding: 1rem;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #666666;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.pedidos-tab.active {
+    color: #FE2E2E;
+    background: rgba(254, 46, 46, 0.1);
+}
+
+.pedidos-tab-contents {
+    width: 100%;
+}
+
+.pedidos-tab-content {
+    display: none;
+    width: 100%;
+}
+
+.pedidos-tab-content.active {
+    display: block;
+}
+
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+.order-card {
+    background: white;
+    border-radius: 0.9375rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.order-card:hover {
+    transform: translateY(-2px);
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.order-number {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #222222;
+}
+
+.order-date {
+    font-size: 0.875rem;
+    color: #666666;
+}
+
+.order-status {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.status-icon {
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.5rem;
+}
+
+.status-text {
+    font-size: 0.875rem;
+    font-weight: bold;
+}
+
+.status-text.preparando {
+    color: #856404;
+}
+
+.status-text.saiu-entrega {
+    color: #0c5460;
+}
+
+.status-text.entregue {
+    color: #155724;
+}
+
+.order-items {
+    margin-bottom: 0.5rem;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    color: #666666;
+    margin-bottom: 0.25rem;
+}
+
+.order-total {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #222222;
+    padding-top: 0.5rem;
+    border-top: 1px solid #e0e0e0;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #666666;
+    width: 100%;
+}
+
+.empty-state .empty-icon {
+    width: 4rem;
+    height: 4rem;
+    margin: 0 auto 1rem;
+    opacity: 0.5;
+}
+
+.empty-state h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.btn-primary {
+    background: linear-gradient(180deg, #FE2E2E 48%, #D40403 100%);
+    color: white;
+    border: none;
+    border-radius: 0.9375rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: inline-block;
+    text-decoration: none;
+    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.5);
+}
+    </style>
+    <style>
+        /* Modal de Filtros */
+        .filter-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .filter-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .filter-modal-content {
+            background: white;
+            width: 100%;
+            max-width: 400px;
+            height: 80vh;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-modal-body {
+            overflow-y: auto;
+            flex: 1;
+            padding-bottom: 1rem;
+        }
+
+        .filter-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-modal-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #222222;
+        }
+
+        .filter-modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #666666;
+            cursor: pointer;
+        }
+
+        .filter-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-section-title {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #222222;
+            margin-bottom: 0.75rem;
+        }
+
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-option input[type="radio"],
+        .filter-option input[type="checkbox"] {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        .filter-option label {
+            font-size: 0.875rem;
+            color: #666666;
+            cursor: pointer;
+        }
+
+        .filter-modal-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            border-radius: 0 0 1rem 1rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .filter-btn-clear,
+        .filter-btn-apply {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .filter-btn-clear {
+            background: #f0f0f0;
+            color: #666666;
+        }
+
+        .filter-btn-apply {
+            background: #FE2E2E;
+            color: white;
+        }
+    </style>
 </head>
 
 <body>
-  <div class="header">
-    <div class="header-bg"></div>
-    <img src="../assets/icons/Voltar.svg" alt="Voltar" class="back-icon">
-    <img src="../assets/logos/GetEatsSVG.svg" alt="Get Eats Logo" class="logo logo--pequeno" />
-    <img src="../assets/icons/PerfilHeader.svg" alt="Perfil" class="profile-icon">
-  </div>
-  <div class="search-bar">
-    <img src="../assets/icons/Busca.svg" alt="Buscar" class="search-icon"> <input type="text" placeholder="Buscar no cardápio..." />
-    <img src="../assets/icons/Filtro.svg" alt="Filtro" class="filter-btn">
-  </div>
-  <div class="main-content">
-    <div class="restaurant-details">
-      <div class="logo-small"></div>
-      <div class="info">
-        <div class="name">Burguer House</div>
-        <div class="rating"> <span class="stars">★★★★★</span> 4.9 • 89 avaliações </div>
-      </div>
+    <div class="header">
+        <div class="header-bg"></div>
+        <img src="../assets/icons/Voltar.svg" alt="Voltar" class="back-icon">
+        <img src="../assets/logos/GetEatsSVG.svg" alt="Get Eats Logo" class="logo logo--pequeno" />
+        <img src="../assets/logos/logo-desktop.svg" alt="Get Eats Logo Desktop" class="logo-desktop" />
+        <div class="header-options">
+            <span class="promotion" data-category="promocoes">Promoção</span>
+            <span class="free-delivery pedidos-link">Pedidos</span>
+        </div>
+        <div class="search-bar">
+            <img src="../assets/icons/Busca.svg" alt="Buscar" class="search-icon"> <input type="text"
+                placeholder="Buscar no cardápio..." />
+            <button class="filter-btn">
+                <img src="../assets/icons/Filtro.svg" alt="Filtros" class="filter-icon">
+            </button>
+        </div>
+        <a href="perfil.html" class="profile-link">
+    <img src="../assets/icons/PerfilHeader.svg" alt="Perfil" class="profile-icon profile-icon--mobile">
+    
+    <img src="../assets/icons/PerfilDesktop.svg" alt="Perfil Desktop" class="profile-icon profile-icon--desktop">
+</a>
     </div>
-    <div class="categories"> <a href="#" class="active">Favoritos</a> <a href="#">Novidades</a> <a href="#">Entrega
-        Grátis</a> <a href="#">Promoções</a> <a href="#">Hambúrgueres</a> <a href="#">Bebidas</a> <div class="categories-line"></div></div>
-    <div class="products">
-      <div class="product-card">
-        <div class="discount-badge">
-          <img src="../assets/icons/Percent.svg" alt="Percent" class="percent-icon">
-          15% off
+    <div class="main-content">
+        <div class="restaurant-details">
+            <div class="logo-small"></div>
+            <div class="info">
+                <div class="name">Burguer House</div>
+                <div class="rating"> <span class="stars">★★★★★</span> 4.9 • 89 avaliações </div>
+            </div>
         </div>
-        <div class="image" style="background-image: url('../assets/imagen/XBacon.jpg');"></div>
-        <div class="details">
-          <div class="title">X Bacon</div>
-          <div class="subtitle">Hambúrguer com bacon • 20 min</div>
-          <div class="rating"> <span class="stars">★★★★★</span> 4.8 </div>
-        </div>
-        <button class="add-btn-tablet">Adicionar</button>
-        <div class="add-btn">+</div>
-      </div>
-      <div class="product-card">
-        <div class="image" style="background-image: url('../assets/imagen/ChickenBurguer.jpg');"></div>
-        <div class="details">
-          <div class="title">Chicken Burguer</div>
-          <div class="subtitle">Hambúrguer de frango • 18 min</div>
-          <div class="rating"> <span class="stars">★★★★☆</span> 4.6 </div>
-        </div>
-        <button class="add-btn-tablet">Adicionar</button>
-        <div class="add-btn">+</div>
-      </div>
-      
-      <div class="product-card">
-        <div class="image" style="background-image: url('../assets/imagen/Australiano.jpg');"></div>
-        <div class="details">
-          <div class="title">Australiano</div>
-          <div class="subtitle">Hambúrguer australiano • 22 min</div>
-          <div class="rating"> <span class="stars">★★★★★</span> 4.9 </div>
-        </div>
-        <button class="add-btn-tablet">Adicionar</button>
-        <div class="add-btn">+</div>
-      </div>
-      <div class="product-card">
-        <div class="image" style="background-image: url('../assets/imagen/CreamBurguer.jpg');"></div>
-        <div class="details">
-          <div class="title">Cream Burguer</div>
-          <div class="subtitle">Hambúrguer cremoso • 19 min</div>
-          <div class="rating"> <span class="stars">★★★★☆</span> 4.7 </div>
-        </div>
-        <button class="add-btn-tablet">Adicionar</button>
-        <div class="add-btn">+</div>
-      </div>
-      <div class="product-card">
-        <div class="image" style="background-image: url('../assets/imagen/CrispyBurguer.jpg');"></div>
-        <div class="details">
-          <div class="title">Crispy Burguer</div>
-          <div class="subtitle">Hambúrguer crispy • 20 min</div>
-          <div class="rating"> <span class="stars">★★★★☆</span> 4.6 </div>
-        </div>
-        <button class="add-btn-tablet">Adicionar</button>
-        <div class="add-btn">+</div>
-      </div>
-      <div class="product-card">
-        <div class="image" style="background-image: url('../assets/imagen/XBurguer.jpg');"></div>
-        <div class="details">
-          <div class="title">X Burguer</div>
-          <div class="subtitle">Clássico com queijo • 15 min</div>
-          <div class="rating"> <span class="stars">★★★★☆</span> 4.5 </div>
-        </div>
-        <button class="add-btn-tablet">Adicionar</button>
-        <div class="add-btn">+</div>
-      </div>
-      <div class="product-card">
-        <div class="image" style="background-image: url('../assets/imagen/CheddarDuplo.jpg');"></div>
-        <div class="details">
-          <div class="title">Cheddar Duplo</div>
-          <div class="subtitle">Hambúrguer duplo com cheddar • 24 min</div>
-          <div class="rating"> <span class="stars">★★★★★</span> 4.9 </div>
-        </div>
-        <button class="add-btn-tablet">Adicionar</button>
-        <div class="add-btn">+</div>
-      </div>
-      <div class="product-card">
-        <div class="image" style="background-image: url('../assets/imagen/ArtesanalDuplo.jpg');"></div>
-        <div class="details">
-          <div class="title">Artesanal Duplo</div>
-          <div class="subtitle">Hambúrguer artesanal duplo • 25 min</div>
-          <div class="rating"> <span class="stars">★★★★★</span> 4.9 </div>
-        </div>
-        <button class="add-btn-tablet">Adicionar</button>
-        <div class="add-btn">+</div>
-      </div>
+
+<div class="highlights-container">
+        
+        <a href="artesanalduplo.html" class="highlight-card highlight-card--red">
+            <div class="highlight-info">
+                <div class="title">Burger Favorito</div>
+                <div class="subtitle">Artesanal Duplo</div>
+                <div class="price">R$ 32,50</div>
+            </div>
+            <img src="../assets/imagen/BurguerMainDesktop.png" alt="X-Bacon Duplo" class="highlight-image highlight-image--burger">
+        </a>
+
+        <a href="sucodelaranja.html" class="highlight-card highlight-card--orange">
+            <div class="highlight-info">
+                <div class="title">Bebida Refrescante</div>
+                <div class="subtitle">Suco de Laranja</div>
+                <div class="price">R$ 6,00</div>
+            </div>
+            <img src="../assets/imagen/SucoMainDesktop.png" alt="Suco de Laranja" class="highlight-image highlight-image--juice">
+        </a>
+
+        <a href="batatafrita.html" class="highlight-card highlight-card--purple">
+            <div class="highlight-info">
+                <div class="title">Fritas Crocantes</div>
+                <div class="subtitle">Porção Média</div>
+                <div class="price">R$ 15,00</div>
+            </div>
+            <img src="../assets/imagen/Batata,MainDesktop.png" alt="Fritas" class="highlight-image highlight-image--fries">
+        </a>
     </div>
-  </div>
-  <div class="cart-float">
-    <img src="../assets/icons/Cart.svg" alt="Carrinho" class="cart-icon">
-  </div>
-  <div class="footer-nav"> <a href="#" class="nav-item active">
-      <img src="../assets/icons/HomeBar.svg" alt="Início" class="nav-icon"> Início
-    </a> <a href="#" class="nav-item">
-      <img src="../assets/icons/BuscaBar.svg" alt="Buscar" class="nav-icon"> Buscar
-    </a> <a href="#" class="nav-item">
-      <img src="../assets/icons/s3Bar.svg" alt="Favoritos" class="nav-icon"> Favoritos
-    </a> <a href="#" class="nav-item">
-      <img src="../assets/icons/PerfilBar.svg" alt="Perfil" class="nav-icon"> Perfil
-    </a> </div>
+
+
+        <div class="categories"> <a href="#" data-category="hamburgueres">Hambúrgueres</a> <a href="#"
+                data-category="bebidas">Bebidas</a> <a href="#" data-category="favoritos">Favoritos</a> <a href="#"
+                data-category="novidades">Novidades</a> <a href="#" data-category="entrega-gratis">Entrega
+                Grátis</a> <a href="#" data-category="promocoes">Promoções</a>
+            <div class="categories-line"></div>
+        </div>
+        <div class="product-grid">
+            <a href="xbacon.html" style="text-decoration: none; color: inherit;"
+                data-categoria="favoritos,entrega-gratis,promocoes,hamburgueres" data-preco="32.50" data-avaliacao="4.8"
+                data-tempo-entrega="20">
+                <div class="product-card">
+                    <div class="discount-badge">
+                        <img src="../assets/icons/Percent.svg" alt="Percent" class="percent-icon">
+                        15%
+                    </div>
+                    <div class="image" style="background-image: url('../assets/imagen/XBacon.jpg');"></div>
+                    <div class="details">
+                        <div class="title">X Bacon</div>
+                        <div class="subtitle">Hambúrguer com bacon • 20 min</div>
+                        <div class="rating"> <span class="stars">★★★★★</span> 4.8 </div>
+                    </div>
+                    <button class="add-btn-tablet">Adicionar</button>
+                    <div class="add-btn">+</div>
+                </div>
+            </a>
+            <a href="chickenburguer.html" style="text-decoration: none; color: inherit;"
+                data-categoria="favoritos,entrega-gratis,hamburgueres" data-preco="28.00" data-avaliacao="4.6"
+                data-tempo-entrega="18">
+                <div class="product-card">
+                    <div class="image" style="background-image: url('../assets/imagen/ChickenBurguer.jpg');"></div>
+                    <div class="details">
+                        <div class="title">Chicken Burguer</div>
+                        <div class="subtitle">Hambúrguer de frango • 18 min</div>
+                        <div class="rating"> <span class="stars">★★★★☆</span> 4.6 </div>
+                    </div>
+                    <button class="add-btn-tablet">Adicionar</button>
+                    <div class="add-btn">+</div>
+                </div>
+            </a>
+
+            <a href="australiano.html" style="text-decoration: none; color: inherit;"
+                data-categoria="favoritos,entrega-gratis,hamburgueres" data-preco="35.00" data-avaliacao="4.9"
+                data-tempo-entrega="22">
+                <div class="product-card">
+                    <div class="image" style="background-image: url('../assets/imagen/Australiano.jpg');"></div>
+                    <div class="details">
+                        <div class="title">Australiano</div>
+                        <div class="subtitle">Hambúrguer australiano • 22 min</div>
+                        <div class="rating"> <span class="stars">★★★★★</span> 4.9 </div>
+                    </div>
+                    <button class="add-btn-tablet">Adicionar</button>
+                    <div class="add-btn">+</div>
+                </div>
+            </a>
+            <a href="creamburguer.html" style="text-decoration: none; color: inherit;"
+                data-categoria="hamburgueres,novidades" data-preco="30.00" data-avaliacao="4.7" data-tempo-entrega="19">
+                <div class="product-card">
+                    <div class="image" style="background-image: url('../assets/imagen/CreamBurguer.jpg');"></div>
+                    <div class="details">
+                        <div class="title">Cream Burguer</div>
+                        <div class="subtitle">Hambúrguer cremoso • 19 min</div>
+                        <div class="rating"> <span class="stars">★★★★☆</span> 4.7 </div>
+                    </div>
+                    <button class="add-btn-tablet">Adicionar</button>
+                    <div class="add-btn">+</div>
+                </div>
+            </a>
+            <a href="crispyburguer.html" style="text-decoration: none; color: inherit;"
+                data-categoria="hamburgueres,novidades" data-preco="29.00" data-avaliacao="4.6" data-tempo-entrega="20">
+                <div class="product-card">
+                    <div class="image" style="background-image: url('../assets/imagen/CrispyBurguer.jpg');"></div>
+                    <div class="details">
+                        <div class="title">Crispy Burguer</div>
+                        <div class="subtitle">Hambúrguer crispy • 20 min</div>
+                        <div class="rating"> <span class="stars">★★★★☆</span> 4.6 </div>
+                    </div>
+                    <button class="add-btn-tablet">Adicionar</button>
+                    <div class="add-btn">+</div>
+                </div>
+            </a>
+            <a href="xburguer.html" style="text-decoration: none; color: inherit;" data-categoria="hamburgueres"
+                data-preco="25.00" data-avaliacao="4.5" data-tempo-entrega="15">
+                <div class="product-card">
+                    <div class="image" style="background-image: url('../assets/imagen/XBurguer.jpg');"></div>
+                    <div class="details">
+                        <div class="title">X Burguer</div>
+                        <div class="subtitle">Clássico com queijo • 15 min</div>
+                        <div class="rating"> <span class="stars">★★★★☆</span> 4.5 </div>
+                    </div>
+                    <button class="add-btn-tablet">Adicionar</button>
+                    <div class="add-btn">+</div>
+                </div>
+            </a>
+            <a href="cheddarduplo.html" style="text-decoration: none; color: inherit;"
+                data-categoria="favoritos,hamburgueres" data-preco="34.00" data-avaliacao="4.9" data-tempo-entrega="24">
+                <div class="product-card">
+                    <div class="image" style="background-image: url('../assets/imagen/CheddarDuplo.jpg');"></div>
+                    <div class="details">
+                        <div class="title">Cheddar Duplo</div>
+                        <div class="subtitle">Hambúrguer 2x com cheddar • 24 min</div>
+                        <div class="rating"> <span class="stars">★★★★★</span> 4.9 </div>
+                    </div>
+                    <button class="add-btn-tablet">Adicionar</button>
+                    <div class="add-btn">+</div>
+                </div>
+            </a>
+            <a href="artesanalduplo.html" style="text-decoration: none; color: inherit;"
+                data-categoria="favoritos,hamburgueres" data-preco="38.00" data-avaliacao="4.9" data-tempo-entrega="25">
+                <div class="product-card">
+                    <div class="image" style="background-image: url('../assets/imagen/ArtesanalDuplo.jpg');"></div>
+                    <div class="details">
+                        <div class="title">Artesanal Duplo</div>
+                        <div class="subtitle">Hambúrguer artesanal duplo • 25 min</div>
+                        <div class="rating"> <span class="stars">★★★★★</span> 4.9 </div>
+                    </div>
+                    <button class="add-btn-tablet">Adicionar</button>
+                    <div class="add-btn">+</div>
+                </div>
+            </a>
+            <a href="agua.html" style="text-decoration: none; color: inherit;" data-categoria="bebidas"
+                data-preco="3.00" data-avaliacao="4.5" data-tempo-entrega="5">
+                <div class="product-card">
+                    <div class="image" style="background-image: url('../assets/imagen/Agua.jpg');"></div>
+                    <div class="details">
+                        <div class="title">Agua</div>
+                        <div class="subtitle">Bebida refrescante • 5 min</div>
+                        <div class="rating"> <span class="stars">★★★★☆</span> 4.5 </div>
+                    </div>
+                    <button class="add-btn-tablet">Adicionar</button>
+                    <div class="add-btn">+</div>
+                </div>
+            </a>
+            <a href="cocacola.html" style="text-decoration: none; color: inherit;" data-categoria="bebidas"
+                data-preco="5.00" data-avaliacao="4.5" data-tempo-entrega="5">
+                <div class="product-card">
+                    <div class="image" style="background-image: url('../assets/imagen/Coca.jpg');"></div>
+                    <div class="details">
+                        <div class="title">Coca-Cola</div>
+                        <div class="subtitle">Refrigerante clássico • 5 min</div>
+                        <div class="rating"> <span class="stars">★★★★☆</span> 4.5 </div>
+                    </div>
+                    <button class="add-btn-tablet">Adicionar</button>
+                    <div class="add-btn">+</div>
+                </div>
+            </a>
+            <a href="sprite.html" style="text-decoration: none; color: inherit;" data-categoria="bebidas"
+                data-preco="5.00" data-avaliacao="4.5" data-tempo-entrega="5">
+                <div class="product-card">
+                    <div class="image" style="background-image: url('../assets/imagen/Sprite.jpg');"></div>
+                    <div class="details">
+                        <div class="title">Sprite</div>
+                        <div class="subtitle">Refrigerante limão • 5 min</div>
+                        <div class="rating"> <span class="stars">★★★★☆</span> 4.5 </div>
+                    </div>
+                    <button class="add-btn-tablet">Adicionar</button>
+                    <div class="add-btn">+</div>
+                </div>
+            </a>
+            <a href="sucolaranja.html" style="text-decoration: none; color: inherit;" data-categoria="bebidas,favoritos"
+                data-preco="6.00" data-avaliacao="4.5" data-tempo-entrega="5">
+                <div class="product-card">
+                    <div class="image" style="background-image: url('../assets/imagen/SucoLaranja.jpg');"></div>
+                    <div class="details">
+                        <div class="title">Suco de Laranja</div>
+                        <div class="subtitle">Suco natural • 5 min</div>
+                        <div class="rating"> <span class="stars">★★★★☆</span> 4.5 </div>
+                    </div>
+                    <button class="add-btn-tablet">Adicionar</button>
+                    <div class="add-btn">+</div>
+                </div>
+            </a>
+            <a href="sucomelancia.html" style="text-decoration: none; color: inherit;"
+                data-categoria="bebidas,favoritos" data-preco="6.00" data-avaliacao="4.5" data-tempo-entrega="5">
+                <div class="product-card">
+                    <div class="image" style="background-image: url('../assets/imagen/SucoMelancia.jpg');"></div>
+                    <div class="details">
+                        <div class="title">Suco de Melancia</div>
+                        <div class="subtitle">Suco natural • 5 min</div>
+                        <div class="rating"> <span class="stars">★★★★☆</span> 4.5 </div>
+                    </div>
+                    <button class="add-btn-tablet">Adicionar</button>
+                    <div class="add-btn">+</div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div id="filter-modal" class="filter-modal">
+        <div class="filter-modal-content">
+            <div class="filter-modal-header">
+                <h2 class="filter-modal-title">Filtros</h2>
+                <button class="filter-modal-close">&times;</button>
+            </div>
+
+            <div class="filter-modal-body">
+                <div class="filter-section">
+                    <h3 class="filter-section-title">Ordenar por</h3>
+                    <div class="filter-options">
+                        <div class="filter-option">
+                            <input type="radio" id="sort-relevance" name="sort" value="relevance" checked>
+                            <label for="sort-relevance">Relevância</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="radio" id="sort-price-low" name="sort" value="price-low">
+                            <label for="sort-price-low">Preço: Menor para Maior</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="radio" id="sort-price-high" name="sort" value="price-high">
+                            <label for="sort-price-high">Preço: Maior para Menor</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="radio" id="sort-rating" name="sort" value="rating">
+                            <label for="sort-rating">Avaliação</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="radio" id="sort-delivery-time" name="sort" value="delivery-time">
+                            <label for="sort-delivery-time">Tempo de Entrega</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h3 class="filter-section-title">Faixa de Preço</h3>
+                    <div class="filter-options">
+                        <div class="filter-option">
+                            <input type="checkbox" id="price-0-20" name="price-range" value="0-20">
+                            <label for="price-0-20">Até R$ 20</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="price-20-40" name="price-range" value="20-40">
+                            <label for="price-20-40">R$ 20 - R$ 40</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="price-40+" name="price-range" value="40+">
+                            <label for="price-40+">Acima de R$ 40</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h3 class="filter-section-title">Avaliação</h3>
+                    <div class="filter-options">
+                        <div class="filter-option">
+                            <input type="radio" id="rating-4+" name="rating" value="4+">
+                            <label for="rating-4+">4+ estrelas</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h3 class="filter-section-title">Tempo de Entrega</h3>
+                    <div class="filter-options">
+                        <div class="filter-option">
+                            <input type="checkbox" id="delivery-20" name="delivery-time" value="20">
+                            <label for="delivery-20">Até 20 min</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="delivery-30" name="delivery-time" value="30">
+                            <label for="delivery-30">Até 30 min</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-section" style="margin-bottom: 1rem;">
+                    <h3 class="filter-section-title">Outros</h3>
+                    <div class="filter-options">
+                        <div class="filter-option">
+                            <input type="checkbox" id="other-favoritos" name="other" value="favoritos">
+                            <label for="other-favoritos">Favoritos</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="other-entrega-gratis" name="other" value="entrega-gratis">
+                            <label for="other-entrega-gratis">Entrega Grátis</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="other-promocoes" name="other" value="promocoes">
+                            <label for="other-promocoes">Promoções</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="other-novidades" name="other" value="novidades">
+                            <label for="other-novidades">Novidades</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-modal-footer">
+                <button class="filter-btn-clear">Limpar</button>
+                <button class="filter-btn-apply">Aplicar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="cart-float">
+        <img src="../assets/icons/Cart.svg" alt="Carrinho" class="cart-icon">
+        <div class="cart-counter">0</div>
+    </div>
+    <div class="footer-nav"> <a href="#" class="nav-item active">
+            <img src="../assets/icons/HomeFooter.svg" alt="Início" class="nav-icon"> Início
+        </a> <a href="pedidos.html" class="nav-item">
+            <img src="../assets/icons/Pedidos.svg" alt="Pedidos" class="nav-icon"> Pedidos
+        </a> <a href="#" class="nav-item" data-category="favoritos">
+            <img src="../assets/icons/s3Foote.svg" alt="Favoritos" class="nav-icon"> Favoritos
+        </a> <a href="perfil.html" class="nav-item">
+            <img src="../assets/icons/PerfilFooter.svg" alt="Perfil" class="nav-icon"> Perfil
+        </a> </div>
+
+        <!-- Modal de Cadastro Desktop -->
+        <div id="auth-modal" class="modal-overlay">
+            <div class="modal-content modal-content--auth">
+                <div class="auth-header">
+                    <img src="../assets/icons/PerfilDesktop.svg" alt="Ícone Perfil" class="auth-icon">
+                    <h2>crie sua conta</h2>
+                    <button class="close-modal-btn">&times;</button>
+                </div>
+                <form class="auth-form" id="signup-form">
+                    <label class="input-field__label" for="signup-name">Nome</label>
+                    <div class="input-field input-field--user">
+                        <div class="input-field__input">
+                            <div class="input-field__icon"></div>
+                            <input type="text" id="signup-name" placeholder="Seu nome completo" />
+                        </div>
+                    </div>
+
+                    <label class="input-field__label" for="signup-email">Email</label>
+                    <div class="input-field input-field--email">
+                        <div class="input-field__input">
+                            <div class="input-field__icon"></div>
+                            <input type="email" id="signup-email" placeholder="seu@email.com" />
+                        </div>
+                    </div>
+
+                    <label class="input-field__label" for="signup-cpf">CPF</label>
+                    <div class="input-field input-field--user">
+                        <div class="input-field__input">
+                            <div class="input-field__icon"></div>
+                            <input type="text" id="signup-cpf" placeholder="000.000.000-00" />
+                        </div>
+                    </div>
+
+                    <label class="input-field__label" for="signup-contato">Contato</label>
+                    <div class="input-field input-field--user">
+                        <div class="input-field__input">
+                            <div class="input-field__icon"></div>
+                            <input type="tel" id="signup-contato" placeholder="(00) 00000-0000" />
+                        </div>
+                    </div>
+
+                    <label class="input-field__label" for="signup-endereco">Endereço</label>
+                    <div class="input-field input-field--user">
+                        <div class="input-field__input">
+                            <div class="input-field__icon"></div>
+                            <input type="text" id="signup-endereco" placeholder="Rua, número, bairro, cidade" />
+                        </div>
+                    </div>
+
+                    <label class="input-field__label" for="signup-password">Senha</label>
+                    <div class="input-field input-field--password">
+                        <div class="input-field__input">
+                            <div class="input-field__icon"></div>
+                            <input type="password" id="signup-password" placeholder="••••••••" />
+                            <img class="input-field__eye" src="../assets/icons/NãoVer.svg" alt="Mostrar senha" />
+                        </div>
+                    </div>
+
+                    <label class="input-field__label" for="signup-confirm-password">Confirmar Senha</label>
+                    <div class="input-field input-field--password">
+                        <div class="input-field__input">
+                            <div class="input-field__icon"></div>
+                            <input type="password" id="signup-confirm-password" placeholder="••••••••" />
+                            <img class="input-field__eye" src="../assets/icons/NãoVer.svg" alt="Mostrar senha" />
+                        </div>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" class="checkbox-group__input" id="signup-terms" />
+                        <label class="checkbox-group__label" for="signup-terms">Aceito os termos e condições</label>
+                    </div>
+
+                    <button type="submit" class="btn btn--primario">Criar conta</button>
+
+                    <div class="form-card__separator">ou</div>
+
+                    <button class="social-btn" onclick="alert('Funcionalidade em desenvolvimento');">
+                        <div class="social-btn__icon"></div>
+                        Continuar com Google
+                    </button>
+                    <button class="social-btn" onclick="alert('Funcionalidade em desenvolvimento');">
+                        <div class="social-btn__icon"></div>
+                        Continuar com Apple
+                    </button>
+
+                    <div class="form-card__bottom-text">Já tem uma conta? <a href="#" id="switch-to-login">Entrar</a></div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal de Login Desktop -->
+        <div id="login-modal" class="modal-overlay">
+            <div class="modal-content modal-content--auth">
+                <div class="auth-header">
+                    <img src="../assets/icons/PerfilDesktop.svg" alt="Ícone Perfil" class="auth-icon">
+                    <h2>entre na sua conta</h2>
+                    <button class="close-modal-btn">&times;</button>
+                </div>
+                <form class="auth-form" id="login-form">
+                    <label class="input-field__label" for="login-email">Email</label>
+                    <div class="input-field input-field--email">
+                        <div class="input-field__input">
+                            <div class="input-field__icon"></div>
+                            <input type="email" id="login-email" placeholder="seu@email.com" />
+                        </div>
+                    </div>
+
+                    <label class="input-field__label" for="login-password">Senha</label>
+                    <div class="input-field input-field--password">
+                        <div class="input-field__input">
+                            <div class="input-field__icon"></div>
+                            <input type="password" id="login-password" placeholder="••••••••" />
+                            <img class="input-field__eye" src="../assets/icons/NãoVer.svg" alt="Mostrar senha" />
+                        </div>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" class="checkbox-group__input" id="login-remember" />
+                        <label class="checkbox-group__label" for="login-remember">Lembrar de mim</label>
+                    </div>
+
+                    <button type="submit" class="btn btn--primario">Entrar</button>
+
+                    <div class="form-card__separator">ou</div>
+
+                    <button class="social-btn" onclick="alert('Funcionalidade em desenvolvimento');">
+                        <div class="social-btn__icon"></div>
+                        Continuar com Google
+                    </button>
+
+                    <button class="social-btn" onclick="alert('Funcionalidade em desenvolvimento');">
+                        <div class="social-btn__icon"></div>
+                        Continuar com Apple
+                    </button>
+
+                    <div class="form-card__bottom-text">Não tem uma conta? <a href="#" id="switch-to-signup">Criar conta</a></div>
+                </form>
+            </div>
+        </div>
+
+
+
+        <!-- Modal do Carrinho Desktop -->
+        <div id="cart-modal" class="cart-modal-overlay">
+            <div class="cart-modal-content">
+                <div class="cart-modal-header">
+                    <h2>Seu Carrinho</h2>
+                    <button class="cart-modal-close">&times;</button>
+                </div>
+                <div class="cart-modal-body">
+                    <div class="cart-coupon-bar">
+                        <input type="text" placeholder="Aplicar cupom..." />
+                        <button class="cart-apply-btn">Aplicar</button>
+                    </div>
+                    <div class="cart-items">
+                        <!-- Itens serão renderizados dinamicamente -->
+                    </div>
+                    <div class="cart-order-summary">
+                        <h3>Resumo do pedido</h3>
+                        <div class="cart-summary-item">
+                            <span>Subtotal:</span>
+                            <span>R$ 0,00</span>
+                        </div>
+                        <div class="cart-summary-item">
+                            <span>Desconto:</span>
+                            <span>R$ 0,00</span>
+                        </div>
+                        <div class="cart-summary-item">
+                            <span>Taxa de entrega:</span>
+                            <span>R$ 5,00</span>
+                        </div>
+                        <hr class="cart-summary-divider">
+                        <div class="cart-summary-total">
+                            <span>Total do pedido:</span>
+                            <span>R$ 5,00</span>
+                        </div>
+                    </div>
+                    <div class="cart-delivery-address">
+                        <div class="cart-address-info">
+                            <img src="../assets/icons/Loc.svg" alt="Location" class="cart-loc-icon">
+                            <span id="cart-endereco-entrega">Carregando...</span>
+                        </div>
+                        <button class="cart-change-btn" id="cart-alterar-endereco-btn">Alterar</button>
+                    </div>
+                </div>
+                <div class="cart-modal-footer">
+                    <button class="cart-finalize-btn">Finalizar Pedido <img src="../assets/icons/Card.svg" alt="Carrinho" class="cart-icon"></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Pagamento Desktop -->
+        <div id="payment-modal" class="cart-modal-overlay">
+            <div class="cart-modal-content">
+                <div class="cart-modal-header">
+                    <h2>Pagamento</h2>
+                    <button class="cart-modal-close">&times;</button>
+                </div>
+                <div class="cart-modal-body">
+                    <div class="payment-summary">
+                        <h3>Resumo do Pedido</h3>
+                        <div class="payment-summary-item">
+                            <span>Subtotal:</span>
+                            <span id="payment-subtotal">R$ 0,00</span>
+                        </div>
+                        <div class="payment-summary-item">
+                            <span>Desconto:</span>
+                            <span id="payment-desconto">R$ 0,00</span>
+                        </div>
+                        <div class="payment-summary-item">
+                            <span>Taxa de entrega:</span>
+                            <span>R$ 5,00</span>
+                        </div>
+                        <hr class="payment-summary-divider">
+                        <div class="payment-summary-total">
+                            <span>Total:</span>
+                            <span id="payment-total">R$ 5,00</span>
+                        </div>
+                    </div>
+
+                    <div class="payment-methods">
+                        <h3>Forma de Pagamento</h3>
+
+                        <button class="payment-method-btn" id="pix-btn">
+                            <img src="../assets/icons/PixFull.svg" alt="PIX Icon" style="width: 12rem; height: 3rem;" />
+                        </button>
+
+                        <div class="payment-separator">ou</div>
+
+                        <div class="credit-card-form">
+                            <label for="card-number">Número do cartão</label>
+                            <input type="text" id="card-number" placeholder="1234 4567 8910 1112" maxlength="19">
+
+                            <div class="card-details-row">
+                                <div class="card-field">
+                                    <label for="card-expiry">Data de expiração</label>
+                                    <input type="text" id="card-expiry" placeholder="MM/AA" maxlength="5">
+                                </div>
+                                <div class="card-field">
+                                    <label for="card-cvv">CVV</label>
+                                    <input type="text" id="card-cvv" placeholder="123" maxlength="4">
+                                </div>
+                            </div>
+
+                            <label for="card-holder">Nome do titular</label>
+                            <input type="text" id="card-holder" placeholder="Nome como no cartão">
+                        </div>
+                    </div>
+                </div>
+                <div class="cart-modal-footer">
+                    <button class="cart-finalize-btn" id="confirm-payment-btn">
+                        Confirmar Pagamento
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Confirmação do Pedido Desktop -->
+        <div id="order-confirmation-modal" class="cart-modal-overlay">
+            <div class="cart-modal-content">
+                <div class="cart-modal-header">
+                    <div class="check-icon">
+                        <img src="../assets/icons/Check.svg" alt="Check" />
+                    </div>
+                    <h2>Pedido Confirmado!</h2>
+                </div>
+                <div class="cart-modal-body">
+                    <p class="confirmation-message">Seu pedido foi realizado com sucesso.</p>
+
+                    <div class="order-details-card">
+                        <h3>Detalhes do Pedido</h3>
+                        <div class="confirmation-summary-item">
+                            <span>Número do Pedido:</span>
+                            <span id="confirmation-order-number">#123456</span>
+                        </div>
+                        <div class="confirmation-summary-item">
+                            <span>Tempo Estimado:</span>
+                            <span>30-45 minutos</span>
+                        </div>
+                        <div class="confirmation-summary-item">
+                            <span>Endereço de Entrega:</span>
+                            <span id="confirmation-address">Carregando...</span>
+                        </div>
+                        <hr class="confirmation-divider">
+                        <div class="confirmation-total">
+                            <span>Total:</span>
+                            <span id="confirmation-total">R$ 0,00</span>
+                        </div>
+                    </div>
+
+                    <div class="confirmation-actions">
+                        <button class="confirmation-btn secondary" id="track-order-btn">Acompanhar Pedido</button>
+                        <button class="confirmation-btn primary" id="back-to-menu-btn">Voltar ao Cardápio</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Acompanhamento do Pedido Desktop -->
+        <div id="order-tracking-modal" class="cart-modal-overlay">
+            <div class="cart-modal-content">
+                <div class="cart-modal-header">
+                    <h2>Acompanhar Pedido</h2>
+                    <button class="cart-modal-close">&times;</button>
+                </div>
+                <div class="cart-modal-body">
+                    <!-- Status do Pedido -->
+                    <div class="status-card">
+                        <div class="status-icon">
+                            <img src="../assets/icons/Check.svg" alt="Status" id="tracking-status-icon" />
+                        </div>
+                        <h3 class="status-title" id="tracking-status-title">Pedido Confirmado</h3>
+                        <p class="status-description" id="tracking-status-description">Seu pedido foi confirmado e está sendo preparado.</p>
+
+                        <!-- Barra de Preparação -->
+                        <div class="progress-section">
+                            <div class="progress-label">Preparação</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="tracking-progress-fill" style="width: 25%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detalhes do Pedido -->
+                    <div class="order-details">
+                        <h2>Resumo do Pedido</h2>
+                        <div class="summary-item">
+                            <span>Número do Pedido:</span>
+                            <span id="tracking-order-number">#123456</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Endereço de Entrega:</span>
+                            <span id="tracking-address">Carregando...</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Tempo Estimado:</span>
+                            <span id="tracking-time">30-45 minutos</span>
+                        </div>
+                        <hr class="summary-divider">
+                        <div class="summary-total">
+                            <span>Total:</span>
+                            <span id="tracking-total">R$ 0,00</span>
+                        </div>
+                    </div>
+
+                    <!-- Informações de Entrega -->
+                    <div class="delivery-info">
+                        <h2>Entrega</h2>
+                        <div class="delivery-route">
+                            <div class="route-point origin">
+                                <div class="icon">
+                                    <img src="../assets/icons/Loc.svg" alt="Origem" />
+                                </div>
+                                <div class="label">Burguer House</div>
+                            </div>
+                            <div class="route-line">
+                                <div class="route-progress" id="route-progress-fill"></div>
+                            </div>
+                            <div class="route-point destination">
+                                <div class="icon">
+                                    <img src="../assets/icons/Loc.svg" alt="Destino" />
+                                </div>
+                                <div class="label">Seu Endereço</div>
+                            </div>
+                        </div>
+
+                        <div class="delivery-person">
+                            <div class="avatar" id="delivery-avatar">JD</div>
+                            <div class="info">
+                                <h3 id="delivery-name">João Silva</h3>
+                                <p id="delivery-info">Entregador • Moto • 5.0 ★</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cart-modal-footer">
+                    <button class="btn" id="update-status-btn">Atualizar Status</button>
+                    <button class="btn-secondary" id="back-to-home-btn">Voltar ao Início</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Histórico de Pedidos Desktop -->
+        <div id="order-history-modal" class="modal-overlay">
+            <div class="modal-content modal-content--history">
+                <div class="history-header">
+                    <h2>Meus Pedidos</h2>
+                    <button class="close-modal-btn">&times;</button>
+                </div>
+                <div class="history-content">
+                    <div class="history-tabs">
+                        <div class="history-tab active" data-tab="current">Pedidos Atuais</div>
+                        <div class="history-tab" data-tab="past">Histórico</div>
+                    </div>
+
+                    <div class="history-orders" id="history-orders-list">
+                        <!-- Orders will be rendered here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Pedidos Desktop -->
+        <div class="pedidos-modal-overlay">
+            <div id="pedidos-modal" class="pedidos-modal-content">
+                <div class="pedidos-modal-header">
+                    <h2>Meus Pedidos</h2>
+                    <button class="pedidos-modal-close">&times;</button>
+                </div>
+                <div class="pedidos-modal-body">
+                    <div class="pedidos-tabs">
+                        <div class="pedidos-tab active" data-tab="atuais">Pedidos Atuais</div>
+                        <div class="pedidos-tab" data-tab="historico">Histórico</div>
+                    </div>
+                    <div class="pedidos-tab-contents">
+                        <div id="atuais" class="pedidos-tab-content active">
+                            <div class="orders-list" id="pedidos-atuais-desktop">
+                                <!-- Pedidos atuais serão renderizados dinamicamente -->
+                            </div>
+                        </div>
+                        <div id="historico" class="pedidos-tab-content">
+                            <div class="orders-list" id="pedidos-historico-desktop">
+                                <!-- Histórico será renderizado dinamicamente -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <script src="../recursos/js/auth.js"></script>
+    <script src="../recursos/js/carrinho.js"></script>
+    <script src="../recursos/js/desktop-cart.js"></script>
+    <script src="../recursos/js/desktop-auth.js"></script>
+    <script src="../recursos/js/desktop-profile.js"></script>
+    <script src="../recursos/js/desktop-payment.js"></script>
+    <script src="../recursos/js/desktop-order-confirmation.js"></script>
+    <script src="../recursos/js/desktop-order-tracking.js"></script>
+    <script src="../recursos/js/desktop-order-history.js"></script>
+    <script src="../recursos/js/desktop-pedidos.js"></script>
+
+    <!-- Modal do Perfil Desktop -->
+    <div id="profile-modal" class="modal-overlay">
+        <div class="modal-content modal-content--profile">
+            <div class="profile-header">
+                <h2>Meu Perfil</h2>
+                <button class="close-modal-btn profile-modal-close">&times;</button>
+            </div>
+            <div class="profile-content">
+                <div class="user-info profile-user-info">
+                    <!-- User info will be rendered here -->
+                </div>
+
+                <div class="profile-section">
+                    <h2 class="section-title">Informações Pessoais</h2>
+                    <div class="profile-personal-info">
+                        <!-- Personal info will be rendered here -->
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <h2 class="section-title">Ações da Conta</h2>
+                    <div class="profile-actions">
+                        <!-- Actions will be rendered here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submodal de Edição de Perfil Desktop -->
+    <div id="profile-edit-modal" class="modal-overlay">
+        <div class="modal-content modal-content--profile">
+            <div class="profile-header">
+                <h2>Editar Perfil</h2>
+                <button class="close-modal-btn profile-edit-modal-close">&times;</button>
+            </div>
+            <div class="profile-content">
+                <div class="profile-section">
+                    <div class="profile-edit-form">
+                        <label class="input-field__label" for="profile-edit-nome">Nome</label>
+                        <div class="input-field">
+                            <div class="input-field__input">
+                                <div class="input-field__icon"></div>
+                                <input type="text" id="profile-edit-nome" placeholder="Seu nome completo" />
+                            </div>
+                        </div>
+
+                        <label class="input-field__label" for="profile-edit-email">Email</label>
+                        <div class="input-field">
+                            <div class="input-field__input">
+                                <div class="input-field__icon"></div>
+                                <input type="email" id="profile-edit-email" placeholder="seu@email.com" />
+                            </div>
+                        </div>
+
+                        <label class="input-field__label" for="profile-edit-contato">Contato</label>
+                        <div class="input-field">
+                            <div class="input-field__input">
+                                <div class="input-field__icon"></div>
+                                <input type="tel" id="profile-edit-contato" placeholder="(00) 00000-0000" />
+                            </div>
+                        </div>
+
+                        <label class="input-field__label" for="profile-edit-endereco">Endereço</label>
+                        <div class="input-field">
+                            <div class="input-field__input">
+                                <div class="input-field__icon"></div>
+                                <input type="text" id="profile-edit-endereco" placeholder="Rua, número, bairro, cidade" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <div class="profile-edit-actions">
+                        <button class="profile-btn profile-btn-secondary" id="profile-cancel-edit">Cancelar</button>
+                        <button class="profile-btn profile-btn-primary" id="profile-save-edit">Salvar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submodal de Alteração de Senha Desktop -->
+    <div id="profile-password-modal" class="modal-overlay">
+        <div class="modal-content modal-content--profile">
+            <div class="profile-header">
+                <h2>Alterar Senha</h2>
+                <button class="close-modal-btn profile-password-modal-close">&times;</button>
+            </div>
+            <div class="profile-content">
+                <div class="profile-section">
+                    <div class="profile-password-form">
+                        <label class="input-field__label" for="profile-current-password">Senha Atual</label>
+                        <div class="input-field">
+                            <div class="input-field__input">
+                                <div class="input-field__icon"></div>
+                                <input type="password" id="profile-current-password" placeholder="••••••••" />
+                                <img class="input-field__eye" src="../assets/icons/NãoVer.svg" alt="Mostrar senha" />
+                            </div>
+                        </div>
+
+                        <label class="input-field__label" for="profile-new-password">Nova Senha</label>
+                        <div class="input-field">
+                            <div class="input-field__input">
+                                <div class="input-field__icon"></div>
+                                <input type="password" id="profile-new-password" placeholder="••••••••" />
+                                <img class="input-field__eye" src="../assets/icons/NãoVer.svg" alt="Mostrar senha" />
+                            </div>
+                        </div>
+
+                        <label class="input-field__label" for="profile-confirm-new-password">Confirmar Nova Senha</label>
+                        <div class="input-field">
+                            <div class="input-field__input">
+                                <div class="input-field__icon"></div>
+                                <input type="password" id="profile-confirm-new-password" placeholder="••••••••" />
+                                <img class="input-field__eye" src="../assets/icons/NãoVer.svg" alt="Mostrar senha" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <div class="profile-password-actions">
+                        <button class="profile-btn profile-btn-secondary" id="profile-cancel-password">Cancelar</button>
+                        <button class="profile-btn profile-btn-primary" id="profile-save-password">Salvar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Função para gerar estrelas baseado no rating
+        function getStars(rating) {
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 !== 0;
+            const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+            let stars = '';
+            stars += '★'.repeat(fullStars);
+            if (hasHalfStar) stars += '☆';
+            stars += '☆'.repeat(emptyStars);
+
+            return stars;
+        }
+
+        // Função para inicializar produtos no localStorage se não existirem
+        function inicializarProdutosPadrao() {
+            const produtosExistentes = localStorage.getItem('produtos');
+            if (!produtosExistentes) {
+                const produtosPadrao = [
+                    {
+                        id: 1,
+                        nome: 'X Bacon',
+                        descricao: 'Hambúrguer com bacon • 20 min',
+                        preco: 32.50,
+                        categoria: 'hamburgueres,favoritos,entrega-gratis,promocoes',
+                        tempo: 20,
+                        imagem: '../assets/imagen/XBacon.jpg',
+                        rating: 4.8,
+                        estrelas: '★★★★★'
+                    },
+                    {
+                        id: 2,
+                        nome: 'Chicken Burguer',
+                        descricao: 'Hambúrguer de frango • 18 min',
+                        preco: 28.00,
+                        categoria: 'hamburgueres,favoritos,entrega-gratis',
+                        tempo: 18,
+                        imagem: '../assets/imagen/ChickenBurguer.jpg',
+                        rating: 4.6,
+                        estrelas: '★★★★☆'
+                    },
+                    {
+                        id: 3,
+                        nome: 'Australiano',
+                        descricao: 'Hambúrguer australiano • 22 min',
+                        preco: 35.00,
+                        categoria: 'hamburgueres,favoritos,entrega-gratis',
+                        tempo: 22,
+                        imagem: '../assets/imagen/Australiano.jpg',
+                        rating: 4.9,
+                        estrelas: '★★★★★'
+                    },
+                    {
+                        id: 4,
+                        nome: 'Cream Burguer',
+                        descricao: 'Hambúrguer cremoso • 19 min',
+                        preco: 30.00,
+                        categoria: 'hamburgueres,novidades',
+                        tempo: 19,
+                        imagem: '../assets/imagen/CreamBurguer.jpg',
+                        rating: 4.7,
+                        estrelas: '★★★★☆'
+                    },
+                    {
+                        id: 5,
+                        nome: 'Crispy Burguer',
+                        descricao: 'Hambúrguer crispy • 20 min',
+                        preco: 29.00,
+                        categoria: 'hamburgueres,novidades',
+                        tempo: 20,
+                        imagem: '../assets/imagen/CrispyBurguer.jpg',
+                        rating: 4.6,
+                        estrelas: '★★★★☆'
+                    },
+                    {
+                        id: 6,
+                        nome: 'X Burguer',
+                        descricao: 'Clássico com queijo • 15 min',
+                        preco: 25.00,
+                        categoria: 'hamburgueres',
+                        tempo: 15,
+                        imagem: '../assets/imagen/XBurguer.jpg',
+                        rating: 4.5,
+                        estrelas: '★★★★☆'
+                    },
+                    {
+                        id: 7,
+                        nome: 'Cheddar Duplo',
+                        descricao: 'Hambúrguer 2x com cheddar • 24 min',
+                        preco: 34.00,
+                        categoria: 'hamburgueres,favoritos',
+                        tempo: 24,
+                        imagem: '../assets/imagen/CheddarDuplo.jpg',
+                        rating: 4.9,
+                        estrelas: '★★★★★'
+                    },
+                    {
+                        id: 8,
+                        nome: 'Artesanal Duplo',
+                        descricao: 'Hambúrguer artesanal duplo • 25 min',
+                        preco: 38.00,
+                        categoria: 'hamburgueres,favoritos',
+                        tempo: 25,
+                        imagem: '../assets/imagen/ArtesanalDuplo.jpg',
+                        rating: 4.9,
+                        estrelas: '★★★★★'
+                    },
+                    {
+                        id: 9,
+                        nome: 'Agua',
+                        descricao: 'Bebida refrescante • 5 min',
+                        preco: 3.00,
+                        categoria: 'bebidas',
+                        tempo: 5,
+                        imagem: '../assets/imagen/Agua.jpg',
+                        rating: 4.5,
+                        estrelas: '★★★★☆'
+                    },
+                    {
+                        id: 10,
+                        nome: 'Coca-Cola',
+                        descricao: 'Refrigerante clássico • 5 min',
+                        preco: 5.00,
+                        categoria: 'bebidas',
+                        tempo: 5,
+                        imagem: '../assets/imagen/Coca.jpg',
+                        rating: 4.5,
+                        estrelas: '★★★★☆'
+                    },
+                    {
+                        id: 11,
+                        nome: 'Sprite',
+                        descricao: 'Refrigerante limão • 5 min',
+                        preco: 5.00,
+                        categoria: 'bebidas',
+                        tempo: 5,
+                        imagem: '../assets/imagen/Sprite.jpg',
+                        rating: 4.5,
+                        estrelas: '★★★★☆'
+                    },
+                    {
+                        id: 12,
+                        nome: 'Suco de Laranja',
+                        descricao: 'Suco natural • 5 min',
+                        preco: 6.00,
+                        categoria: 'bebidas,favoritos',
+                        tempo: 5,
+                        imagem: '../assets/imagen/SucoLaranja.jpg',
+                        rating: 4.5,
+                        estrelas: '★★★★☆'
+                    },
+                    {
+                        id: 13,
+                        nome: 'Suco de Melancia',
+                        descricao: 'Suco natural • 5 min',
+                        preco: 6.00,
+                        categoria: 'bebidas,favoritos',
+                        tempo: 5,
+                        imagem: '../assets/imagen/SucoMelancia.jpg',
+                        rating: 4.5,
+                        estrelas: '★★★★☆'
+                    }
+                ];
+                localStorage.setItem('produtos', JSON.stringify(produtosPadrao));
+            }
+        }
+
+        // Função para renderizar produtos dinamicamente
+        function renderizarProdutos() {
+            const produtos = JSON.parse(localStorage.getItem('produtos') || '[]');
+            const productGrid = document.querySelector('.product-grid');
+
+            if (!productGrid) return;
+
+            // Limpar produtos existentes
+            productGrid.innerHTML = '';
+
+            produtos.forEach(produto => {
+                const productLink = document.createElement('a');
+                // Set the href to the product page based on the product name
+                const productPageName = produto.nome.toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9]/g, '') + '.html';
+                productLink.href = productPageName;
+                productLink.style.textDecoration = 'none';
+                productLink.style.color = 'inherit';
+                productLink.setAttribute('data-categoria', produto.categoria);
+                productLink.setAttribute('data-preco', produto.preco.toString());
+                productLink.setAttribute('data-avaliacao', produto.rating.toString());
+                productLink.setAttribute('data-tempo-entrega', produto.tempo.toString());
+
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+
+                // Adicionar badge de desconto se necessário (exemplo para X Bacon)
+                if (produto.id === 1) {
+                    const discountBadge = document.createElement('div');
+                    discountBadge.className = 'discount-badge';
+                    discountBadge.innerHTML = `
+                        <img src="../assets/icons/Percent.svg" alt="Percent" class="percent-icon">
+                        15% off
+                    `;
+                    productCard.appendChild(discountBadge);
+                }
+
+                const imageDiv = document.createElement('div');
+                imageDiv.className = 'image';
+                imageDiv.style.backgroundImage = `url('${produto.imagem}')`;
+                productCard.appendChild(imageDiv);
+
+                const detailsDiv = document.createElement('div');
+                detailsDiv.className = 'details';
+
+                const titleDiv = document.createElement('div');
+                titleDiv.className = 'title';
+                titleDiv.textContent = produto.nome;
+                detailsDiv.appendChild(titleDiv);
+
+                const subtitleDiv = document.createElement('div');
+                subtitleDiv.className = 'subtitle';
+                subtitleDiv.textContent = produto.descricao;
+                detailsDiv.appendChild(subtitleDiv);
+
+                const ratingDiv = document.createElement('div');
+                ratingDiv.className = 'rating';
+                ratingDiv.innerHTML = `<span class="stars">${getStars(produto.rating)}</span> ${produto.rating.toFixed(1)}`;
+                detailsDiv.appendChild(ratingDiv);
+
+                productCard.appendChild(detailsDiv);
+
+                const addBtnTablet = document.createElement('button');
+                addBtnTablet.className = 'add-btn-tablet';
+                addBtnTablet.textContent = 'Adicionar';
+                productCard.appendChild(addBtnTablet);
+
+                const addBtn = document.createElement('div');
+                addBtn.className = 'add-btn';
+                addBtn.textContent = '+';
+                productCard.appendChild(addBtn);
+
+                productLink.appendChild(productCard);
+                productGrid.appendChild(productLink);
+            });
+        }
+
+        // Função para atualizar o contador do carrinho
+        function atualizarContadorCarrinho() {
+            const quantidadeTotal = carrinhoManager.obterQuantidadeTotal();
+            const cartCounter = document.querySelector('.cart-counter');
+            if (cartCounter) {
+                cartCounter.textContent = quantidadeTotal;
+                cartCounter.style.display = quantidadeTotal > 0 ? 'flex' : 'none';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Inicializar produtos padrão se necessário
+            inicializarProdutosPadrao();
+
+            // Renderizar produtos dinamicamente
+            renderizarProdutos();
+            // Atualizar contador do carrinho na carga da página
+            atualizarContadorCarrinho();
+
+            const backIcon = document.querySelector('.back-icon');
+            if (backIcon) {
+                backIcon.addEventListener('click', function () {
+                    window.history.back();
+                });
+            }
+
+            // Funcionalidade de busca
+            const searchInput = document.querySelector('.search-bar input');
+            const productCards = document.querySelectorAll('.product-card');
+
+            searchInput.addEventListener('input', function () {
+                const searchTerm = searchInput.value.toLowerCase().trim();
+
+                productCards.forEach(card => {
+                    const title = card.querySelector('.title').textContent.toLowerCase();
+                    const parent = card.parentElement;
+                    if (title.includes(searchTerm)) {
+                        parent.style.display = '';
+                    } else {
+                        parent.style.display = 'none';
+                    }
+                });
+            });
+
+            // Função para abrir o modal do carrinho
+            function openCartModal() {
+                const cartModal = document.getElementById('cart-modal');
+                if (cartModal) {
+                    cartModal.style.display = 'flex';
+                }
+            }
+
+
+
+            // Funcionalidade dos botões de adicionar ao carrinho
+            // NOTE: Assumindo que 'carrinhoManager' está definido em '../recursos/js/carrinho.js'
+            function adicionarProdutoAoCarrinho(card) {
+                const titulo = card.querySelector('.title').textContent;
+                const subtitulo = card.querySelector('.subtitle').textContent;
+                const imagem = card.querySelector('.image').style.backgroundImage;
+                const imagemUrl = imagem.replace('url("', '').replace('")', '');
+
+                // Obter preço do atributo data-preco do link pai
+                const preco = parseFloat(card.closest('a').getAttribute('data-preco')) || 0;
+
+                // Gerar ID único baseado no título
+                const id = titulo.toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9]/g, '');
+
+                const produto = {
+                    id: id,
+                    nome: titulo,
+                    preco: preco,
+                    quantidade: 1,
+                    imagem: imagemUrl,
+                    customizacoes: {}
+                };
+
+                // Adicionar item ao carrinho usando o CarrinhoManager
+                carrinhoManager.adicionarItem(produto);
+
+                // Atualizar contador do carrinho após adicionar
+                atualizarContadorCarrinho();
+
+                // Feedback visual
+                const btn = card.querySelector('.add-btn') || card.querySelector('.add-btn-tablet');
+                if (btn) {
+                    const textoOriginal = btn.textContent || btn.innerHTML;
+                    btn.textContent = '✓';
+                    btn.style.background = '#4CAF50';
+                    setTimeout(() => {
+                        btn.innerHTML = textoOriginal;
+                        // Restaura a cor original (pode ser necessário um reset de cor específico para cada botão)
+                        if (btn.classList.contains('add-btn-tablet')) {
+                            btn.style.background = 'linear-gradient(180deg, #FE2E2E 48%, #D40403 100%)';
+                        } else {
+                            btn.style.background = '#D9D9D9';
+                        }
+                    }, 1000);
+                }
+            }
+
+            // Add event listeners directly to buttons to prevent link navigation
+            document.querySelectorAll('.add-btn, .add-btn-tablet').forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const card = this.closest('.product-card');
+                    if (card) {
+                        adicionarProdutoAoCarrinho(card);
+                    }
+                });
+            });
+
+            // =========================================================
+            // CÓDIGO PARA ABRIR E FECHAR O MODAL DE FILTROS
+            // =========================================================
+
+            // 1. Seleciona os elementos necessários
+            const filterBtn = document.querySelector('.filter-btn');
+            const filterModal = document.getElementById('filter-modal');
+            const closeModalBtn = document.querySelector('.filter-modal-close');
+            const applyBtn = document.querySelector('.filter-btn-apply');
+            const clearBtn = document.querySelector('.filter-btn-clear');
+
+            // 2. Função para abrir o modal
+            function openModal() {
+                // Adiciona a classe 'show' para tornar o modal visível (CSS faz o resto)
+                filterModal.classList.add('show');
+            }
+
+            // 3. Função para fechar o modal
+            function closeModal() {
+                // Remove a classe 'show' para esconder o modal
+                filterModal.classList.remove('show');
+            }
+
+            // 4. Adiciona Event Listeners para Abrir e Fechar
+            if (filterBtn && filterModal) {
+                // Abre o modal quando clica no botão de filtro
+                filterBtn.addEventListener('click', openModal);
+
+                // Fecha o modal ao clicar no 'X'
+                if (closeModalBtn) {
+                    closeModalBtn.addEventListener('click', closeModal);
+                }
+
+                // 5. Funcionalidade de Filtros e Ordenação
+                let currentFilters = {};
+                let currentSort = 'relevance';
+
+                function applyFilters() {
+                    const productLinks = document.querySelectorAll('.product-grid a');
+                    const visibleProducts = [];
+
+                    productLinks.forEach(link => {
+                        const preco = parseFloat(link.getAttribute('data-preco'));
+                        const avaliacao = parseFloat(link.getAttribute('data-avaliacao'));
+                        const tempoEntrega = parseInt(link.getAttribute('data-tempo-entrega'));
+                        const categorias = link.getAttribute('data-categoria').split(',');
+
+                        let show = true;
+
+                        // Filtro de preço
+                        if (currentFilters.priceRanges && currentFilters.priceRanges.length > 0) {
+                            let priceMatch = false;
+                            currentFilters.priceRanges.forEach(range => {
+                                if (range === '0-20' && preco <= 20) priceMatch = true;
+                                else if (range === '20-40' && preco > 20 && preco <= 40) priceMatch = true;
+                                else if (range === '40+' && preco > 40) priceMatch = true;
+                            });
+                            if (!priceMatch) show = false;
+                        }
+
+                        // Filtro de avaliação
+                        if (currentFilters.rating && avaliacao < 4) {
+                            show = false;
+                        }
+
+                        // Filtro de tempo de entrega
+                        if (currentFilters.deliveryTimes && currentFilters.deliveryTimes.length > 0) {
+                            let deliveryMatch = false;
+                            currentFilters.deliveryTimes.forEach(time => {
+                                if (time === '20' && tempoEntrega <= 20) deliveryMatch = true;
+                                else if (time === '30' && tempoEntrega <= 30) deliveryMatch = true;
+                            });
+                            if (!deliveryMatch) show = false;
+                        }
+
+                        // Filtro de outros
+                        if (currentFilters.others && currentFilters.others.length > 0) {
+                            let otherMatch = false;
+                            currentFilters.others.forEach(other => {
+                                if (categorias.includes(other)) otherMatch = true;
+                            });
+                            if (!otherMatch) show = false;
+                        }
+
+                        if (show) {
+                            visibleProducts.push(link);
+                            link.style.display = '';
+                        } else {
+                            link.style.display = 'none';
+                        }
+                    });
+
+                    // Aplicar ordenação
+                    if (currentSort !== 'relevance') {
+                        visibleProducts.sort((a, b) => {
+                            const aPreco = parseFloat(a.getAttribute('data-preco'));
+                            const bPreco = parseFloat(b.getAttribute('data-preco'));
+                            const aAvaliacao = parseFloat(a.getAttribute('data-avaliacao'));
+                            const bAvaliacao = parseFloat(b.getAttribute('data-avaliacao'));
+                            const aTempo = parseInt(a.getAttribute('data-tempo-entrega'));
+                            const bTempo = parseInt(b.getAttribute('data-tempo-entrega'));
+
+                            if (currentSort === 'price-low') return aPreco - bPreco;
+                            if (currentSort === 'price-high') return bPreco - aPreco;
+                            if (currentSort === 'rating') return bAvaliacao - aAvaliacao;
+                            if (currentSort === 'delivery-time') return aTempo - bTempo;
+                            return 0;
+                        });
+
+                        // Reordenar no DOM
+                        const productsContainer = document.querySelector('.product-grid');
+                        visibleProducts.forEach(link => {
+                            productsContainer.appendChild(link);
+                        });
+                    }
+                }
+
+                function clearFilters() {
+                    currentFilters = {};
+                    currentSort = 'relevance';
+
+                    // Limpar checkboxes e radios
+                    document.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(input => {
+                        input.checked = input.name === 'sort' && input.value === 'relevance';
+                    });
+
+                    // Mostrar todos os produtos
+                    document.querySelectorAll('.product-grid a').forEach(link => {
+                        link.style.display = '';
+                    });
+                }
+
+                // Event listener para "Aplicar"
+                if (applyBtn) {
+                    applyBtn.addEventListener('click', function () {
+                        // Coletar filtros selecionados
+                        currentFilters = {
+                            priceRanges: Array.from(document.querySelectorAll('input[name="price-range"]:checked')).map(cb => cb.value),
+                            rating: document.querySelector('input[name="rating"]:checked') ? document.querySelector('input[name="rating"]:checked').value : null,
+                            deliveryTimes: Array.from(document.querySelectorAll('input[name="delivery-time"]:checked')).map(cb => cb.value),
+                            others: Array.from(document.querySelectorAll('input[name="other"]:checked')).map(cb => cb.value)
+                        };
+
+                        // Coletar ordenação
+                        const sortInput = document.querySelector('input[name="sort"]:checked');
+                        currentSort = sortInput ? sortInput.value : 'relevance';
+
+                        applyFilters();
+                        closeModal();
+                    });
+                }
+
+                // Event listener para "Limpar"
+                if (clearBtn) {
+                    clearBtn.addEventListener('click', function () {
+                        clearFilters();
+                        closeModal();
+                    });
+                }
+
+                // Fecha ao clicar fora do conteúdo do modal (overlay)
+                filterModal.addEventListener('click', (e) => {
+                    // Verifica se o clique foi no elemento pai (o overlay), não no conteúdo
+                    if (e.target.id === 'filter-modal') {
+                        closeModal();
+                    }
+                });
+            }
+
+            // 5. Funcionalidade de Categorias
+            const categoryLinks = document.querySelectorAll('.categories a, .footer-nav .nav-item[data-category], .header-options .promotion');
+            const homeLink = document.querySelector('.footer-nav .nav-item[href="#"]'); // Início
+
+            function filterProducts(category) {
+                const productLinks = document.querySelectorAll('.product-grid a');
+                productLinks.forEach(link => {
+                    const categorias = link.getAttribute('data-categoria').split(',');
+                    if (categorias.includes(category)) {
+                        link.style.display = '';
+                    } else {
+                        link.style.display = 'none';
+                    }
+                });
+            }
+
+            function showAllProducts() {
+                const productLinks = document.querySelectorAll('.product-grid a');
+                productLinks.forEach(link => link.style.display = '');
+            }
+
+            categoryLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    // Only allow promotion button on desktop
+                    if (this.classList.contains('promotion') && window.innerWidth < 1024) return;
+                    e.preventDefault();
+
+                    // Reset promotion button text if clicking other categories
+                    if (!this.classList.contains('promotion')) {
+                        const promoBtn = document.querySelector('.header-options .promotion');
+                        if (promoBtn) promoBtn.textContent = 'Promoção';
+                    }
+
+                    // Handle promotion button toggle
+                    if (this.classList.contains('promotion')) {
+                        if (this.textContent === 'Promoção') {
+                            // First click: show promotions, change to 'Todos'
+                            this.textContent = 'Todos';
+                            filterProducts('promocoes');
+                        } else {
+                            // Second click: show all, change to 'Promoção'
+                            this.textContent = 'Promoção';
+                            showAllProducts();
+                        }
+                        // Remove active from all, add to this
+                        document.querySelectorAll('.categories a, .footer-nav .nav-item, .header-options .promotion').forEach(l => l.classList.remove('active'));
+                        this.classList.add('active');
+                        return;
+                    }
+
+                    // For other categories
+                    const category = this.getAttribute('data-category');
+                    // Remove active from all
+                    document.querySelectorAll('.categories a, .footer-nav .nav-item, .header-options .promotion').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    filterProducts(category);
+                });
+            });
+
+            if (homeLink) {
+                homeLink.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    // Remove active from all
+                    document.querySelectorAll('.categories a, .footer-nav .nav-item, .header-options .promotion').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    showAllProducts();
+                });
+            }
+
+
+        });
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+    // Breakpoint de Desktop
+    const DESKTOP_BREAKPOINT = 1024;
+
+
+
+    // FUNÇÕES DE COntrole
+
+    const openModal = (e) => {
+        // Verifica se a tela é de desktop (>= 1024px)
+        if (window.innerWidth >= DESKTOP_BREAKPOINT) {
+            e.preventDefault();
+            // Adiciona a classe ao body para exibir o modal via CSS
+            document.body.classList.add('modal-open-auth');
+        }
+        // Se for mobile, a ação padrão (navegar para perfil.html) ocorrerá.....
+    };
+
+    const closeModal = () => {
+        // Remove a classe do body para ocultar o modal
+        document.body.classList.remove('modal-open-auth');
+    };
+
+
+    // Adicionar event listener para abrir modal de pedidos no desktop
+    const pedidosLink = document.querySelector('.pedidos-link');
+    if (pedidosLink) {
+        pedidosLink.addEventListener('click', function(e) {
+            if (window.innerWidth >= DESKTOP_BREAKPOINT) {
+                e.preventDefault();
+                openPedidosModal();
+            }
+        });
+    }
+
+    // Adicionar event listener para o ícone de perfil no desktop
+    const profileLink = document.querySelector('.profile-link');
+    if (profileLink) {
+        profileLink.addEventListener('click', function(e) {
+            if (window.innerWidth >= DESKTOP_BREAKPOINT) {
+                e.preventDefault();
+                const user = authManager.obterUsuarioLogado();
+                if (user && user.email && user.email.trim() !== '') {
+                    // Usuário logado: abrir modal de perfil
+                    document.getElementById('profile-modal').style.display = 'flex';
+                } else {
+                    // Usuário não logado: abrir modal de login
+                    window.openLoginModal();
+                }
+            }
+            // Para mobile, permitir navegação padrão para perfil.html
+        });
+    }
+
+    // Animação de fade-out do header no scroll para desktop
+    window.addEventListener('scroll', function() {
+        if (window.innerWidth >= DESKTOP_BREAKPOINT) {
+            const header = document.querySelector('.header');
+            if (header) {
+                if (window.scrollY > 0) {
+                    header.classList.add('fade-out');
+                } else {
+                    header.classList.remove('fade-out');
+                }
+            }
+        }
+    });
+
+});
+    </script>
 </body>
 
 </html>

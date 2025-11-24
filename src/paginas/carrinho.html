@@ -1,169 +1,729 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
+
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="../recursos/css/principal.css">
-	<link rel="stylesheet" type="text/css" href="../recursos/css/paginas/carrinho.css">
-	<title>Carrinho</title>
-	<!-- feito por Miguel J. Castro -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Carrinho - Get Eats</title>
+  <style>
+    /* Reset */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      min-height: 100vh;
+      padding-bottom: 80px;
+      /* Espaço para footer fixo */
+    }
+
+    /* Header Superior Vermelho */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 10rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 1rem;
+      z-index: 10;
+    }
+
+    .header-bg {
+      position: absolute;
+      top: -150px;
+      left: 50%;
+      width: 150%;
+      height: 300px;
+      transform: translateX(-50%);
+      background: linear-gradient(180deg, #FE2E2E 48%, #D40403 100%);
+      border-radius: 50%;
+    }
+
+    .header .back-icon {
+      margin-left: 50px;
+      width: 1.5rem;
+      height: 1.5rem;
+      position: relative;
+      z-index: 11;
+    }
+
+    .header .cart-icon-header {
+      width: 2rem;
+      position: relative;
+      z-index: 11;
+    }
+
+    .header .profile-icon {
+      margin-right: 50px;
+      width: 1.5rem;
+      height: 1.5rem;
+      position: relative;
+      z-index: 8;
+    }
+
+    /* Conteúdo Principal */
+    .main-content {
+        padding-top: 10rem;
+      background-color: #f9f9f900;
+      width: 90vw;
+      max-width: 400px;
+      min-width: 320px;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0 auto;
+      margin-top: 2rem;
+    }
+
+    /* Barra de Aplicar Cupom */
+    .coupon-bar {
+      position: fixed;
+      left: 50%;
+      top: 13%;
+      transform: translateX(-50%);
+      max-width: 600px;
+      width: 70vw;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      background: white;
+      border-radius: 4rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 1rem 0.75rem;
+      z-index: 15;
+    }
+
+    .coupon-bar .coupon-icon {
+      width: 1rem;
+      height: 1rem;
+      border-radius: 0.25rem;
+      margin-left: 0.5rem;
+    }
+
+    .coupon-bar input {
+      border: none;
+      outline: none;
+      flex-grow: 1;
+      font-size: 0.8rem;
+      color: #9999b0;
+      margin-left: 0.5rem;
+    }
+
+    .coupon-bar .apply-btn {
+      background: linear-gradient(180deg, #FE2E2E 48%, #D40403 100%);
+      color: white;
+      border: none;
+      border-radius: 2rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.8rem;
+      font-weight: bold;
+      cursor: pointer;
+      margin-right: 0.5rem;
+    }
+
+    /* Itens do Carrinho */
+    .cart-items {
+      min-width: 350px;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 2rem;
+      gap: 1rem;
+    }
+
+    .cart-item {
+      height: 9rem;
+      display: flex;
+      background: white;
+      border-radius: 0.9375rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 0.9375rem;
+      position: relative;
+    }
+
+    .cart-item .left-side {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-right: 0.8rem;
+    }
+
+    .cart-item .image {
+      width: 6.75rem;
+      height: 5rem;
+      border-radius: 0.5rem;
+      background-size: cover;
+      background-position: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .cart-item .quantity {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.875rem;
+      color: #666666;
+    }
+
+    .cart-item .quantity .qty-btn {
+      width: 1.5rem;
+      height: 1.5rem;
+      background: #f0f0f0;
+      border-radius: 50%;
+      color: #525252;
+      font-size: 1.2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      margin: 0 0.5rem;
+    }
+
+    .cart-item .details {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: top;
+    }
+
+    .cart-item .title {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #222222;
+      margin-bottom: 0.25rem;
+    }
+
+    .cart-item .price {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #222222;
+      margin-bottom: 0.125rem;
+    }
+
+    .cart-item .delivery-time {
+      padding: 1rem 0;
+      font-size: 1rem;
+      color: #666666;
+    }
+
+    .delete-icon {
+      position: absolute;
+      bottom: 1rem;
+      right: 1.5rem;
+      width: 1.75rem;
+      height: 1.75rem;
+      background: #f0f0f0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+    }
+
+    .delete-icon img {
+      width: 0.75rem;
+    }
+
+    /* Card de Resumo do Pedido */
+    .order-summary {
+      width: 100%;
+      max-width: 350px;
+      background: white;
+      border-radius: 0.9375rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .order-summary h2 {
+      font-size: 1.25rem;
+      font-weight: lighter;
+      color: #222222;
+      margin-bottom: 1rem;
+    }
+
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+      color: #666666;
+    }
+
+    .summary-item span:first-child {
+      text-align: left;
+    }
+
+    .summary-item span:last-child {
+      text-align: right;
+      font-weight: bold;
+      color: #222222;
+    }
+
+    .summary-divider {
+      border: none;
+      height: 1px;
+      background-color: #cccccc;
+      margin: 1rem 0;
+    }
+
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.125rem;
+      font-weight: lighter;
+      color: #222222;
+    }
+
+    .summary-total span:first-child {
+      text-align: left;
+    }
+
+    .summary-total span:last-child {
+      text-align: right;
+    }
+
+    /* Endereço de Entrega */
+    .delivery-address {
+      width: 100%;
+      max-width: 350px;
+      background: white;
+      border-radius: 0.9375rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 1rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .address-info {
+      display: flex;
+      align-items: center;
+      font-size: 1rem;
+      color: #222222;
+    }
+
+    .address-info .loc-icon {
+      width: 1.25rem;
+      height: 1.25rem;
+      margin-right: 0.5rem;
+    }
+
+    .change-btn {
+      background: linear-gradient(180deg, #9779e2 48%, #7f5fce 100%);
+      color: white;
+      border: none;
+      border-radius: 2rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.8rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* Botão Flutuante Carrinho - Removido pois é a página do carrinho */
+
+    /* Footer Navegação */
+    .footer-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100vw;
+      height: 100px;
+      background: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+      z-index: 10;
+      padding: 1rem;
+    }
+
+    .finalize-btn {
+      width: 100%;
+      max-width: 350px;
+      background: linear-gradient(180deg, #FE2E2E 48%, #D40403 100%);
+      color: white;
+      border: none;
+      border-radius: 1rem;
+      padding: 1rem;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .finalize-btn .cart-icon {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    .footer-nav .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #b0b0b0;
+      font-size: 0.625rem;
+    }
+
+    .footer-nav .nav-item.active {
+      color: #000000;
+    }
+
+    .footer-nav .nav-icon {
+      width: 1.25rem;
+      height: 1.25rem;
+      border-radius: 0.25rem;
+      margin-bottom: 1rem;
+    }
+
+
+    /* Media Queries para Responsividade */
+    @media (max-width: 767px) {
+      .cart-item .qty-btn-tablet {
+        display: none;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .cart-item .qty-btn {
+        width: 200px;
+        display: none;
+      }
+
+      .main-content {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 10rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 5.5rem;
+      z-index: 10;
+    }
+
+    .cart-items {
+        min-width: 500px;
+      }
+
+    .order-summary, .delivery-address {
+        max-width: 500px;
+      }
+
+      .finalize-btn {
+        max-width: 500px;
+      }
+            
+
+
+      .coupon-bar {
+        top: 7rem;
+        max-width: 500px;
+      }
+
+      .main-content {
+        padding-top: 12rem;
+      }
+
+    }
+
+    @media (min-width: 820px) {
+      .header .back-icon {
+        margin-left: 112px;
+      }
+
+      .header .profile-icon {
+        margin-right: 112px;
+      }
+    }
+
+
+  </style>
 </head>
+
 <body>
+  <div class="header">
+    <div class="header-bg"></div>
+    <img src="../assets/icons/Voltar.svg" alt="Voltar" class="back-icon">
+    <img src="../assets/icons/Cart.svg" alt="Pedidos" class="cart-icon-header" />
+    <img src="../assets/icons/PerfilHeader.svg" alt="Perfil" class="profile-icon">
+  </div>
+  <div class="coupon-bar">
+ <input type="text" placeholder="Aplicar cupom..." />
+    <button class="apply-btn">Aplicar</button>
+  </div>
+  <div class="main-content">
+    <div class="cart-items">
+      <!-- Itens serão renderizados dinamicamente pelo JavaScript -->
+    </div>
 
-	<button onclick="document.getElementById('carrinho--modal').style.display='block'" class="carrinho--modal-btn">
-		<img src="../assets/icons/CartRed.svg" width="35px" height="35px"></button>
+    <!-- Card de Resumo do Pedido -->
+    <div class="order-summary">
+      <h2>Resumo do pedido</h2>
+      <div class="summary-item">
+        <span>Subtotal:</span>
+        <span>R$ 0,00</span>
+      </div>
+      <div class="summary-item">
+        <span>Desconto:</span>
+        <span>R$ 0,00</span>
+      </div>
+      <div class="summary-item">
+        <span>Taxa de entrega:</span>
+        <span>R$ 5,00</span>
+      </div>
+      <hr class="summary-divider">
+      <div class="summary-total">
+        <span>Total do pedido:</span>
+        <span>R$ 5,00</span>
+      </div>
+    </div>
 
-	<div id="carrinho--modal" class="modal--content">
+    <!-- Endereço de Entrega -->
+    <div class="delivery-address">
+      <div class="address-info">
+        <img src="../assets/icons/Loc.svg" alt="Location" class="loc-icon">
+        <span id="endereco-entrega">Carregando...</span>
+      </div>
+      <button class="change-btn" id="alterar-endereco-btn">Alterar</button>
+    </div>
+  </div>
+  <div class="footer-nav">
+    <button class="finalize-btn">Finalizar Pedido <img src="../assets/icons/Card.svg" alt="Carrinho" class="cart-icon"></button>
+  </div>
+  <script src="../recursos/js/auth.js"></script>
+  <script src="../recursos/js/carrinho.js"></script>
+  <script>
+    // Classe para gerenciar a interface do carrinho
+    class CarrinhoInterface {
+      constructor() {
+        this.carrinhoManager = carrinhoManager;
+        this.init();
+      }
 
-		<div class="carrinho--sideline modal--animate-right">
+      init() {
+        this.renderizarCarrinho();
+        this.configurarEventos();
+        this.atualizarResumo();
+        this.atualizarEndereco();
+      }
 
-			<div class="carrinho--top">
-				<div class="carrinho--top-red"></div>
-				<div class="item--nome">Carrinho de compras</div>
-				<button onclick="document.getElementById('carrinho--modal').style.display='none'" class="item--nome carrinho--top-close">
-					<img src="../assets/icons/Close.svg" width="30px" height="30px">
-				</button>
-			</div>
+      renderizarCarrinho() {
+        const cartItemsContainer = document.querySelector('.cart-items');
+        if (!cartItemsContainer) return;
 
-			<div class="form-card__separator lessmargin"></div>
+        const itens = this.carrinhoManager.carrinho;
 
-			<div class="carrinho--itemcontainer">
-				<div class="carrinho--item">
-					<div>
-						<img src="../assets/imagen/ArtesanalDuplo.jpg" class="carrinho--imagem">
+        if (itens.length === 0) {
+          cartItemsContainer.innerHTML = `
+            <div style="text-align: center; padding: 2rem; color: #666;">
+              <p>Seu carrinho está vazio</p>
+              <p><a href="cardapio.html" style="color: #FE2E2E; text-decoration: none;">Voltar ao cardápio</a></p>
+            </div>
+          `;
+          return;
+        }
 
-						<div class="carrinho--opcoes">
-							<div class="carrinho--iconbg carrinho--opcao">
-								<div class="carrinho--icon"> - </div>
-							</div>
-							<div class="carrinho--numeroitens">1</div>
-							<div class="carrinho--iconbg carrinho--opcao">
-								<div class="carrinho--icon"> + </div>
-							</div>
-						</div>
+        cartItemsContainer.innerHTML = '';
 
-						<div class="carrinho--iconbg carrinho--delete">
-							<img src="../assets/icons/Delete.svg" class="carrinho--icon">
-						</div>
-					</div>
+        itens.forEach(item => {
+          const itemElement = this.criarElementoItem(item);
+          cartItemsContainer.appendChild(itemElement);
+        });
+      }
 
-					<div>
-						<div class="item--nome">Duplo</div>
-						<div class="item--descricao">Italiana | 25-30 Minutos</div>
-						<div class="item--preco">R$ 22,90</div>
-					</div>
+      criarElementoItem(item) {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'cart-item';
+        itemDiv.innerHTML = `
+          <div class="left-side">
+            <div class="image" style="background-image: url('${item.imagem}');"></div>
+            <div class="quantity">
+              <div class="qty-btn" data-action="decrease" data-id="${item.id}">-</div>
+              <span>${item.quantidade}</span>
+              <div class="qty-btn" data-action="increase" data-id="${item.id}">+</div>
+            </div>
+          </div>
+          <div class="details">
+            <div class="title">${item.nome}</div>
+            <div class="price">R$ ${(item.preco * item.quantidade).toFixed(2).replace('.', ',')}</div>
+            <div class="delivery-time">Previsão: 30-45 min</div>
+          </div>
+          <div class="delete-icon" data-id="${item.id}">
+            <img src="../assets/icons/Delete.svg" alt="Delete">
+          </div>
+        `;
 
-					<div class="carrinho--opcoes">
-						<div class="carrinho--iconbg carrinho--opcao">
-							<div class="carrinho--icon"> - </div>
-						</div>
-						<div class="carrinho--numeroitens">1</div>
-						<div class="carrinho--iconbg carrinho--opcao">
-							<div class="carrinho--icon"> + </div>
-						</div>
-					</div>
+        return itemDiv;
+      }
 
-					<div class="carrinho--iconbg carrinho--delete">
-						<img src="../assets/icons/Delete.svg" class="carrinho--icon">
-					</div>
-				</div>
+      configurarEventos() {
+        // Eventos para botões de quantidade
+        document.addEventListener('click', (e) => {
+          if (e.target.classList.contains('qty-btn')) {
+            const action = e.target.dataset.action;
+            const id = e.target.dataset.id;
 
-				<div class="carrinho--item">
-					<div>
-						<img src="../assets/imagen/Suco.jpg" class="carrinho--imagem">
-					</div>
+            if (action === 'increase') {
+              this.carrinhoManager.alterarQuantidade(id, this.carrinhoManager.carrinho.find(item => item.id === id).quantidade + 1);
+            } else if (action === 'decrease') {
+              this.carrinhoManager.alterarQuantidade(id, this.carrinhoManager.carrinho.find(item => item.id === id).quantidade - 1);
+            }
 
-					<div>
-						<div class="item--nome">Suco</div>
-						<div class="item--descricao">Italiana | 25-30 Minutos</div>
-						<div class="item--preco">R$ 5,90</div>
-					</div>
+            this.renderizarCarrinho();
+            this.atualizarResumo();
+          }
+        });
 
-					<div class="carrinho--opcoes">
-						<div class="carrinho--iconbg carrinho--opcao">
-							<div class="carrinho--icon"> - </div>
-						</div>
-						<div class="carrinho--numeroitens">1</div>
-						<div class="carrinho--iconbg carrinho--opcao">
-							<div class="carrinho--icon"> + </div>
-						</div>
-					</div>
+        // Eventos para botões de deletar
+        document.addEventListener('click', (e) => {
+          if (e.target.closest('.delete-icon')) {
+            const id = e.target.closest('.delete-icon').dataset.id;
+            this.carrinhoManager.removerItem(id);
+            this.renderizarCarrinho();
+            this.atualizarResumo();
+          }
+        });
 
-					<div class="carrinho--iconbg carrinho--delete">
-						<img src="../assets/icons/Delete.svg" class="carrinho--icon">
-					</div>
-				</div>
-			</div>
+        // Evento para aplicar cupom
+        const applyBtn = document.querySelector('.apply-btn');
+        const couponInput = document.querySelector('.coupon-bar input');
 
-			<div id="preco--modal">
-				<div class="infopagamento">
-					<div class="item--nome left">Resumo do pedido</div>
-					<div class="item--pedido">
-						<div class="item--descricao left">Duplo</div>
-						<div class="item--descricao right">R$ 22,90</div>
-					</div>
-					<div class="item--pedido">
-						<div class="item--descricao left">Suco</div>
-						<div class="item--descricao right">R$ 5,90</div>
-					</div>
-					<div class="item--pedido">
-						<div class="item--descricao left">Taxa de entrega</div>
-						<div class="item--descricao right">R$ 3,90</div>
-					</div>
-					<div class="form-card__separator"></div>
-					<div class="item--pedido">
-						<div class="item--nome left">Total</div>
-						<div class="item--nome right">R$ 32,70</div>
-					</div>
-				</div>
+        if (applyBtn && couponInput) {
+          applyBtn.addEventListener('click', () => {
+            const codigo = couponInput.value.trim().toUpperCase();
+            if (codigo) {
+              const sucesso = this.carrinhoManager.aplicarCupom(codigo);
+              if (sucesso) {
+                alert('Cupom aplicado com sucesso!');
+                couponInput.value = '';
+                this.atualizarResumo();
+              } else {
+                alert('Cupom inválido ou expirado.');
+              }
+            }
+          });
+        }
 
-				<div class="form-card__separator"></div>
+        // Evento para voltar
+        const backIcon = document.querySelector('.back-icon');
+        if (backIcon) {
+          backIcon.addEventListener('click', function() {
+            window.history.back();
+          });
+        }
 
-					<div class="pedido--endereco">
-						<div>
-							<img src="../assets/icons/Loc.svg" class="endereco--icon">
-						</div>
-						<div>
-							<p>Av, Brasil - 1234</p>
-							<p class="item--descricao nomargin">Apto 10</p>
-						</div>
-						<div class="btn--alterarendereco">Alterar</div>
-					</div>
-				<button   onclick="document.getElementById('preco--modal').style.display='none'; document.getElementById('pagamento--modal').style.display='block';" class="btn btn--finalizarpedido">
-						<img src="../assets/icons/card.svg">
-						Finalizar pedido
-				</button>
-			</div>
+        // Evento para alterar endereço
+        const alterarEnderecoBtn = document.querySelector('#alterar-endereco-btn');
+        if (alterarEnderecoBtn) {
+          alterarEnderecoBtn.addEventListener('click', () => {
+            const novoEndereco = prompt('Digite o novo endereço de entrega:');
+            if (novoEndereco && novoEndereco.trim()) {
+              this.carrinhoManager.alterarEndereco(novoEndereco.trim());
+              this.atualizarEndereco();
+              alert('Endereço atualizado com sucesso!');
+            }
+          });
+        }
 
-			<div id="pagamento--modal" class="pagamento--select">
-				
-				<div class="pagamento--modo">
-					<div class="left">Pague por aqui</div>
-					<div class="right">Pague na entrega</div>
-				</div>
+        // Evento para finalizar pedido
+        const finalizeBtn = document.querySelector('.finalize-btn');
+        if (finalizeBtn) {
+          finalizeBtn.addEventListener('click', function() {
+            if (this.carrinhoManager.estaVazio()) {
+              alert('Seu carrinho está vazio. Adicione itens antes de finalizar.');
+              return;
+            }
 
-				<div class="formaspagamento">
-					<div class="lessmargin">Formas de pagamento</div>
-					<a href="pagamento.html">
-					<img class="pagamento--pix" src="../assets/logos/pix.png">
-					<div class="flex-row"></a>
-						<a href="pagamento.html">
-						<img src="../assets/logos/paypal.png" class="pagamento--provedor"></a>
-						<a href="pagamento.html">
-						<img src="../assets/logos/mastercard.png" class="pagamento--provedor"></a>
-						<a href="pagamento.html">
-						<img src="../assets/logos/maestro.png" class="pagamento--provedor"></a>
-					</div>
-					<div class="flex-row">
-						<a href="pagamento.html">
-						<img src="../assets/logos/applepay.png" class="pagamento--provedor"></a>
-						<a href="pagamento.html">
-						<img src="../assets/logos/amazonpay.png" class="pagamento--provedor"></a>
-						<a href="pagamento.html">
-						<img src="../assets/logos/binancepay.png" class="pagamento--provedor"></a>
-					</div>
-				</div>
-			</div>
-	</div>
+            // Verificar se usuário está logado
+            if (!authManager.estaLogado()) {
+              alert('Você precisa fazer login para finalizar o pedido.');
+              window.location.href = 'login.html';
+              return;
+            }
+
+            // Verificar se endereço foi definido
+            if (!this.carrinhoManager.obterEndereco()) {
+              alert('Por favor, defina um endereço de entrega antes de finalizar o pedido.');
+              return;
+            }
+
+            window.location.href = 'pagamento.html';
+          }.bind(this));
+        }
+      }
+
+      atualizarResumo() {
+        const resumo = this.carrinhoManager.obterResumo();
+
+        // Obter todos os elementos .summary-item
+        const summaryItems = document.querySelectorAll('.summary-item');
+
+        // Atualizar subtotal (primeiro .summary-item)
+        if (summaryItems[0]) {
+          const subtotalElement = summaryItems[0].querySelector('span:last-child');
+          if (subtotalElement) {
+            subtotalElement.textContent = `R$ ${resumo.subtotal.toFixed(2).replace('.', ',')}`;
+          }
+        }
+
+        // Atualizar desconto (segundo .summary-item)
+        if (summaryItems[1]) {
+          const descontoElement = summaryItems[1].querySelector('span:last-child');
+          if (descontoElement) {
+            descontoElement.textContent = resumo.desconto > 0 ? `-R$ ${resumo.desconto.toFixed(2).replace('.', ',')}` : 'R$ 0,00';
+          }
+        }
+
+        // Atualizar taxa de entrega (terceiro .summary-item)
+        if (summaryItems[2]) {
+          const taxaElement = summaryItems[2].querySelector('span:last-child');
+          if (taxaElement) {
+            taxaElement.textContent = `R$ ${resumo.taxaEntrega.toFixed(2).replace('.', ',')}`;
+          }
+        }
+
+        // Atualizar total
+        const totalElement = document.querySelector('.summary-total span:last-child');
+        if (totalElement) {
+          totalElement.textContent = `R$ ${resumo.total.toFixed(2).replace('.', ',')}`;
+        }
+      }
+
+      atualizarEndereco() {
+        const enderecoElement = document.querySelector('#endereco-entrega');
+        if (enderecoElement) {
+          const endereco = this.carrinhoManager.obterEndereco();
+          enderecoElement.textContent = endereco || 'Endereço não definido';
+        }
+      }
+    }
+
+    // Inicializar interface do carrinho quando a página carregar
+    document.addEventListener('DOMContentLoaded', function() {
+      new CarrinhoInterface();
+    });
+  </script>
 </body>
+
 </html>
