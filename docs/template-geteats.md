@@ -25,7 +25,7 @@ Para visualizar o protótipo no figma, acesse o link abaixo:
 - Menu principal (cardápio), dropdown/mega menu para filtro de categorias complexas, menu de usuário (perfil, pedidos, favoritos).
 
 **Breakpoints recomendados (mobile-first):**
-- `--sm`: 360px (telefones pequenos)  
+- `--sm`: 440px (telefones)  
 - `--md`: 768px (tablets)  
 - `--lg`: 1024px (laptops)  
 - `--xl`: 1440px (desktop grande)
