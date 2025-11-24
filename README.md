@@ -1,12 +1,13 @@
 # Get Eats
 
-![Hello](docs/img/Capa0.png)
-
 `CURSO: Sistemas de Informação`
 
-`DISCIPLINA: Projeto - Aplicações Web`
+`DISCIPLINA: - Aplicações Web`
 
 `SEMESTRE: 1º`
+
+![Hello](docs/img/Capa0.png)
+
 
 O projeto "Get Eats" é uma aplicação web desenvolvida no contexto da disciplina "Projeto - Aplicações Web" do curso de Sistemas de Informação, com o objetivo de criar um sistema completo de pedidos online para restaurantes como a "Burguer House". Ele aborda o crescente mercado de delivery de alimentos no Brasil, oferecendo uma solução tecnológica acessível para estabelecimentos de pequeno e médio porte, permitindo o gerenciamento de cardápios, processamento de pedidos, autenticação de usuários e acompanhamento em tempo real, visando modernizar processos operacionais e melhorar a experiência do cliente.
 
