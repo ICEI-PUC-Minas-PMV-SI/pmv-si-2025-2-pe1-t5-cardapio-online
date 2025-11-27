@@ -18,7 +18,7 @@ A aplicação integra funcionalidades administrativas para proprietários, como 
 * Ana Luiza da Silva Borges
 * Célio Pedro Sá Almeida 
 * Enzo Monteiro Martuscelli 
-* Nome completo do aluno 4
+* Miguel José de Castro Garcia
 
 
 ## Orientador
